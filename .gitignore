@@ -1,0 +1,28 @@
+# Backup de código-fonte do projeto Todday Modas.
+# Git é o backup real: todo deploy deve ser commitado. Zips em versions/ são imutáveis.
+
+# Dependências e builds
+node_modules/
+src/dist/
+*.min.js
+*.min.css
+
+# Ambiente
+.env
+.env.local
+*.log
+php_errors.log
+
+# Windows
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Arquivos sensíveis / não versionar
+*.sql
+*.pem
+*.key
+wp-config.php
+
+# Sessões de IA e anotações temporárias
+_dev/

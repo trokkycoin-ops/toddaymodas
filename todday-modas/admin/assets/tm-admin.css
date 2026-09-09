@@ -1,0 +1,67 @@
+/* Painéis admin — Todday Modas | Identidade v1.0.4 (brechó: terracota + champagne) */
+:root {
+	--tm-a-destaque: #B4552D;   /* terracota — realces, bordas de card */
+	--tm-a-secundaria: #23201C; /* expresso — números, textos fortes */
+	--tm-a-acento: #C6A15B;     /* champagne — detalhes */
+	--tm-a-base: #FAF8F5;       /* linho — fundos alternados */
+	--tm-a-borda: #E8E2DA;
+	--tm-a-radius: 12px;
+}
+
+.tm-wrap h1 { display: flex; align-items: center; gap: 10px; }
+.tm-wrap h1::before {
+	content: "";
+	width: 28px; height: 28px;
+	background: var(--tm-a-destaque);
+	mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h3a2 2 0 0 1 2 2v11a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V9a2 2 0 0 1 2-2h3V5.73C10.4 5.39 10 4.74 10 4a2 2 0 0 1 2-2z'/%3E%3C/svg%3E") no-repeat center/contain;
+	-webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h3a2 2 0 0 1 2 2v11a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V9a2 2 0 0 1 2-2h3V5.73C10.4 5.39 10 4.74 10 4a2 2 0 0 1 2-2z'/%3E%3C/svg%3E") no-repeat center/contain;
+}
+
+.tm-cards { display: flex; gap: 16px; flex-wrap: wrap; margin: 16px 0 24px; }
+.tm-card {
+	background: #fff; border: 1px solid var(--tm-a-borda); border-left: 4px solid var(--tm-a-destaque);
+	border-radius: var(--tm-a-radius); padding: 18px 22px; min-width: 200px; flex: 1;
+	box-shadow: 0 1px 4px rgba(35, 32, 28, .05);
+}
+.tm-card-label { display: block; color: #6b625a; font-size: 12px; text-transform: uppercase; letter-spacing: .5px; }
+.tm-card-numero { display: block; font-size: 28px; margin: 6px 0 2px; color: var(--tm-a-secundaria); }
+.tm-card-detalhe { color: #999; font-size: 12px; }
+
+.tm-duas-colunas { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: start; }
+@media (max-width: 1100px) { .tm-duas-colunas { grid-template-columns: 1fr; } }
+
+.tm-form { background: #fff; border: 1px solid var(--tm-a-borda); border-radius: var(--tm-a-radius); padding: 20px; max-width: 720px; }
+
+.tm-logo-box { display: flex; align-items: center; gap: 12px; }
+.tm-logo-preview {
+	width: 160px; height: 80px; border: 1px dashed #ccc; border-radius: var(--tm-a-radius);
+	display: flex; align-items: center; justify-content: center; background: #fff; overflow: hidden;
+}
+.tm-logo-preview img { max-width: 100%; max-height: 100%; object-fit: contain; }
+.tm-logo-vazio { color: #aaa; font-size: 12px; }
+
+.tm-banner-preview { max-width: 220px; border-radius: var(--tm-a-radius); display: block; margin-top: 8px; }
+
+.tm-grafico {
+	display: flex; align-items: flex-end; gap: 3px; height: 180px;
+	background: #fff; border: 1px solid var(--tm-a-borda); border-radius: var(--tm-a-radius); padding: 12px; max-width: 900px;
+}
+.tm-barra { flex: 1; background: var(--tm-a-destaque); border-radius: 3px 3px 0 0; min-height: 2px; transition: filter .15s; }
+.tm-barra:hover { filter: brightness(1.15); }
+.tm-grafico-linha { display: flex; justify-content: space-between; font-size: 11px; color: #999; margin-top: 6px; max-width: 900px; }
+
+.tm-lista { background: #fff; border: 1px solid var(--tm-a-borda); border-radius: var(--tm-a-radius); padding: 12px 20px; max-width: 640px; }
+
+.tm-status { padding: 3px 10px; border-radius: 999px; font-size: 12px; background: #eee; }
+.tm-status-processing { background: #fdeadd; color: #8a4318; }
+.tm-status-completed { background: #e2f5e3; color: #1e7b30; }
+.tm-status-pending, .tm-status-on-hold { background: #fff6d6; color: #8a7200; }
+.tm-status-cancelled, .tm-status-failed { background: #fde2e2; color: #a12626; }
+
+.tm-log { padding: 2px 10px; border-radius: 999px; font-size: 11px; }
+.tm-log-info { background: #e3edfb; color: #1a4a8a; }
+.tm-log-warning { background: #fff3cd; color: #856404; }
+.tm-log-error { background: #f8d7da; color: #842029; }
+
+.tm-dicas-seguranca { background: #fff; border: 1px solid var(--tm-a-borda); border-radius: var(--tm-a-radius); padding: 8px 20px; max-width: 720px; }
+.tm-passo-a-passo { background: #fffbf5; border: 1px solid #e7d9b8; border-radius: var(--tm-a-radius); padding: 8px 20px 16px; max-width: 720px; margin-top: 24px; }
