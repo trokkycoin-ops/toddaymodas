@@ -1,54 +1,40 @@
 <?php
-/**
- * Desinstalação do Todday Modas: remove options e dados do plugin.
- *
- * Os CPTs de banner e seus attachments são removidos. As páginas do
- * WooCommerce e os cupons NÃO são removidos (pertencem ao WooCommerce).
- *
- * @package Todday_Modas
- */
-
 if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
-	exit;
+    exit;
 }
 
-// Options do plugin (prefixo tm_).
+global $wpdb;
+
+// Limpeza de options
 $options = array(
-	'tm_color_base',
-	'tm_color_secundaria',
-	'tm_color_destaque',
-	'tm_color_acento',
-	'tm_color_neutro',
-	'tm_font_title',
-	'tm_font_body',
-	'tm_logo_id',
-	'tm_whatsapp_number',
-	'tm_whatsapp_message',
-	'tm_free_shipping_min',
-	'tm_mp_sandbox',
-	'tm_mp_public_key',
-	'tm_mp_access_token',
-	'tm_email_marketing',
-	'tm_logs',
-	'tm_version_saved',
+    'tm_db_version',
+    'tm_branding_settings',
+    'tm_frete_settings',
+    'tm_integracoes_settings',
+    'tm_consent_settings',
+    'tm_active_coupons',
+    'tm_banner_settings'
 );
+
 foreach ( $options as $option ) {
-	delete_option( $option );
+    delete_option( $option );
 }
 
-// Banners (CPT) + imagens destacadas associadas.
-$banners = get_posts(
-	array(
-		'post_type'      => 'tm_banner',
-		'posts_per_page' => -1,
-		'post_status'    => 'any',
-		'fields'         => 'ids',
-	)
-);
+// Limpeza de Custom Post Types
+$banners = get_posts( array(
+    'post_type'      => 'tm_banner',
+    'posts_per_page' => -1,
+    'post_status'    => 'any',
+    'fields'         => 'ids',
+) );
+
 foreach ( $banners as $banner_id ) {
-	$thumb_id = get_post_thumbnail_id( $banner_id );
-	if ( $thumb_id ) {
-		wp_delete_attachment( $thumb_id, true );
-	}
-	wp_delete_post( $banner_id, true );
+    wp_delete_post( $banner_id, true );
 }
+
+// Dropar tabelas criadas
+$table_consent = $wpdb->prefix . 'tm_consent_logs';
+$table_activity = $wpdb->prefix . 'tm_activity_logs';
+
+$wpdb->query( "DROP TABLE IF EXISTS {$table_consent}" );
+$wpdb->query( "DROP TABLE IF EXISTS {$table_activity}" );

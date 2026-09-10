@@ -1,43 +1,37 @@
 <?php
-/**
- * Integração com Elementor: registra os 3 widgets da marca.
- *
- * @package Todday_Modas
- */
+if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
-
-/**
- * Registra widgets próprios no Elementor (se estiver ativo).
- */
 class TM_Elementor {
+    public static function init() {
+        add_action( 'elementor/elements/categories_registered', array( __CLASS__, 'register_category' ) );
+        add_action( 'elementor/widgets/register', array( __CLASS__, 'register_widgets' ) );
+    }
 
-	/**
-	 * Hooks.
-	 */
-	public static function init() {
-		// Elementor >= 3.5 usa elementor/widgets/register.
-		add_action( 'elementor/widgets/register', array( __CLASS__, 'register_widgets' ) );
-	}
+    public static function register_category( $elements_manager ) {
+        $elements_manager->add_category(
+            'todday-modas',
+            array(
+                'title' => __( 'Todday Modas', 'todday-modas' ),
+                'icon'  => 'fa fa-plug',
+            )
+        );
+    }
 
-	/**
-	 * Instancia os widgets.
-	 *
-	 * @param \Elementor\Widgets_Manager $widgets_manager Gerenciador.
-	 */
-	public static function register_widgets( $widgets_manager ) {
-		require_once TM_PLUGIN_DIR . 'includes/widgets/class-tm-widget-produto-destaque.php';
-		require_once TM_PLUGIN_DIR . 'includes/widgets/class-tm-widget-banner-cta.php';
-		require_once TM_PLUGIN_DIR . 'includes/widgets/class-tm-widget-grade-categorias.php';
-		require_once TM_PLUGIN_DIR . 'includes/widgets/class-tm-widget-cupons.php';
-		require_once TM_PLUGIN_DIR . 'includes/widgets/class-tm-widget-banners.php';
-
-		$widgets_manager->register( new TM_Widget_Produto_Destaque() );
-		$widgets_manager->register( new TM_Widget_Banner_CTA() );
-		$widgets_manager->register( new TM_Widget_Grade_Categorias() );
-		$widgets_manager->register( new TM_Widget_Cupons() );
-		$widgets_manager->register( new TM_Widget_Banners() );
-	}
+    public static function register_widgets( $widgets_manager ) {
+        if ( class_exists( 'TM_Widget_Produto_Destaque' ) ) {
+            $widgets_manager->register( new TM_Widget_Produto_Destaque() );
+        }
+        if ( class_exists( 'TM_Widget_Grade_Categorias' ) ) {
+            $widgets_manager->register( new TM_Widget_Grade_Categorias() );
+        }
+        if ( class_exists( 'TM_Widget_Cupons' ) ) {
+            $widgets_manager->register( new TM_Widget_Cupons() );
+        }
+        if ( class_exists( 'TM_Widget_Banners' ) ) {
+            $widgets_manager->register( new TM_Widget_Banners() );
+        }
+        if ( class_exists( 'TM_Widget_Banner_CTA' ) ) {
+            $widgets_manager->register( new TM_Widget_Banner_CTA() );
+        }
+    }
 }

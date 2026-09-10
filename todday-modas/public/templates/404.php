@@ -1,25 +1,14 @@
 <?php
-/**
- * Template 404 da marca: mensagem amigável + CTA para voltar à loja.
- *
- * @package Todday_Modas
- */
-
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
-
+if ( ! defined( 'ABSPATH' ) ) { exit; }
 get_header();
 ?>
-<main id="primary" class="site-main">
-	<section class="tm-404">
-		<p class="tm-404-codigo">404</p>
-		<h1><?php esc_html_e( 'Ops! Essa página saiu de linha.', 'todday-modas' ); ?></h1>
-		<p><?php esc_html_e( 'O endereço que você procurou não existe mais — mas a coleção nova continua esperando por você.', 'todday-modas' ); ?></p>
-		<a class="tm-404-cta" href="<?php echo esc_url( get_permalink( wc_get_page_id( 'shop' ) ) ); ?>">
-			<?php esc_html_e( 'Voltar para a loja', 'todday-modas' ); ?>
-		</a>
-	</section>
-</main>
+<div class="tm-container tm-404-wrap" style="text-align:center; padding: 80px 20px;">
+    <h1 style="font-size: 64px; color: var(--tm-primary, #C86D51); margin-bottom: 10px;">404</h1>
+    <h2><?php esc_html_e( 'Peca Nao Encontrada', 'todday-modas' ); ?></h2>
+    <p><?php esc_html_e( 'Essa peca unica pode ja ter sido adquirida por outra pessoa ou a pagina foi movida.', 'todday-modas' ); ?></p>
+    <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="tm-btn-primary" style="display:inline-block; margin-top:20px;">
+        <?php esc_html_e( 'Voltar para a Vitrine', 'todday-modas' ); ?>
+    </a>
+</div>
 <?php
 get_footer();

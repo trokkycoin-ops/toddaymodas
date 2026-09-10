@@ -1,88 +1,41 @@
 <?php
-/**
- * Helpers centrais: defaults de configuração e leitura segura de options.
- *
- * @package Todday_Modas
- */
+if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
-
-/**
- * Utilidades compartilhadas entre os módulos.
- */
 class TM_Helpers {
+    public static function init() {
+        add_action( 'init', array( __CLASS__, 'registra' ) );
+    }
 
-	/**
-	 * Todos os defaults do plugin (identidade é a única parte que muda por loja).
-	 *
-	 * @return array<string,mixed>
-	 */
-	public static function default_settings() {
-		return array(
-			'tm_color_base'       => '#FAF8F5',
-			'tm_color_secundaria' => '#23201C',
-			'tm_color_destaque'   => '#B4552D',
-			'tm_color_acento'     => '#C6A15B',
-			'tm_color_neutro'     => '#F1ECE5',
-			'tm_font_title'       => 'Playfair Display',
-			'tm_font_body'        => 'Inter',
-			'tm_logo_id'          => 0,
-			'tm_whatsapp_number'  => '',
-			'tm_whatsapp_message' => __( 'Olá! Vim pelo site da Todday Modas e preciso de ajuda.', 'todday-modas' ),
-			'tm_free_shipping_min' => 0,
-			'tm_mp_sandbox'       => 'yes',
-			'tm_mp_public_key'    => '',
-			'tm_mp_access_token'  => '',
-			'tm_email_marketing'  => '',
-		);
-	}
+    public static function registra() {
+        // Inicializacao de helpers e defaults
+    }
 
-	/**
-	 * Lê uma option do plugin com fallback ao default conhecido.
-	 *
-	 * @param string $key     Nome completo da option (tm_*).
-	 * @param mixed  $default Fallback se não houver default registrado.
-	 * @return mixed
-	 */
-	public static function get( $key, $default = '' ) {
-		$defaults = self::default_settings();
-		if ( array_key_exists( $key, $defaults ) ) {
-			$default = $defaults[ $key ];
-		}
-		return get_option( $key, $default );
-	}
+    public static function get_default_settings() {
+        return array(
+            'primary_color'   => '#C86D51',
+            'secondary_color' => '#1A1918',
+            'accent_color'    => '#FAF4ED',
+            'lock_time'       => 15,
+            'whatsapp_number' => '5511999999999',
+            'free_shipping'   => 250,
+        );
+    }
 
-	/**
-	 * Sanitiza uma cor hexadecimal (#RGB ou #RRGGBB). Retorna fallback se inválida.
-	 *
-	 * @param string $color    Entrada do usuário.
-	 * @param string $fallback Valor de fallback.
-	 * @return string
-	 */
-	public static function sanitize_hex( $color, $fallback = '#FFFFFF' ) {
-		$color = sanitize_text_field( (string) $color );
-		if ( preg_match( '/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/', $color ) ) {
-			return strtoupper( $color );
-		}
-		return $fallback;
-	}
+    public static function format_price( $value ) {
+        if ( function_exists( 'wc_price' ) ) {
+            return wc_price( $value );
+        }
+        return 'R$ ' . number_format( (float) $value, 2, ',', '.' );
+    }
 
-	/**
-	 * Sanitiza número de WhatsApp: somente dígitos, com DDI Brasil se faltar.
-	 *
-	 * @param string $number Entrada do usuário.
-	 * @return string
-	 */
-	public static function sanitize_whatsapp( $number ) {
-		$digits = preg_replace( '/\D/', '', (string) $number );
-		if ( strlen( $digits ) >= 10 && strlen( $digits ) <= 11 ) {
-			$digits = '55' . $digits;
-		}
-		if ( strlen( $digits ) < 12 || strlen( $digits ) > 13 ) {
-			return '';
-		}
-		return $digits;
-	}
+    public static function clean_phone( $phone ) {
+        return preg_replace( '/[^0-9]/', '', (string) $phone );
+    }
+
+    public static function sanitize_text_field_deep( $data ) {
+        if ( is_array( $data ) ) {
+            return array_map( array( __CLASS__, 'sanitize_text_field_deep' ), $data );
+        }
+        return sanitize_text_field( (string) $data );
+    }
 }

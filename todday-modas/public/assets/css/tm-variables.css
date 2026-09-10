@@ -1,25 +1,12 @@
-/**
- * Paleta oficial Todday Modas — ÚNICA fonte de cores do front.
- * Identidade v1.0.3: brechó de curadoria — linho, expresso, terracota, champagne.
- * Ajustes de cor acontecem aqui (ou nas options tm_color_* via wp_head).
- * Nunca usar hex solto fora daqui.
- */
 :root {
-	--tm-base: #FAF8F5;        /* Linho Clara — fundo principal, cards */
-	--tm-secundaria: #23201C;  /* Expresso — textos, header, footer */
-	--tm-destaque: #B4552D;    /* Terracota — CTA, badges, interação */
-	--tm-destaque-rgb: 180, 85, 45; /* par RGB do terracota (transparências) */
-	--tm-acento: #C6A15B;      /* Champagne Envelhecido — detalhes premium */
-	--tm-neutro: #F1ECE5;      /* Areia — fundos alternados */
-	--tm-linha: #E3DACF;       /* Fio — bordas e divisores suaves */
-
-	--tm-font-title: 'Playfair Display', Georgia, serif;
-	--tm-font-body: 'Inter', system-ui, -apple-system, sans-serif;
-
-	--tm-radius: 14px;
-	--tm-radius-btn: 999px;
-
-	--tm-shadow-1: 0 2px 10px rgba(35, 32, 28, .06);
-	--tm-shadow-2: 0 16px 38px rgba(35, 32, 28, .13);
-	--tm-ease: cubic-bezier(.22, .61, .36, 1);
+    --tm-color-primary: #1a1918;
+    --tm-color-secondary: #b28758;
+    --tm-color-bg: #faf8f5;
+    --tm-color-card: #ffffff;
+    --tm-color-text: #2d2a26;
+    --tm-color-muted: #857e74;
+    --tm-color-border: #e8e2d8;
+    --tm-font-editorial: "Playfair Display", Georgia, serif;
+    --tm-font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --tm-radius: 6px;
 }

@@ -2,8 +2,8 @@
 /**
  * Plugin Name:       Todday Modas
  * Plugin URI:        https://toddaymodas.oficinas.online
- * Description:       Painéis administrativos, identidade visual e integrações da loja Todday Modas. Estende o WooCommerce e integra com Elementor e Mercado Pago.
- * Version:           1.0.28
+ * Description:       Paineis administrativos, identidade visual e integracoes da loja Todday Modas (brecho de moda circular). Estende o WooCommerce e integra com Elementor e Mercado Pago.
+ * Version:           1.0.35
  * Requires at least: 6.4
  * Requires PHP:      8.1
  * Requires Plugins:  woocommerce
@@ -14,103 +14,111 @@
  * Text Domain:       todday-modas
  * Domain Path:       /languages
  * WC requires at least: 8.0
- * WC tested up to:      11.0
+ * WC tested up to:   11.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Bloqueio de acesso direto.
+    exit;
 }
 
-define( 'TM_VERSION', '1.0.28' );
+define( 'TM_VERSION', '1.0.35' );
 define( 'TM_PLUGIN_FILE', __FILE__ );
 define( 'TM_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'TM_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'TM_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
 
-/**
- * Declara compatibilidade com HPOS (High-Performance Order Storage) do WooCommerce.
- */
-add_action( 'before_woocommerce_init', function () {
-	if ( class_exists( \Automattic\WooCommerce\Utilities\FeaturesUtil::class ) ) {
-		\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
-	}
+// Declarar compatibilidade HPOS (High-Performance Order Storage)
+add_action( 'before_woocommerce_init', function() {
+    if ( class_exists( '\Automattic\WooCommerce\Utilities\FeaturesUtil' ) ) {
+        \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
+    }
 } );
 
-/**
- * Carrega as classes do plugin.
- */
-require_once TM_PLUGIN_DIR . 'includes/class-tm-crypto.php';
-require_once TM_PLUGIN_DIR . 'includes/class-tm-logger.php';
+// Includes dos modulos principais
 require_once TM_PLUGIN_DIR . 'includes/class-tm-helpers.php';
+require_once TM_PLUGIN_DIR . 'includes/class-tm-logger.php';
+require_once TM_PLUGIN_DIR . 'includes/class-tm-crypto.php';
 require_once TM_PLUGIN_DIR . 'includes/class-tm-admin-menu.php';
+require_once TM_PLUGIN_DIR . 'includes/class-tm-public.php';
+require_once TM_PLUGIN_DIR . 'includes/class-tm-hero.php';
 require_once TM_PLUGIN_DIR . 'includes/class-tm-banners.php';
 require_once TM_PLUGIN_DIR . 'includes/class-tm-promocoes.php';
 require_once TM_PLUGIN_DIR . 'includes/class-tm-produto.php';
 require_once TM_PLUGIN_DIR . 'includes/class-tm-consent.php';
-require_once TM_PLUGIN_DIR . 'includes/debug-consent.php'; // Script de debug para consentimentos
 require_once TM_PLUGIN_DIR . 'includes/class-tm-integrations.php';
-require_once TM_PLUGIN_DIR . 'includes/class-tm-hero.php';
 require_once TM_PLUGIN_DIR . 'includes/class-tm-ofertas.php';
 require_once TM_PLUGIN_DIR . 'includes/class-tm-woocommerce.php';
-require_once TM_PLUGIN_DIR . 'includes/class-tm-setup.php';
-require_once TM_PLUGIN_DIR . 'includes/class-tm-public.php';
 require_once TM_PLUGIN_DIR . 'includes/class-tm-elementor.php';
 require_once TM_PLUGIN_DIR . 'includes/class-tm-panel.php';
+require_once TM_PLUGIN_DIR . 'includes/class-tm-setup.php';
+require_once TM_PLUGIN_DIR . 'includes/data-tabelas-medidas.php';
 
-/**
- * Inicialização: cada módulo registra seus próprios hooks no topo, de forma incondicional.
- */
-function tm_init() {
-	if ( ! class_exists( 'WooCommerce' ) ) {
-		add_action( 'admin_notices', function () {
-			echo '<div class="notice notice-error"><p>';
-			echo esc_html__( 'Todday Modas: o plugin WooCommerce é obrigatório e não está ativo.', 'todday-modas' );
-			echo '</p></div>';
-		} );
-		return;
-	}
+// Includes do painel de gestao
+require_once TM_PLUGIN_DIR . 'includes/panel/class-rest-api.php';
+require_once TM_PLUGIN_DIR . 'includes/panel/class-media.php';
+require_once TM_PLUGIN_DIR . 'includes/panel/class-agents.php';
+require_once TM_PLUGIN_DIR . 'includes/panel/class-activity-log.php';
+require_once TM_PLUGIN_DIR . 'includes/panel/class-admin-panel.php';
 
-	TM_Logger::init();
-	TM_Admin_Menu::init();
-	TM_Banners::init();
-	TM_Promocoes::init();
-	TM_Produto::init();
-	TM_Consent::init();
-	TM_Integrations::init();
-	TM_Hero::init();
-	TM_Ofertas::init();
-	TM_WooCommerce::init();
-	TM_Setup::init();
-	TM_Public::init();
-	TM_Elementor::init();
-	TM_Panel::init();
+// Widgets Elementor
+require_once TM_PLUGIN_DIR . 'includes/widgets/class-tm-widget-produto-destaque.php';
+require_once TM_PLUGIN_DIR . 'includes/widgets/class-tm-widget-grade-categorias.php';
+require_once TM_PLUGIN_DIR . 'includes/widgets/class-tm-widget-cupons.php';
+require_once TM_PLUGIN_DIR . 'includes/widgets/class-tm-widget-banners.php';
+require_once TM_PLUGIN_DIR . 'includes/widgets/class-tm-widget-banner-cta.php';
+
+// Ativacao e Desativacao
+register_activation_hook( __FILE__, 'tm_activate' );
+register_deactivation_hook( __FILE__, 'tm_deactivate' );
+
+function tm_activate() {
+    TM_Consent::check_schema();
+    TM_Panel_Activity_Log::create_table();
+    flush_rewrite_rules();
 }
+
+function tm_deactivate() {
+    flush_rewrite_rules();
+}
+
+// Inicializacao unificada no hook plugins_loaded
 add_action( 'plugins_loaded', 'tm_init' );
 
-/**
- * Load textdomain.
- */
-add_action( 'init', function () {
-	load_plugin_textdomain( 'todday-modas', false, dirname( TM_PLUGIN_BASENAME ) . '/languages' );
-} );
+function tm_init() {
+    load_plugin_textdomain( 'todday-modas', false, dirname( TM_PLUGIN_BASENAME ) . '/languages' );
 
-/**
- * Ao ativar: registra CPT, grava defaults e faz flush de rewrite.
- */
-register_activation_hook( __FILE__, function () {
-	TM_Banners::register_cpt();
-	// Defaults de identidade (somente se ainda não existirem).
-	$defaults = TM_Helpers::default_settings();
-	foreach ( $defaults as $key => $value ) {
-		if ( false === get_option( $key, false ) ) {
-			add_option( $key, $value );
-		}
-	}
-	TM_Logger::add( 'info', __( 'Plugin ativado.', 'todday-modas' ) );
-	flush_rewrite_rules();
-} );
+    if ( ! class_exists( 'WooCommerce' ) ) {
+        add_action( 'admin_notices', 'tm_woocommerce_missing_notice' );
+        return;
+    }
 
-register_deactivation_hook( __FILE__, function () {
-	TM_Logger::add( 'info', __( 'Plugin desativado.', 'todday-modas' ) );
-	flush_rewrite_rules();
-} );
+    TM_Helpers::init();
+    TM_Logger::init();
+    TM_Crypto::init();
+    TM_Consent::init();
+    TM_Admin_Menu::init();
+    TM_Public::init();
+    TM_Hero::init();
+    TM_Banners::init();
+    TM_Promocoes::init();
+    TM_Produto::init();
+    TM_Integrations::init();
+    TM_Ofertas::init();
+    TM_WooCommerce::init();
+    TM_Elementor::init();
+    TM_Panel::init();
+    TM_Setup::init();
+    TM_Panel_Rest_Api::init();
+    TM_Panel_Media::init();
+    TM_Panel_Agents::init();
+    TM_Panel_Activity_Log::init();
+    TM_Panel_Admin::init();
+}
+
+function tm_woocommerce_missing_notice() {
+    ?>
+    <div class="notice notice-error is-dismissible">
+        <p><?php esc_html_e( 'O plugin Todday Modas requer o WooCommerce instalado e ativado para operar.', 'todday-modas' ); ?></p>
+    </div>
+    <?php
+}
