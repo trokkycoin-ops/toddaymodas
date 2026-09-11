@@ -1,0 +1,23 @@
+{
+  "name": "Todday Modas Brechó",
+  "short_name": "Todday Modas",
+  "description": "Loja virtual premium de brechó e moda sustentável com peças exclusivas.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F6FFF9",
+  "theme_color": "#0E9B75",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/wp-content/plugins/todday-modas-brecho/public/pwa/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/wp-content/plugins/todday-modas-brecho/public/pwa/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "categories": ["shopping", "lifestyle"]
+}
