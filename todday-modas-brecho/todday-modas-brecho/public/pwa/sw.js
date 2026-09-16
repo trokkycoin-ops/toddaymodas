@@ -1,9 +1,9 @@
 /**
  * Todday Modas Brechó — Service Worker
- * @version 1.0.0
+ * @version 1.0.20
  */
 
-const CACHE_NAME = 'todday-modas-v1';
+const CACHE_NAME = 'todday-modas-v20';
 const ASSETS_TO_CACHE = [
   './',
   '../../assets/css/todday-frontend.css',
@@ -43,12 +43,17 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
+  const isStoreAsset = event.request.url.includes('/wp-content/plugins/todday-modas-brecho/');
   event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
-      if (cachedResponse) {
-        return cachedResponse;
-      }
-      return fetch(event.request).catch(() => {
+    (isStoreAsset
+      ? fetch(event.request).then((response) => {
+          if (response.ok && response.type === 'basic') {
+            const copy = response.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
+          }
+          return response;
+        }).catch(() => caches.match(event.request))
+      : caches.match(event.request).then((cachedResponse) => cachedResponse || fetch(event.request))).catch(() => {
         // Fallback offline caso a rede esteja indisponível
         if (event.request.mode === 'navigate') {
           return new Response(
@@ -56,7 +61,7 @@ self.addEventListener('fetch', (event) => {
             { headers: { 'Content-Type': 'text/html; charset=utf-8' } }
           );
         }
-      });
-    })
+      }
+    )
   );
 });

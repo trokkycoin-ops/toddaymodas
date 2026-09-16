@@ -3,7 +3,7 @@
  * Plugin Name:       Todday Modas Brechó
  * Plugin URI:        https://tselak.com.br/plugins/todday-modas-brecho
  * Description:       Loja virtual premium sobre WooCommerce para Todday Modas Brechó. Catálogo customizado, checkout com ViaCEP, Melhor Envio e Mercado Pago, painéis SPA fora do wp-admin, PWA e widgets Elementor.
- * Version:           1.0.19
+ * Version:           1.0.20
  * Requires at least: 6.0
  * Requires PHP:      8.1
  * Author:            Tselak Solutions
@@ -21,7 +21,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Definição de constantes do plugin
-define('TODDAY_MODAS_VERSION', '1.0.19');
+define('TODDAY_MODAS_VERSION', '1.0.20');
 define('TODDAY_MODAS_DB_VERSION', '1.0.1');
 define('TODDAY_MODAS_FILE', __FILE__);
 define('TODDAY_MODAS_PATH', plugin_dir_path(__FILE__));
