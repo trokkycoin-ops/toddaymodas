@@ -1,0 +1,6 @@
+{
+  "name": "Todday Modas Brechó",
+  "description": "Loja virtual de brechó com moda modesta feminina, vestidos mídi, linha infantil (kids) e artigos cristãos com medidas reais na fita métrica.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
