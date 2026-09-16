@@ -13,6 +13,9 @@ class Migrations {
         if (version_compare($current_version, '1.0.0', '<')) {
             self::migrate_to_1_0_0();
         }
+        if (version_compare($current_version, '1.0.1', '<')) {
+            self::migrate_to_1_0_1();
+        }
     }
 
     private static function migrate_to_1_0_0(): void {
@@ -42,9 +45,18 @@ class Migrations {
         if (false === get_option('todday_settings_whatsapp')) {
             update_option('todday_settings_whatsapp', [
                 'enabled' => 'yes',
-                'phone' => '5511999998888',
-                'default_message' => 'Olá, gostaria de tirar dúvidas sobre as peças do Todday Modas Brechó!',
+                    'phone' => '5535991759960',
+                    'default_message' => 'Olá, Sebastiana! Gostaria de tirar dúvidas sobre as peças do Todday Modas Brechó!',
             ]);
+        }
+    }
+
+    private static function migrate_to_1_0_1(): void {
+        $settings = get_option('todday_settings_whatsapp', []);
+        if (in_array($settings['phone'] ?? '', ['', '5511999998888'], true)) {
+            $settings['phone'] = '5535991759960';
+            $settings['default_message'] = 'Olá, Sebastiana! Gostaria de tirar dúvidas sobre as peças do Todday Modas Brechó!';
+            update_option('todday_settings_whatsapp', $settings);
         }
     }
 }

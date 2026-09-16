@@ -60,8 +60,8 @@ class SettingsController {
                 ],
                 'whatsapp' => [
                     'enabled' => $wa['enabled'] ?? 'yes',
-                    'phone' => $wa['phone'] ?? '5511999998888',
-                    'default_message' => $wa['default_message'] ?? 'Olá, gostaria de saber mais sobre as peças do Todday Modas!',
+                        'phone' => $wa['phone'] ?? '5535991759960',
+                        'default_message' => $wa['default_message'] ?? 'Olá, Sebastiana! Gostaria de saber mais sobre as peças do Todday Modas!',
                 ],
             ],
         ]);

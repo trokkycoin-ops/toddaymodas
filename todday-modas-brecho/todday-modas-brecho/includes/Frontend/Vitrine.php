@@ -44,9 +44,17 @@ class Vitrine {
 
         // Enfileira o bundle React (app lilás do AI Studio)
         wp_enqueue_script(
+            'tdm-mercadopago-sdk',
+            'https://sdk.mercadopago.com/js/v2',
+            [],
+            null,
+            false
+        );
+
+        wp_enqueue_script(
             'tdm-frontend-js',
             TODDAY_MODAS_URL . 'assets/react/index.js',
-            [],
+            ['tdm-mercadopago-sdk'],
             TODDAY_MODAS_VERSION,
             true
         );
@@ -61,6 +69,7 @@ class Vitrine {
             'cartUrl' => function_exists('wc_get_cart_url') ? wc_get_cart_url() : home_url('/carrinho/'),
             'checkoutUrl' => function_exists('wc_get_checkout_url') ? wc_get_checkout_url() : home_url('/checkout/'),
             'homeUrl' => home_url('/'),
+            'mercadopagoPublicKey' => get_option('todday_settings_mercadopago', [])['public_key'] ?? '',
         ]);
     }
 

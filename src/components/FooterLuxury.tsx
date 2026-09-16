@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Logo } from './Logo';
 import { 
   ShieldCheck, 
   Sparkles, 
@@ -174,16 +175,16 @@ export const FooterLuxury: React.FC<FooterLuxuryProps> = ({
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mb-10">
           {/* Identidade da Marca */}
           <div>
-            <div className="flex items-center gap-2.5 mb-3">
-              <div 
-                className="w-9 h-9 rounded-xl flex items-center justify-center text-[#271E2D] font-serif font-black text-base shadow-sm"
-                style={{ backgroundColor: '#dac9df' }}
-              >
-                TM
-              </div>
-              <span className="font-serif font-black text-white text-xl tracking-tight">
-                Todday Modas Brechó
-              </span>
+            <div className="mb-3.5">
+              <Logo 
+                variant="horizontal" 
+                size="md" 
+                theme="dark" 
+                onClick={() => {
+                  onSelectTab('store');
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }} 
+              />
             </div>
 
             <p className="text-purple-200/80 text-xs leading-relaxed mb-4">
@@ -279,7 +280,7 @@ export const FooterLuxury: React.FC<FooterLuxuryProps> = ({
               </li>
               <li className="pt-1">
                 <a
-                  href="https://wa.me/5511999998888?text=Ol%C3%A1%20Todday%20Modas%2C%20preciso%20de%20ajuda%20com%20um%20pedido."
+                  href="https://wa.me/5535991759960?text=Ol%C3%A1%20Sebastiana%2C%20preciso%20de%20ajuda%20com%20um%20pedido."
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 text-xs text-[#dac9df] hover:text-white transition-colors font-medium"

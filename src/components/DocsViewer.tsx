@@ -1,11 +1,18 @@
 import React, { useState } from 'react';
-import { BookOpen, FileText, CheckCircle2, ChevronRight, Terminal } from 'lucide-react';
+import { BookOpen, ChevronRight, FileCode } from 'lucide-react';
 
-const DOCS_LIST = [
+interface DocItem {
+  id: string;
+  title: string;
+  description: string;
+  content: string;
+}
+
+const DOCS_LIST: DocItem[] = [
   {
     id: 'api-rest',
     title: 'API REST (todday/v1)',
-    description: 'Especificação das 12 rotas RESTful para vitrine, pedidos, relatórios, configurações e webhooks.',
+    description: 'Especificação das rotas RESTful para vitrine, pedidos, relatórios, configurações e webhooks.',
     content: `### API REST Todday Modas Brechó (Namespace: todday/v1)
 
 Todas as requisições autenticadas exigem o cabeçalho:
@@ -15,7 +22,7 @@ Content-Type: application/json
 \`\`\`
 
 #### Endpoints Principais:
-- **GET /wp-json/todday/v1/vitrine**: Retorna catálogo de peças com filtros de categoria, condição de brechó e busca.
+- **GET /wp-json/todday/v1/vitrine**: Retorna catálogo de peças com filtros de categoria, condição e busca.
 - **GET /wp-json/todday/v1/produtos/(?P<id>\\d+)**: Detalhes completos de uma peça, medidas e estoque.
 - **POST /wp-json/todday/v1/carrinho/adicionar**: Adiciona item respeitando a unicidade de estoque (peça única).
 - **POST /wp-json/todday/v1/checkout/finalizar**: Processa compra com suporte a HPOS e gateway Mercado Pago.
@@ -42,7 +49,7 @@ Content-Type: application/json
 - Auto-preenchimento instantâneo de logradouro, bairro, cidade e estado a partir dos 8 dígitos do CEP.
 
 #### 4. Notificações WhatsApp
-- Disparo de links pré-formatados com número de pedido, itens garimpados e link de rastreio.`
+- Disparo de links pré-formatados com número de pedido, itens selecionados e link de rastreio.`
   },
   {
     id: 'banco',
@@ -54,7 +61,7 @@ O plugin cria 3 tabelas customizadas com charset/collate do WordPress via \`dbDe
 
 1. **\`wp_todday_activity_log\`**: Trilha de auditoria (user_id, action, object_type, object_id, ip_address, created_at).
 2. **\`wp_todday_item_reviews\`**: Avaliações de clientes por peça (rating 1-5, comment, status).
-3. **\`wp_todday_vendor_commissions\`**: Controle de repasses e comissões dos curadores e vendedores parceiros.
+3. **\`wp_todday_vendor_commissions\`**: Controle de repasses e comissões dos vendedores parceiros.
 
 #### WooCommerce HPOS
 Compatibilidade declarada via \`Automattic\\WooCommerce\\Utilities\\FeaturesUtil::declare_compatibility('custom_order_tables', ...)\`.
@@ -78,8 +85,8 @@ O acesso ao Painel de Gestão SPA (\`/todday-painel/\`) e rotas administrativas 
   }
 ];
 
-export const DocsViewer: React.FC = () => {
-  const [selectedDoc, setSelectedDoc] = useState(DOCS_LIST[0]);
+export function DocsViewer() {
+  const [activeDoc, setActiveDoc] = useState<DocItem>(DOCS_LIST[0]);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -90,21 +97,20 @@ export const DocsViewer: React.FC = () => {
             Documentação Técnica do Plugin
           </span>
         </div>
-        <h1 className="text-2xl font-black text-slate-900">Manuais & Guias de Integração</h1>
+        <h1 className="text-2xl font-black text-slate-900">Manuais &amp; Guias de Integração</h1>
         <p className="text-xs text-slate-500">
           Documentação completa de arquitetura, banco de dados, API REST e conformidade com WooCommerce HPOS.
         </p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Lista Lateral de Manuais */}
         <div className="space-y-2">
           {DOCS_LIST.map((doc) => (
             <button
               key={doc.id}
-              onClick={() => setSelectedDoc(doc)}
-              className={`w-full text-left p-4 rounded-xl border transition-all flex items-start justify-between ${
-                selectedDoc.id === doc.id
+              onClick={() => setActiveDoc(doc)}
+              className={`w-full text-left p-4 rounded-xl border transition-all flex items-start justify-between cursor-pointer ${
+                activeDoc.id === doc.id
                   ? 'bg-white border-[#7C3AED] ring-2 ring-[#7C3AED]/10 shadow-xs'
                   : 'bg-white/60 border-slate-200 hover:bg-white'
               }`}
@@ -113,25 +119,27 @@ export const DocsViewer: React.FC = () => {
                 <h4 className="font-extrabold text-sm text-slate-900 mb-1">{doc.title}</h4>
                 <p className="text-xs text-slate-500 line-clamp-2">{doc.description}</p>
               </div>
-              <ChevronRight className={`w-4 h-4 mt-1 shrink-0 ${selectedDoc.id === doc.id ? 'text-[#7C3AED]' : 'text-slate-300'}`} />
+              <ChevronRight
+                className={`w-4 h-4 mt-1 shrink-0 ${
+                  activeDoc.id === doc.id ? 'text-[#7C3AED]' : 'text-slate-300'
+                }`}
+              />
             </button>
           ))}
         </div>
 
-        {/* Leitor do Manual Selecionado */}
         <div className="lg:col-span-2 bg-white p-6 sm:p-8 rounded-2xl border border-purple-100 shadow-2xs">
           <h2 className="text-xl font-black text-slate-900 mb-4 pb-3 border-b border-purple-50 flex items-center gap-2">
-            <FileText className="w-5 h-5 text-[#7C3AED]" />
-            <span>{selectedDoc.title}</span>
+            <FileCode className="w-5 h-5 text-[#7C3AED]" />
+            <span>{activeDoc.title}</span>
           </h2>
-
           <div className="prose prose-sm max-w-none text-slate-700 text-xs leading-relaxed space-y-4">
             <pre className="bg-slate-900 text-slate-200 p-4 rounded-xl font-mono text-xs overflow-x-auto whitespace-pre-wrap">
-              {selectedDoc.content}
+              {activeDoc.content}
             </pre>
           </div>
         </div>
       </div>
     </div>
   );
-};
+}

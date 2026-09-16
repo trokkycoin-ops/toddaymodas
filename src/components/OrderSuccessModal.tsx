@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { Logo } from './Logo';
 import { X, CheckCircle2, FileText, MessageCircle, ArrowRight, Copy, Check, Sparkles, Heart } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { Order } from '../types';
@@ -41,7 +42,7 @@ export const OrderSuccessModal: React.FC<OrderSuccessModalProps> = ({
   };
 
   const whatsappMsg = `A paz! Olá Todday Modas, acabei de fazer o pedido #${order.order_number} no valor de R$ ${order.total.toFixed(2).replace('.', ',')}. Gostaria de acompanhar os detalhes do envio das minhas peças!`;
-  const whatsappUrl = `https://wa.me/5511999998888?text=${encodeURIComponent(whatsappMsg)}`;
+  const whatsappUrl = `https://wa.me/5535991759960?text=${encodeURIComponent(whatsappMsg)}`;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200">
@@ -55,6 +56,11 @@ export const OrderSuccessModal: React.FC<OrderSuccessModalProps> = ({
         >
           <X className="w-5 h-5" />
         </button>
+
+        {/* Logo da Marca */}
+        <div className="flex justify-center mb-4">
+          <Logo variant="stacked" size="sm" theme="light" onClick={onClose} />
+        </div>
 
         {/* Ícone de Sucesso com Paleta #dac9df */}
         <div 
@@ -76,7 +82,7 @@ export const OrderSuccessModal: React.FC<OrderSuccessModalProps> = ({
           Obrigada pela sua Compra!
         </h2>
         <p className="text-xs sm:text-sm text-slate-500 mb-6">
-          Pedido <strong>#{order.order_number}</strong> confirmado com sucesso. Suas peças serão preparadas e higienizadas a vapor com muito carinho e amor.
+          Pedido <strong>#{order.order_number}</strong> confirmado com sucesso. Suas peças serão preparadas e embaladas com muito carinho e amor.
         </p>
 
         {/* Informações de Pagamento PIX se aplicável */}

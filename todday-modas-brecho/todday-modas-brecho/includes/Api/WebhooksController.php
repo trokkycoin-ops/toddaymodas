@@ -50,11 +50,10 @@ class WebhooksController {
                 return new WP_REST_Response(['success' => false, 'message' => 'Assinatura inválida.'], 403);
             }
         } else {
-            // Sem segredo configurado, o webhook ainda é processado (cenário de loja
-            // sem secret), mas registramos o aviso para o dono habilitar a assinatura.
             ActivityLogRepository::log('webhook_mp_missing_secret', 'webhook', '', [
                 'ip' => sanitize_text_field(wp_unslash($_SERVER['REMOTE_ADDR'] ?? '')),
             ]);
+            return new WP_REST_Response(['success' => false, 'message' => 'Webhook não configurado.'], 503);
         }
 
         if ($type === 'payment' && !empty($resource_id)) {

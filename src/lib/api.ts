@@ -11,6 +11,7 @@ export interface TdmConfig {
   isLoggedIn: boolean;
   homeUrl: string;
   appMode: AppMode;
+  mercadopagoPublicKey: string;
 }
 
 export function getConfig(): TdmConfig {
@@ -25,6 +26,7 @@ export function getConfig(): TdmConfig {
     isLoggedIn: !!c.isLoggedIn,
     homeUrl: c.homeUrl || (window.location.origin + '/'),
     appMode: mode,
+    mercadopagoPublicKey: c.mercadopagoPublicKey || '',
   };
 }
 

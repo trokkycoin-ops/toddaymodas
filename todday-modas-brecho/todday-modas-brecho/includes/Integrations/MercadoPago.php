@@ -20,7 +20,8 @@ class MercadoPago {
             ];
         }
 
-        $idempotency_key = wp_generate_uuid4();
+        $idempotency_key = sanitize_text_field($payment_data['_idempotency_key'] ?? wp_generate_uuid4());
+        unset($payment_data['_idempotency_key']);
         $endpoint = 'https://api.mercadopago.com/v1/payments';
 
         $response = wp_remote_post($endpoint, [

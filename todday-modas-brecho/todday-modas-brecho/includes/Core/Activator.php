@@ -28,7 +28,7 @@ class Activator {
             update_option('todday_settings_general', [
                 'store_name' => 'Todday Modas Brechó',
                 'contact_email' => get_option('admin_email'),
-                'phone' => '(11) 98765-4321',
+                'phone' => '(35) 99175-9960',
                 'currency' => 'BRL',
             ]);
         }

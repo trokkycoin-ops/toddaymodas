@@ -1,0 +1,62 @@
+<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-label="Todday Modas Brechó Logo">
+  <defs>
+    <radialGradient id="hangerBg" cx="50%" cy="38%" r="62%">
+      <stop offset="0%" stopColor="#3F2A4C"/>
+      <stop offset="65%" stopColor="#271E2D"/>
+      <stop offset="100%" stopColor="#150E1A"/>
+    </radialGradient>
+    
+    <linearGradient id="hangerGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stopColor="#FFF4D4"/>
+      <stop offset="35%" stopColor="#E2C16B"/>
+      <stop offset="70%" stopColor="#B3891D"/>
+      <stop offset="100%" stopColor="#F5DF9E"/>
+    </linearGradient>
+
+    <linearGradient id="hangerLavender" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stopColor="#FFFFFF"/>
+      <stop offset="60%" stopColor="#EBDDF0"/>
+      <stop offset="100%" stopColor="#DAC9DF"/>
+    </linearGradient>
+
+    <filter id="hangerGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="1.2" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+
+  <!-- Medalhão Circular Nobre -->
+  <circle cx="60" cy="60" r="56" fill="url(#hangerBg)" stroke="url(#hangerGold)" stroke-width="1.8"/>
+
+  <!-- Anel de Costura Pontilhado -->
+  <circle cx="60" cy="60" r="50.5" fill="none" stroke="#DAC9DF" stroke-width="0.8" stroke-dasharray="2 3" opacity="0.75"/>
+
+  <!-- Ícone de Cabide de Alfaiataria e Ateliê -->
+  <g filter="url(#hangerGlow)">
+    <!-- Terminal Esférico Dourado -->
+    <circle cx="60" cy="23" r="3.2" fill="url(#hangerGold)"/>
+
+    <!-- Gancho Superior Curvado -->
+    <path d="M 60,24 C 54,24 49.5,28 49.5,33.5 C 49.5,39 53.5,43 58.5,43.5 L 60,44.5 L 60,52" fill="none" stroke="url(#hangerGold)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+
+    <!-- Ombros do Cabide com Contorno Elegante -->
+    <path d="M 60,52 C 62,52 64,53.5 67,55 L 95,69 C 99,71 100,74.5 98,77.5 C 96.5,79.5 93.5,80.5 90.5,80.5 L 29.5,80.5 C 26.5,80.5 23.5,79.5 22,77.5 C 20,74.5 21,71 25,69 L 53,55 C 56,53.5 58,52 60,52 Z" fill="none" stroke="url(#hangerGold)" stroke-width="3.2" stroke-linejoin="round"/>
+
+    <!-- Barra Horizontal de Calças e Saias -->
+    <line x1="28" y1="80.5" x2="92" y2="80.5" stroke="url(#hangerLavender)" stroke-width="2.4" stroke-linecap="round"/>
+
+    <!-- Estrela / Diamante Central no Vértice -->
+    <g transform="translate(60, 64)">
+      <path d="M 0,-4.5 L 1.3,-1.2 L 4.5,0 L 1.3,1.2 L 0,4.5 L -1.3,1.2 L -4.5,0 L -1.3,-1.2 Z" fill="url(#hangerGold)"/>
+      <circle cx="0" cy="0" r="0.8" fill="#FFFFFF"/>
+    </g>
+
+    <!-- Entalhes de Alça de Vestidos Mídi -->
+    <path d="M 40,63 L 42,65" stroke="url(#hangerLavender)" stroke-width="1.8" stroke-linecap="round"/>
+    <path d="M 80,63 L 78,65" stroke="url(#hangerLavender)" stroke-width="1.8" stroke-linecap="round"/>
+
+    <!-- Laço Inferior -->
+    <path d="M 50,88 C 55,90 65,90 70,88" fill="none" stroke="url(#hangerGold)" stroke-width="1.2" stroke-linecap="round"/>
+    <circle cx="60" cy="89" r="1" fill="#FFFFFF"/>
+  </g>
+</svg>

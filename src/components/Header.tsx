@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Logo } from './Logo';
 import { 
   ShoppingBag, 
   User, 
@@ -104,36 +105,15 @@ export const Header: React.FC<HeaderProps> = ({
         <div className="flex items-center justify-between h-18 sm:h-20 gap-3 sm:gap-4">
           {/* Logo da Loja Brechó */}
           <div 
-            className="flex items-center gap-2.5 sm:gap-3 cursor-pointer group shrink-0"
-            onClick={() => onSelectTab('store')}
+            className="shrink-0"
             id="tdm-brand-logo"
           >
-            <div className="relative">
-              <div 
-                className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl flex items-center justify-center text-[#271E2D] font-serif font-black text-lg sm:text-xl shadow-sm border border-[#cbb6d2] group-hover:scale-105 transition-transform"
-                style={{ backgroundColor: '#dac9df' }}
-              >
-                TM
-              </div>
-              <div className="absolute -bottom-1 -right-1 w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full bg-[#271E2D] border-2 border-white flex items-center justify-center">
-                <Crown className="w-2 h-2 text-[#dac9df]" />
-              </div>
-            </div>
-
-            <div>
-              <div className="flex items-center gap-1.5">
-                <span className="font-serif font-black text-xl sm:text-2xl tracking-tight text-[#271E2D]">
-                  Todday Modas Brechó
-                </span>
-              </div>
-              <p className="text-[10px] sm:text-xs text-gray-500 font-medium flex items-center gap-1">
-                <span>Moda Feminina</span>
-                <span className="text-[#dac9df]">•</span>
-                <span>Infantil</span>
-                <span className="text-[#dac9df]">•</span>
-                <span>Cristã</span>
-              </p>
-            </div>
+            <Logo 
+              variant="horizontal" 
+              size="md" 
+              theme="light" 
+              onClick={() => onSelectTab('store')} 
+            />
           </div>
 
           {/* Barra de Busca */}
@@ -203,6 +183,7 @@ export const Header: React.FC<HeaderProps> = ({
         <nav className="border-t border-[#EBDDF0] py-2 sm:py-2.5 flex items-center justify-between gap-3 overflow-x-auto scrollbar-none text-xs font-semibold text-gray-700">
           <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
             <button
+              data-tab="store"
               onClick={() => {
                 onSelectTab('store');
                 if (onSearchSubmit) onSearchSubmit('');

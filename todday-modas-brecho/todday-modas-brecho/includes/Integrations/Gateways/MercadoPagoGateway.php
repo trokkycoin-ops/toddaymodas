@@ -7,8 +7,8 @@ if (!defined('ABSPATH')) {
 
 class MercadoPagoGateway {
     public static function register_gateway(array $gateways): array {
-        if (class_exists('WC_Payment_Gateway')) {
-            $gateways[] = self::class;
+        if (class_exists(WcGatewayMercadoPagoTodday::class)) {
+            $gateways[] = WcGatewayMercadoPagoTodday::class;
         }
         return $gateways;
     }

@@ -226,6 +226,12 @@ class CheckoutController {
         if ($owner_id > 0 && get_current_user_id() !== $owner_id) {
             return new WP_REST_Response(['success' => false, 'message' => 'Pedido não pertence a este usuário.'], 403);
         }
+        if ($owner_id === 0) {
+            $email = sanitize_email($request->get_param('email') ?? '');
+            if (!is_email($email) || strtolower($email) !== strtolower((string) $order->get_billing_email())) {
+                return new WP_REST_Response(['success' => false, 'message' => 'Confirme o e-mail usado no pedido.'], 403);
+            }
+        }
 
         // Impede pagamento duplicado de pedido já pago.
         if ($order->is_paid()) {
@@ -255,6 +261,14 @@ class CheckoutController {
                 'last_name' => $order->get_billing_last_name(),
             ],
         ];
+
+        $idempotency_key = (string) $order->get_meta('_todday_mp_idempotency_key');
+        if ($idempotency_key === '') {
+            $idempotency_key = 'todday-order-' . $order->get_id();
+            $order->update_meta_data('_todday_mp_idempotency_key', $idempotency_key);
+            $order->save();
+        }
+        $payment_payload['_idempotency_key'] = $idempotency_key;
 
         if ($payment_type === 'pix') {
             $payment_payload['payment_method_id'] = 'pix';

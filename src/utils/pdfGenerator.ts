@@ -45,26 +45,50 @@ export function generateOrderReceipt(order: Order): void {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          border-bottom: 2px solid #7C3AED;
+          border-bottom: 2px solid #271E2D;
           padding-bottom: 20px;
           margin-bottom: 24px;
         }
+        .brand-wrapper {
+          display: flex;
+          align-items: center;
+          gap: 14px;
+        }
+        .brand-logo-circle {
+          width: 46px;
+          height: 46px;
+          border-radius: 50%;
+          background: #271E2D;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #dac9df;
+          font-family: Georgia, serif;
+          font-weight: 900;
+          font-size: 20px;
+          border: 2px solid #D4AF37;
+        }
         .brand {
-          font-size: 24px;
-          font-weight: 800;
-          color: #7C3AED;
+          font-family: Georgia, serif;
+          font-size: 22px;
+          font-weight: 900;
+          color: #271E2D;
+          letter-spacing: -0.5px;
           margin: 0;
         }
         .subbrand {
-          font-size: 13px;
-          color: #64748B;
+          font-size: 11px;
+          color: #846391;
+          font-weight: 600;
+          letter-spacing: 0.5px;
+          text-transform: uppercase;
           margin: 2px 0 0 0;
         }
         .meta-box {
           display: flex;
           justify-content: space-between;
           margin-bottom: 24px;
-          font-size: 14px;
+          font-size: 13px;
         }
         table {
           width: 100%;
@@ -116,12 +140,15 @@ export function generateOrderReceipt(order: Order): void {
     <body>
       <div class="container">
         <div class="header">
-          <div>
-            <h1 class="brand">TODDAY MODAS BRECHÓ</h1>
-            <p class="subbrand">Moda Modesta, Infantil & Acessórios Cristãos</p>
+          <div class="brand-wrapper">
+            <div class="brand-logo-circle">TM</div>
+            <div>
+              <h1 class="brand">TODDAY MODAS BRECHÓ</h1>
+              <p class="subbrand">Moda Modesta • Infantil • Artigos Cristãos</p>
+            </div>
           </div>
           <div style="text-align: right;">
-            <strong style="font-size: 16px; color: #7C3AED;">Fatura / Recibo</strong>
+            <strong style="font-size: 16px; color: #271E2D;">Fatura / Recibo</strong>
             <p style="margin: 2px 0; font-size: 13px; color: #64748B;">Pedido #${order.order_number}</p>
             <p style="margin: 0; font-size: 12px; color: #94A3B8;">${order.date}</p>
           </div>
@@ -129,13 +156,13 @@ export function generateOrderReceipt(order: Order): void {
 
         <div class="meta-box">
           <div>
-            <strong style="color: #7C3AED;">Dados da Cliente:</strong><br>
+            <strong style="color: #271E2D;">Dados da Cliente:</strong><br>
             ${order.customer_name}<br>
             ${order.customer_email}<br>
             ${order.customer_phone}
           </div>
           <div>
-            <strong style="color: #7C3AED;">Endereço de Entrega:</strong><br>
+            <strong style="color: #271E2D;">Endereço de Entrega:</strong><br>
             ${order.shipping_address.street}, ${order.shipping_address.number} ${order.shipping_address.complement || ''}<br>
             ${order.shipping_address.neighborhood} — ${order.shipping_address.city}/${order.shipping_address.state}<br>
             CEP: ${order.shipping_address.cep}

@@ -25,6 +25,7 @@ class Bootstrap {
 
         // Handlers de banco e capabilities
         add_action('init', [self::class, 'init_schema_and_roles'], 5);
+        add_action('init', [self::class, 'register_order_statuses'], 6);
         add_action('init', [self::class, 'register_rewrite_rules'], 10);
         add_filter('query_vars', [self::class, 'register_query_vars']);
         add_action('template_redirect', [self::class, 'handle_spa_routes']);
@@ -69,6 +70,17 @@ class Bootstrap {
             CapabilityMatrix::setup_roles_and_capabilities();
             update_option('todday_db_version', TODDAY_MODAS_DB_VERSION);
         }
+    }
+
+    public static function register_order_statuses(): void {
+        register_post_status('wc-shipped', [
+            'label' => _x('Enviado', 'Order status', 'todday-modas-brecho'),
+            'public' => true,
+            'exclude_from_search' => false,
+            'show_in_admin_all_list' => true,
+            'show_in_admin_status_list' => true,
+            'label_count' => _n_noop('Enviado <span class="count">(%s)</span>', 'Enviados <span class="count">(%s)</span>', 'todday-modas-brecho'),
+        ]);
     }
 
     public static function register_rewrite_rules(): void {

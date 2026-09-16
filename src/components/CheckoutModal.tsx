@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { Logo } from './Logo';
+import { getConfig } from '../lib/api';
 import { X, CheckCircle2, QrCode, CreditCard, Truck, ShieldCheck, MapPin, Search, Loader2 } from 'lucide-react';
 import { CartItem, ShippingOption, Address, Order } from '../types';
 
@@ -22,10 +24,10 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
   const [step, setStep] = useState<'form' | 'processing'>('form');
 
   // Dados Pessoais
-  const [firstName, setFirstName] = useState('Camila');
-  const [lastName, setLastName] = useState('Albuquerque');
-  const [email, setEmail] = useState('camila.albuquerque@exemplo.com.br');
-  const [phone, setPhone] = useState('(11) 98765-4321');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
 
   // Endereço
   const [cep, setCep] = useState('01414-001');
@@ -47,10 +49,11 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
 
   // Pagamento
   const [paymentMethod, setPaymentMethod] = useState<'pix' | 'credit_card'>('pix');
-  const [cardNumber, setCardNumber] = useState('•••• •••• •••• 4242');
-  const [cardHolder, setCardHolder] = useState('CAMILA ALBUQUERQUE');
-  const [cardExp, setCardExp] = useState('12/28');
-  const [cardCvv, setCardCvv] = useState('888');
+  const [cardNumber, setCardNumber] = useState('');
+  const [cardHolder, setCardHolder] = useState('');
+  const [cardExp, setCardExp] = useState('');
+  const [cardCvv, setCardCvv] = useState('');
+  const [cardCpf, setCardCpf] = useState('');
   const [installments, setInstallments] = useState('1');
 
   if (!isOpen) return null;
@@ -148,6 +151,45 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
         });
         const json = await res.json();
         if (json?.success && json.data?.order_id) {
+          let cardToken = '';
+          if (paymentMethod === 'credit_card') {
+            const publicKey = getConfig().mercadopagoPublicKey;
+            const mercadoPago = (window as any).MercadoPago;
+            const [expirationMonth, expirationYear] = cardExp.split('/').map((part) => part.trim());
+            if (!publicKey || !mercadoPago || !cardNumber || !cardHolder || !expirationMonth || !expirationYear || !cardCvv || !cardCpf) {
+              throw new Error('Preencha os dados do cartão e o CPF para continuar.');
+            }
+            const mp = new mercadoPago(publicKey, { locale: 'pt-BR' });
+            const tokenResult = await mp.createCardToken({
+              cardNumber: cardNumber.replace(/\D/g, ''),
+              cardholderName: cardHolder,
+              cardExpirationMonth: expirationMonth,
+              cardExpirationYear: expirationYear.length === 2 ? `20${expirationYear}` : expirationYear,
+              securityCode: cardCvv,
+              identificationType: 'CPF',
+              identificationNumber: cardCpf.replace(/\D/g, ''),
+            });
+            if (!tokenResult?.id) {
+              throw new Error('Não foi possível tokenizar o cartão. Confira os dados.');
+            }
+            cardToken = tokenResult.id;
+          }
+
+          const paymentResponse = await fetch(`${apiBase}/checkout/payment`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': (window as any).tdmConfig?.nonce || '' },
+            body: JSON.stringify({
+              order_id: Number(json.data.order_id),
+              email,
+              payment_type: paymentMethod === 'pix' ? 'pix' : 'credit_card',
+                token: paymentMethod === 'credit_card' ? cardToken : undefined,
+              installments: Number(installments) || 1,
+            }),
+          });
+          const paymentJson = await paymentResponse.json();
+          if (!paymentResponse.ok || !paymentJson?.success) {
+            throw new Error(paymentJson?.message || 'Falha ao processar o pagamento');
+          }
           return {
             id: Number(json.data.order_id),
             order_number: json.data.order_number || `TDM-${json.data.order_id}`,
@@ -156,14 +198,22 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
         }
         throw new Error(json?.message || 'Falha ao registrar o pedido');
       } catch (err) {
-        console.warn('REST checkout indisponível, usando fluxo local:', (err as Error).message);
-        return null;
+        console.error('REST checkout indispon├¡vel:', (err as Error).message);
+        throw err;
       }
     };
 
     setTimeout(async () => {
-      const restOrder = await confirmViaRest();
-      const orderIdBase = restOrder ? restOrder.id : Math.floor(1000 + Math.random() * 9000);
+      let restOrder;
+      try {
+        restOrder = await confirmViaRest();
+      } catch (err) {
+        setStep('form');
+        alert((err as Error).message || 'N├úo foi poss├¡vel concluir o pedido. Tente novamente.');
+        return;
+      }
+
+      const orderIdBase = restOrder.id;
       const newOrder: Order = {
         id: orderIdBase,
         order_number: restOrder ? restOrder.order_number : `TDM-2026-${orderIdBase}`,
@@ -183,8 +233,8 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
         total: restOrder ? restOrder.total : total,
         status: 'processing',
         payment_method: paymentMethod,
-        payment_status: restOrder ? 'pending' : 'paid',
-        tracking_code: restOrder ? '' : `BR${Math.floor(100000000 + Math.random() * 900000000)}AA`,
+        payment_status: 'pending',
+        tracking_code: '',
         assigned_vendor: '',
         shipping_address: {
           cep,
@@ -210,16 +260,14 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
         onClick={(e) => e.stopPropagation()}
       >
         {/* Topo */}
-        <div className="p-6 border-b border-[#dac9df] flex items-center justify-between bg-[#faf7fb] sticky top-0 z-20">
-          <div>
-            <span className="text-xs font-bold text-[#8a5d96] uppercase tracking-wider">
-              Checkout Seguro • Todday Modas Brechó
-            </span>
-            <h2 className="text-xl font-black text-[#382343] font-serif">Finalizar Compra</h2>
+        <div className="p-5 sm:p-6 border-b border-[#dac9df] flex items-center justify-between bg-[#faf7fb] sticky top-0 z-20">
+          <div className="flex items-center gap-3">
+            <Logo variant="horizontal" size="sm" theme="light" onClick={onClose} />
           </div>
           <button
             onClick={onClose}
             className="p-2 rounded-full text-slate-400 hover:text-slate-700 hover:bg-[#dac9df]/40 transition-colors"
+            title="Fechar"
           >
             <X className="w-5 h-5" />
           </button>
@@ -503,6 +551,16 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                         className="w-full px-3 py-2 border border-[#dac9df] rounded-xl focus:outline-none focus:border-[#8a5d96]"
                       />
                     </div>
+                    <div>
+                      <label className="block text-slate-600 font-semibold mb-1">Nome no Cartão</label>
+                      <input
+                        type="text"
+                        value={cardHolder}
+                        onChange={(e) => setCardHolder(e.target.value.toUpperCase())}
+                        autoComplete="cc-name"
+                        className="w-full px-3 py-2 border border-[#dac9df] rounded-xl focus:outline-none focus:border-[#8a5d96]"
+                      />
+                    </div>
                     <div className="grid grid-cols-2 gap-3">
                       <div>
                         <label className="block text-slate-600 font-semibold mb-1">Validade</label>
@@ -522,6 +580,17 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                           className="w-full px-3 py-2 border border-[#dac9df] rounded-xl focus:outline-none focus:border-[#8a5d96]"
                         />
                       </div>
+                    </div>
+                    <div>
+                      <label className="block text-slate-600 font-semibold mb-1">CPF do Titular</label>
+                      <input
+                        type="text"
+                        value={cardCpf}
+                        onChange={(e) => setCardCpf(e.target.value)}
+                        autoComplete="off"
+                        inputMode="numeric"
+                        className="w-full px-3 py-2 border border-[#dac9df] rounded-xl focus:outline-none focus:border-[#8a5d96]"
+                      />
                     </div>
                     <div>
                       <label className="block text-slate-600 font-semibold mb-1">Parcelamento</label>
