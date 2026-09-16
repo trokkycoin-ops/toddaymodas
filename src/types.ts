@@ -94,6 +94,10 @@ export interface Order {
   status: 'pending' | 'processing' | 'shipped' | 'completed' | 'cancelled';
   payment_method: 'pix' | 'credit_card';
   payment_status: 'paid' | 'pending' | 'failed';
+  payment_data?: {
+    qr_code?: string;
+    qr_code_base64?: string;
+  };
   tracking_code?: string;
   shipping_address: Address;
   assigned_vendor?: string;

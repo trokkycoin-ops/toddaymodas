@@ -33,9 +33,10 @@ export const OrderSuccessModal: React.FC<OrderSuccessModalProps> = ({
 
   if (!order) return null;
 
-  const pixCopyPaste = `00020126580014br.gov.bcb.pix0136tdm-brecho-${order.order_number}520400005303986540${order.total.toFixed(2)}5802BR5925TODDAY MODAS BRECHO6009SAO PAULO62070503***6304ABCD`;
+  const pixCopyPaste = order.payment_data?.qr_code || '';
 
   const handleCopyPix = () => {
+    if (!pixCopyPaste) return;
     navigator.clipboard.writeText(pixCopyPaste);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
@@ -92,11 +93,12 @@ export const OrderSuccessModal: React.FC<OrderSuccessModalProps> = ({
               Pagamento via PIX (Mercado Pago)
             </h4>
             <div className="flex flex-col sm:flex-row items-center gap-4 bg-white p-3 rounded-xl border border-[#dac9df] mb-3">
-              {/* QR Code Fictício Estilizado */}
-              <div className="w-24 h-24 bg-[#291630] text-[#dac9df] rounded-lg flex items-center justify-center shrink-0 p-2">
-                <div className="w-full h-full border border-dashed border-[#dac9df] flex items-center justify-center text-[10px] font-mono text-center">
-                  PIX QR CODE
-                </div>
+              <div className="w-24 h-24 bg-white rounded-lg flex items-center justify-center shrink-0 p-1 border border-[#dac9df]">
+                {order.payment_data?.qr_code_base64 ? (
+                  <img src={`data:image/png;base64,${order.payment_data.qr_code_base64}`} alt="QR Code PIX" className="w-full h-full object-contain" />
+                ) : (
+                  <span className="text-[10px] text-slate-500 text-center">QR Code será exibido após a confirmação do Mercado Pago.</span>
+                )}
               </div>
               <div className="flex-1 text-xs">
                 <p className="font-bold text-slate-800 mb-1">Total: R$ {order.total.toFixed(2).replace('.', ',')}</p>
@@ -105,11 +107,12 @@ export const OrderSuccessModal: React.FC<OrderSuccessModalProps> = ({
                 </p>
                 <button
                   onClick={handleCopyPix}
+                  disabled={!pixCopyPaste}
                   className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-bold text-xs text-[#382343] shadow-xs hover:shadow-md transition-all cursor-pointer"
                   style={{ backgroundColor: '#dac9df', border: '1px solid #cbb6d2' }}
                 >
                   {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
-                  <span>{copied ? 'Código Copiado!' : 'Copiar Chave PIX'}</span>
+                  <span>{copied ? 'Código Copiado!' : pixCopyPaste ? 'Copiar Chave PIX' : 'Aguardando PIX'}</span>
                 </button>
               </div>
             </div>

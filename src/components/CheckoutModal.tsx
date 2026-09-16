@@ -194,6 +194,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
             id: Number(json.data.order_id),
             order_number: json.data.order_number || `TDM-${json.data.order_id}`,
             total: Number(json.data.total) || total,
+            payment_data: paymentJson.data?.point_of_interaction?.transaction_data || {},
           };
         }
         throw new Error(json?.message || 'Falha ao registrar o pedido');
@@ -235,6 +236,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
         payment_method: paymentMethod,
         payment_status: 'pending',
         tracking_code: '',
+        payment_data: restOrder.payment_data,
         assigned_vendor: '',
         shipping_address: {
           cep,
