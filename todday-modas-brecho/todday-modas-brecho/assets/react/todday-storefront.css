@@ -64,6 +64,47 @@ body {
 #root button {
   background-image: none;
   text-transform: none;
+  background-color: #dac9df !important;
+  color: #382343 !important;
+  border-color: #8a5d96 !important;
+}
+
+#root button[class*="bg-white"],
+#root button[class*="bg-\\[\\#FAF7FA\\]"] {
+  background-color: #ffffff !important;
+  color: #382343 !important;
+}
+
+#root button[class*="bg-\\[\\#271E2D\\]"] {
+  background-color: #271e2d !important;
+  color: #ffffff !important;
+  border-color: #271e2d !important;
+}
+
+#root button[class*="bg-white\\/10"] {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.25) !important;
+}
+
+#root #tdm-hero-carousel h1,
+#root #tdm-hero-carousel h2,
+#root #tdm-hero-carousel h3 {
+  color: #ffffff !important;
+}
+
+#root #tdm-hero-carousel p,
+#root #tdm-hero-carousel li,
+#root #tdm-hero-carousel span {
+  color: #f5eff7 !important;
+}
+
+#root #tdm-hero-carousel button {
+  color: #382343 !important;
+}
+
+#root #tdm-hero-carousel button[class*="bg-white\\/10"] {
+  color: #ffffff !important;
 }
 
 #root button[class*="bg-blue-"],
