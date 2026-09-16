@@ -66,6 +66,61 @@ body {
   text-transform: none;
 }
 
+#root button[class*="bg-blue-"],
+#root a[class*="bg-blue-"],
+#root button[class*="bg-indigo-"],
+#root a[class*="bg-indigo-"] {
+  background-color: #dac9df !important;
+  border-color: #8a5d96 !important;
+  color: #382343 !important;
+}
+
+#root button[class*="bg-blue-"]:hover,
+#root a[class*="bg-blue-"]:hover,
+#root button[class*="bg-indigo-"]:hover,
+#root a[class*="bg-indigo-"]:hover {
+  background-color: #cbb6d2 !important;
+  color: #271e2d !important;
+}
+
+#root [class*="text-blue-"],
+#root [class*="text-indigo-"] {
+  color: #6b4b7a !important;
+}
+
+#root [class*="border-blue-"],
+#root [class*="border-indigo-"] {
+  border-color: #cbb6d2 !important;
+}
+
+#root [class*="text-slate-"],
+#root [class*="text-gray-"] {
+  color: #514456 !important;
+}
+
+#root input,
+#root select,
+#root textarea {
+  color: #382343 !important;
+  background-color: #ffffff !important;
+  border-color: #cbb6d2 !important;
+}
+
+#root input::placeholder,
+#root textarea::placeholder {
+  color: #75697a !important;
+  opacity: 1 !important;
+}
+
+#root button:focus-visible,
+#root a:focus-visible,
+#root input:focus,
+#root select:focus,
+#root textarea:focus {
+  outline: 3px solid rgba(138, 93, 150, 0.32) !important;
+  outline-offset: 2px;
+}
+
 #root .tdm-checkout-panel button,
 #root .tdm-checkout-panel input[type="submit"] {
   border-radius: 12px;
