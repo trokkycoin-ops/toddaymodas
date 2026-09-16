@@ -53,32 +53,21 @@ body {
   overflow-x: hidden;
 }
 
-/* WhatsApp Floating Button — só existe nesta página (storefront), por isso o
-   estilo vive aqui e não no todday-frontend.css (que é enfileirado no admin). */
-.tdm-wa-floating {
-  position: fixed;
-  bottom: 24px;
-  right: 24px;
-  width: 58px;
-  height: 58px;
-  background-color: #25D366;
-  color: #ffffff;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-  z-index: 9999;
-  transition: transform 0.2s ease;
+/* Isola a vitrine dos estilos globais do WooCommerce e do tema. */
+#root button,
+#root input,
+#root select,
+#root textarea {
+  font-family: inherit;
 }
 
-.tdm-wa-floating:hover {
-  transform: scale(1.1);
-  color: #ffffff;
+#root button {
+  background-image: none;
+  text-transform: none;
 }
 
-.tdm-wa-floating svg {
-  width: 28px;
-  height: 28px;
-  fill: currentColor;
+#root .tdm-checkout-panel button,
+#root .tdm-checkout-panel input[type="submit"] {
+  border-radius: 12px;
+  box-shadow: none;
 }

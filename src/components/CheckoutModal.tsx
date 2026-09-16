@@ -30,22 +30,18 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
   const [phone, setPhone] = useState('');
 
   // Endereço
-  const [cep, setCep] = useState('01414-001');
-  const [street, setStreet] = useState('Rua Oscar Freire');
-  const [number, setNumber] = useState('1420');
-  const [complement, setComplement] = useState('Apto 42');
-  const [neighborhood, setNeighborhood] = useState('Cerqueira César');
-  const [city, setCity] = useState('São Paulo');
-  const [state, setState] = useState('SP');
+  const [cep, setCep] = useState('');
+  const [street, setStreet] = useState('');
+  const [number, setNumber] = useState('');
+  const [complement, setComplement] = useState('');
+  const [neighborhood, setNeighborhood] = useState('');
+  const [city, setCity] = useState('');
+  const [state, setState] = useState('');
   const [isLookingUpCep, setIsLookingUpCep] = useState(false);
 
   // Opções de Frete Melhor Envio
-  const [shippingOptions, setShippingOptions] = useState<ShippingOption[]>([
-    { id: 'sedex', name: 'SEDEX — Correios', company: 'Melhor Envio', price: 18.50, delivery_time: 2 },
-    { id: 'pac', name: 'PAC — Correios', company: 'Melhor Envio', price: 12.00, delivery_time: 5 },
-    { id: 'jadlog', name: 'Jadlog .Package', company: 'Melhor Envio', price: 14.90, delivery_time: 4 },
-  ]);
-  const [selectedShipping, setSelectedShipping] = useState<ShippingOption>(shippingOptions[0]);
+  const [shippingOptions, setShippingOptions] = useState<ShippingOption[]>([]);
+  const [selectedShipping, setSelectedShipping] = useState<ShippingOption | null>(null);
 
   // Pagamento
   const [paymentMethod, setPaymentMethod] = useState<'pix' | 'credit_card'>('pix');
@@ -59,7 +55,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
   if (!isOpen) return null;
 
   const subtotal = items.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
-  const total = Math.max(0, subtotal + selectedShipping.price - discountAmount);
+  const total = Math.max(0, subtotal + (selectedShipping?.price || 0) - discountAmount);
 
   // Consulta real ViaCEP (com fallback garantido)
   const handleLookupCep = async () => {
@@ -93,7 +89,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
       setIsLookingUpCep(false);
     }
 
-    // Cotação real de frete (Melhor Envio com fallback plano)
+    // Cotação real de frete; sem fallback fictício.
     try {
       const apiBase = (window as any).tdmConfig?.restUrl || `${window.location.origin}/wp-json/todday/v1`;
       const q = await fetch(`${apiBase}/shipping/quote`, {
@@ -114,11 +110,20 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
         setSelectedShipping(quotes[0]);
       }
     } catch {
-      // Mantém as opções locais de frete
+      setShippingOptions([]);
+      setSelectedShipping(null);
     }
   };
 
   const handleFinishOrder = () => {
+    if (!firstName || !lastName || !email || !phone || !cep || !street || !number || !city || !state) {
+      alert('Preencha seus dados e o endereço antes de continuar.');
+      return;
+    }
+    if (!selectedShipping) {
+      alert('Informe o CEP e escolha uma opção de frete calculada para continuar.');
+      return;
+    }
     setStep('processing');
 
     const apiBase = (window as any).tdmConfig?.restUrl || `${window.location.origin}/wp-json/todday/v1`;
@@ -141,11 +146,11 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
               postcode: cep.replace(/\D/g, ''),
             },
             items: items.map((i) => ({ product_id: i.product.id, quantity: i.quantity })),
-            shipping: {
+            shipping: selectedShipping ? {
               id: selectedShipping.id,
               name: selectedShipping.name,
               price: selectedShipping.price,
-            },
+            } : undefined,
             payment_method: 'todday_mercadopago',
           }),
         });
@@ -229,7 +234,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
           quantity: i.quantity,
         })),
         subtotal,
-        shipping_cost: selectedShipping.price,
+        shipping_cost: selectedShipping?.price || 0,
         discount: discountAmount,
         total: restOrder ? restOrder.total : total,
         status: 'processing',
@@ -457,7 +462,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                     <label
                       key={opt.id}
                       className={`flex items-center justify-between p-3 rounded-xl border cursor-pointer transition-all ${
-                        selectedShipping.id === opt.id
+                        selectedShipping?.id === opt.id
                           ? 'border-[#8a5d96] bg-[#f5eff7] ring-2 ring-[#dac9df] shadow-xs'
                           : 'border-[#dac9df] bg-white hover:bg-[#faf7fb]'
                       }`}
@@ -466,7 +471,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                         <input
                           type="radio"
                           name="shipping"
-                          checked={selectedShipping.id === opt.id}
+                          checked={selectedShipping?.id === opt.id}
                           onChange={() => setSelectedShipping(opt)}
                           className="accent-[#8a5d96]"
                         />
@@ -638,8 +643,8 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                     <span>R$ {subtotal.toFixed(2).replace('.', ',')}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>Frete ({selectedShipping.name.split(' ')[0]})</span>
-                    <span>R$ {selectedShipping.price.toFixed(2).replace('.', ',')}</span>
+                    <span>Frete {selectedShipping ? `(${selectedShipping.name.split(' ')[0]})` : ''}</span>
+                    <span>{selectedShipping ? `R$ ${selectedShipping.price.toFixed(2).replace('.', ',')}` : 'Calcule no CEP'}</span>
                   </div>
                   {discountAmount > 0 && (
                     <div className="flex justify-between text-[#5c406b] font-bold">

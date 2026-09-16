@@ -10,7 +10,7 @@ use ToddayModasBrecho\Database\ActivityLogRepository;
 class NotificacaoService {
     public static function get_whatsapp_url(string $phone = '', string $message = ''): string {
         $settings = get_option('todday_settings_whatsapp', []);
-        $target_phone = !empty($phone) ? $phone : ($settings['phone'] ?? '5511999998888');
+        $target_phone = !empty($phone) ? $phone : ($settings['phone'] ?? '5535991759960');
         $clean_phone = preg_replace('/\D/', '', $target_phone);
 
         $default_msg = $settings['default_message'] ?? 'Olá! Gostaria de informações sobre o Todday Modas Brechó.';
@@ -74,7 +74,10 @@ class NotificacaoService {
         </div>
         ";
 
-        $headers = ['Content-Type: text/html; charset=UTF-8'];
+        $headers = [
+            'Content-Type: text/html; charset=UTF-8',
+            'From: ' . sanitize_text_field(get_bloginfo('name')) . ' <' . sanitize_email(get_option('admin_email')) . '>',
+        ];
         $sent = wp_mail($to, $subject, $body, $headers);
 
         ActivityLogRepository::log('email_notification_sent', 'order', (string) $order_id, [

@@ -108,7 +108,7 @@ class SettingsController {
         if (isset($params['whatsapp'])) {
             $new_wa = [
                 'enabled' => sanitize_text_field($params['whatsapp']['enabled'] ?? 'yes'),
-                'phone' => sanitize_text_field($params['whatsapp']['phone'] ?? '5511999998888'),
+                'phone' => sanitize_text_field($params['whatsapp']['phone'] ?? '5535991759960'),
                 'default_message' => sanitize_text_field($params['whatsapp']['default_message'] ?? ''),
             ];
             update_option('todday_settings_whatsapp', $new_wa);
