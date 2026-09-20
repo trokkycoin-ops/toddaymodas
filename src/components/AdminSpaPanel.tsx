@@ -49,12 +49,17 @@ export function AdminSpaPanel({
   onTestMelhorEnvio,
 }: AdminSpaPanelProps) {
   type AdminTab = 'dashboard' | 'orders' | 'products' | 'logs' | 'settings';
-  const initialTab = typeof window !== 'undefined' && ['dashboard', 'orders', 'products', 'logs', 'settings'].includes(window.location.hash.slice(1))
-    ? window.location.hash.slice(1) as AdminTab
-    : 'dashboard';
+  const savedTab = typeof window !== 'undefined' ? window.localStorage.getItem('tdm_admin_tab') : null;
+  const hashTab = typeof window !== 'undefined' ? window.location.hash.slice(1) : '';
+  const initialTab = ['dashboard', 'orders', 'products', 'logs', 'settings'].includes(hashTab)
+    ? hashTab as AdminTab
+    : ['dashboard', 'orders', 'products', 'logs', 'settings'].includes(savedTab || '')
+      ? savedTab as AdminTab
+      : 'dashboard';
   const [currentTab, setCurrentTab] = useState<AdminTab>(initialTab);
 
   useEffect(() => {
+    window.localStorage.setItem('tdm_admin_tab', currentTab);
     window.history.replaceState(null, '', `${window.location.pathname}${window.location.search}#${currentTab}`);
   }, [currentTab]);
 
@@ -95,6 +100,10 @@ export function AdminSpaPanel({
   const [mercadoPagoTestMessage, setMercadoPagoTestMessage] = useState<string | null>(null);
   const [testingMelhorEnvio, setTestingMelhorEnvio] = useState(false);
   const [melhorEnvioTestMessage, setMelhorEnvioTestMessage] = useState<string | null>(null);
+
+  useEffect(() => {
+    setLocalSettings(settings);
+  }, [settings]);
 
   // KPIs
   const totalRevenue = orders.reduce((sum, o) => sum + (o.status !== 'cancelled' ? o.total : 0), 0);
