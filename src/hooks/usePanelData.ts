@@ -153,6 +153,15 @@ export function usePanelData(mode: AppMode) {
     []
   );
 
+  const testMercadoPago = useCallback(async (accessToken: string) => {
+    const result = await api('/settings/test-mercadopago', {
+      method: 'POST',
+      body: { access_token: accessToken },
+    });
+    await load();
+    return result;
+  }, [load]);
+
   return {
     orders,
     products,
@@ -166,5 +175,6 @@ export function usePanelData(mode: AppMode) {
     updateProduct,
     deleteProduct,
     updateSettings,
+    testMercadoPago,
   };
 }

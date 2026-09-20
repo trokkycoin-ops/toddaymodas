@@ -9,6 +9,38 @@ use ToddayModasBrecho\Security\Security;
 use ToddayModasBrecho\Database\ActivityLogRepository;
 
 class MercadoPago {
+    public static function test_connection(string $access_token = ''): array {
+        if ($access_token === '') {
+            $settings = get_option('todday_settings_mercadopago', []);
+            $access_token = Security::decrypt_secret($settings['access_token'] ?? '');
+        }
+
+        if ($access_token === '') {
+            return ['success' => false, 'message' => 'Informe o Access Token do Mercado Pago.'];
+        }
+
+        $response = wp_remote_get('https://api.mercadopago.com/users/me', [
+            'timeout' => 10,
+            'headers' => ['Authorization' => 'Bearer ' . $access_token],
+        ]);
+
+        if (is_wp_error($response)) {
+            return ['success' => false, 'message' => 'Não foi possível conectar ao Mercado Pago: ' . $response->get_error_message()];
+        }
+
+        $status_code = wp_remote_retrieve_response_code($response);
+        $data = json_decode(wp_remote_retrieve_body($response), true);
+        if ($status_code >= 400 || !is_array($data) || empty($data['id'])) {
+            return ['success' => false, 'message' => $data['message'] ?? 'Access Token inválido ou recusado pelo Mercado Pago.'];
+        }
+
+        return [
+            'success' => true,
+            'message' => 'Mercado Pago conectado com sucesso.',
+            'data' => ['user_id' => (string) $data['id'], 'nickname' => sanitize_text_field($data['nickname'] ?? '')],
+        ];
+    }
+
     public static function create_payment(array $payment_data): array {
         $settings = get_option('todday_settings_mercadopago', []);
         $access_token = Security::decrypt_secret($settings['access_token'] ?? '');

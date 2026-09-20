@@ -246,6 +246,7 @@ export function App() {
             onUpdateProduct={panel.updateProduct}
             onDeleteProduct={panel.deleteProduct}
             onUpdateSettings={panel.updateSettings}
+            onTestMercadoPago={panel.testMercadoPago}
           />
         )}
         {mode === 'vendor' && <VendorSpaPanel orders={panel.orders} />}
@@ -318,6 +319,7 @@ export function App() {
             onUpdateProduct={handleUpdateProduct}
             onDeleteProduct={handleDeleteProduct}
             onUpdateSettings={handleUpdateSettings}
+            onTestMercadoPago={panel.testMercadoPago}
           />
         )}
 

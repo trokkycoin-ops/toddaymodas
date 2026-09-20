@@ -9,6 +9,7 @@ use WP_REST_Request;
 use WP_REST_Response;
 use ToddayModasBrecho\Security\Security;
 use ToddayModasBrecho\Database\ActivityLogRepository;
+use ToddayModasBrecho\Integrations\MercadoPago;
 
 class SettingsController {
     public static function register_routes(): void {
@@ -28,6 +29,12 @@ class SettingsController {
         register_rest_route(RestController::NAMESPACE, '/settings/test-notification', [
             'methods' => 'POST',
             'callback' => [self::class, 'test_notification'],
+            'permission_callback' => [self::class, 'check_admin_permission'],
+        ]);
+
+        register_rest_route(RestController::NAMESPACE, '/settings/test-mercadopago', [
+            'methods' => 'POST',
+            'callback' => [self::class, 'test_mercadopago'],
             'permission_callback' => [self::class, 'check_admin_permission'],
         ]);
     }
@@ -132,5 +139,20 @@ class SettingsController {
             'success' => $sent,
             'message' => $sent ? "E-mail de teste enviado para {$email}." : "Falha ao enviar e-mail. Verifique o servidor SMTP.",
         ]);
+    }
+
+    public static function test_mercadopago(WP_REST_Request $request): WP_REST_Response {
+        $params = $request->get_json_params() ?: $request->get_params();
+        $token = sanitize_text_field($params['access_token'] ?? '');
+        $result = MercadoPago::test_connection($token);
+
+        if ($result['success']) {
+            $settings = get_option('todday_settings_mercadopago', []);
+            $settings['enabled'] = 'yes';
+            $settings['access_token'] = Security::encrypt_secret($token);
+            update_option('todday_settings_mercadopago', $settings);
+        }
+
+        return new WP_REST_Response($result, $result['success'] ? 200 : 400);
     }
 }

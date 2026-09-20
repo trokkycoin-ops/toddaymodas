@@ -18,6 +18,7 @@ import {
   Check,
   X,
   ExternalLink,
+  LoaderCircle,
 } from 'lucide-react';
 
 interface AdminSpaPanelProps {
@@ -30,6 +31,7 @@ interface AdminSpaPanelProps {
   onUpdateProduct: (product: Product) => void;
   onDeleteProduct: (productId: number) => void;
   onUpdateSettings: (settings: PluginSettings) => void;
+  onTestMercadoPago: (accessToken: string) => Promise<any>;
 }
 
 export function AdminSpaPanel({
@@ -42,6 +44,7 @@ export function AdminSpaPanel({
   onUpdateProduct,
   onDeleteProduct,
   onUpdateSettings,
+  onTestMercadoPago,
 }: AdminSpaPanelProps) {
   const [currentTab, setCurrentTab] = useState<'dashboard' | 'orders' | 'products' | 'logs' | 'settings'>('dashboard');
 
@@ -78,6 +81,8 @@ export function AdminSpaPanel({
   // Settings tab state
   const [localSettings, setLocalSettings] = useState<PluginSettings>(settings);
   const [savedSettingsSuccess, setSavedSettingsSuccess] = useState(false);
+  const [testingMercadoPago, setTestingMercadoPago] = useState(false);
+  const [mercadoPagoTestMessage, setMercadoPagoTestMessage] = useState<string | null>(null);
 
   // KPIs
   const totalRevenue = orders.reduce((sum, o) => sum + (o.status !== 'cancelled' ? o.total : 0), 0);
@@ -89,6 +94,20 @@ export function AdminSpaPanel({
     onUpdateSettings(localSettings);
     setSavedSettingsSuccess(true);
     setTimeout(() => setSavedSettingsSuccess(false), 3000);
+  };
+
+  const handleTestMercadoPago = async () => {
+    setTestingMercadoPago(true);
+    setMercadoPagoTestMessage(null);
+    try {
+      const result = await onTestMercadoPago(localSettings.mercadopago.access_token);
+      setLocalSettings((current) => ({ ...current, mercadopago: { ...current.mercadopago, enabled: true } }));
+      setMercadoPagoTestMessage(result.message || 'Mercado Pago conectado e ativado.');
+    } catch (error: any) {
+      setMercadoPagoTestMessage(error?.message || 'Não foi possível conectar ao Mercado Pago.');
+    } finally {
+      setTestingMercadoPago(false);
+    }
   };
 
   const handleSaveProduct = (e: React.FormEvent) => {
@@ -544,7 +563,23 @@ export function AdminSpaPanel({
                 <span>Habilitado</span>
               </label>
             </div>
+            {mercadoPagoTestMessage && (
+              <div className={`rounded-xl border px-3 py-2 text-xs font-bold ${mercadoPagoTestMessage.includes('sucesso') || mercadoPagoTestMessage.includes('ativado') ? 'border-emerald-200 bg-emerald-50 text-emerald-800' : 'border-red-200 bg-red-50 text-red-700'}`}>
+                {mercadoPagoTestMessage}
+              </div>
+            )}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+              <div>
+                <label className="block text-gray-700 font-bold mb-1">Ambiente</label>
+                <select
+                  value={localSettings.mercadopago.environment}
+                  onChange={(e) => setLocalSettings({ ...localSettings, mercadopago: { ...localSettings.mercadopago, environment: e.target.value as 'sandbox' | 'production' } })}
+                  className="w-full px-3 py-2 bg-[#FAF7FA] border border-[#EBDDF0] rounded-xl text-xs"
+                >
+                  <option value="sandbox">Sandbox / testes</option>
+                  <option value="production">Produção</option>
+                </select>
+              </div>
               <div>
                 <label className="block text-gray-700 font-bold mb-1">Chave Pública (Public Key)</label>
                 <input
@@ -573,7 +608,21 @@ export function AdminSpaPanel({
                   className="w-full px-3 py-2 bg-[#FAF7FA] border border-[#EBDDF0] rounded-xl font-mono text-[11px]"
                 />
               </div>
+              <div className="sm:col-span-2">
+                <label className="block text-gray-700 font-bold mb-1">Webhook Secret</label>
+                <input
+                  type="password"
+                  value={localSettings.mercadopago.webhook_secret}
+                  onChange={(e) => setLocalSettings({ ...localSettings, mercadopago: { ...localSettings.mercadopago, webhook_secret: e.target.value } })}
+                  placeholder="Opcional, recomendado para produção"
+                  className="w-full px-3 py-2 bg-[#FAF7FA] border border-[#EBDDF0] rounded-xl font-mono text-[11px]"
+                />
+              </div>
             </div>
+            <button type="button" onClick={handleTestMercadoPago} disabled={testingMercadoPago || !localSettings.mercadopago.access_token} className="inline-flex items-center gap-2 rounded-xl bg-[#271E2D] px-4 py-2.5 text-xs font-black text-white disabled:cursor-not-allowed disabled:opacity-50">
+              {testingMercadoPago ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <Check className="h-4 w-4" />}
+              {testingMercadoPago ? 'Testando conexão...' : 'Testar e ativar Mercado Pago'}
+            </button>
           </div>
 
           {/* Melhor Envio */}
