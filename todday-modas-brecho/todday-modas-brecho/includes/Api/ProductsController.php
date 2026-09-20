@@ -194,6 +194,7 @@ class ProductsController {
         try {
             $product->set_regular_price((string) $regular);
             $product->set_sale_price($regular_input > $price ? (string) $price : '');
+            $product->set_price((string) $price);
             $product->save();
         } catch (\Throwable $e) {
             return new WP_REST_Response(['success' => false, 'message' => 'Falha ao salvar produto: ' . $e->getMessage()], 500);
@@ -230,7 +231,12 @@ class ProductsController {
             update_post_meta($id, $key, $value);
         }
 
-        ActivityLogRepository::log('product_saved', 'product', (string) $id, ['name' => $name]);
+        ActivityLogRepository::log('product_saved', 'product', (string) $id, [
+            'name' => $name,
+            'price' => $product->get_price(),
+            'regular_price' => $product->get_regular_price(),
+            'sale_price' => $product->get_sale_price(),
+        ]);
 
         return new WP_REST_Response([
             'success' => true,
