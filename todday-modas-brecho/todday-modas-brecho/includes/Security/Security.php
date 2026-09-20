@@ -8,7 +8,14 @@ if (!defined('ABSPATH')) {
 class Security {
     public static function verify_rest_nonce(\WP_REST_Request $request): bool {
         $nonce = $request->get_header('x-wp-nonce');
-        return is_string($nonce) && $nonce !== '' && (bool) wp_verify_nonce($nonce, 'wp_rest');
+        if (is_string($nonce) && $nonce !== '' && (bool) wp_verify_nonce($nonce, 'wp_rest')) {
+            return true;
+        }
+
+        $panel_nonce = $request->get_header('x-tdm-panel-nonce');
+        return GestaoSession::is_valid()
+            && is_string($panel_nonce)
+            && hash_equals(hash_hmac('sha256', 'tdm_panel_rest', wp_salt('auth')), $panel_nonce);
     }
 
     public static function encrypt_secret(string $plain_text): string {

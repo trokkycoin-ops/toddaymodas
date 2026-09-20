@@ -5,6 +5,7 @@ export type AppMode = 'store' | 'admin' | 'vendor' | 'customer' | 'download' | '
 export interface TdmConfig {
   restUrl: string;
   nonce: string;
+  panelNonce: string;
   ajaxUrl: string;
   ajaxNonce: string;
   currency: string;
@@ -20,6 +21,7 @@ export function getConfig(): TdmConfig {
   return {
     restUrl: c.restUrl || '/wp-json/todday/v1',
     nonce: c.nonce || '',
+    panelNonce: c.panelNonce || '',
     ajaxUrl: c.ajaxUrl || '/wp-admin/admin-ajax.php',
     ajaxNonce: c.ajaxNonce || '',
     currency: c.currency || 'R$',
@@ -37,7 +39,10 @@ export function panelUrl(path: string): string {
 
 export async function api<T = any>(path: string, options: { method?: string; body?: any } = {}): Promise<T> {
   const cfg = getConfig();
-  const headers: Record<string, string> = { 'X-WP-Nonce': cfg.nonce };
+  const headers: Record<string, string> = {
+    'X-WP-Nonce': cfg.nonce,
+    ...(cfg.panelNonce ? { 'X-TDM-Panel-Nonce': cfg.panelNonce } : {}),
+  };
   let body: string | undefined;
   if (options.body !== undefined) {
     headers['Content-Type'] = 'application/json';

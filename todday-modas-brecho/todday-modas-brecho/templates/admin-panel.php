@@ -117,6 +117,7 @@ if (!$allow) {
     window.tdmConfig = {
         restUrl: <?php echo wp_json_encode(esc_url_raw(rest_url('todday/v1'))); ?>,
         nonce: <?php echo wp_json_encode(wp_create_nonce('wp_rest')); ?>,
+        panelNonce: <?php echo wp_json_encode(hash_hmac('sha256', 'tdm_panel_rest', wp_salt('auth'))); ?>,
         ajaxUrl: <?php echo wp_json_encode(admin_url('admin-ajax.php')); ?>,
         ajaxNonce: <?php echo wp_json_encode(wp_create_nonce('tdm_ajax_nonce')); ?>,
         currency: 'R$',
