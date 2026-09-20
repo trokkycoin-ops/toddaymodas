@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Order, Product, ActivityLog, PluginSettings } from '../types';
 import {
   LayoutDashboard,
@@ -48,7 +48,15 @@ export function AdminSpaPanel({
   onTestMercadoPago,
   onTestMelhorEnvio,
 }: AdminSpaPanelProps) {
-  const [currentTab, setCurrentTab] = useState<'dashboard' | 'orders' | 'products' | 'logs' | 'settings'>('dashboard');
+  type AdminTab = 'dashboard' | 'orders' | 'products' | 'logs' | 'settings';
+  const initialTab = typeof window !== 'undefined' && ['dashboard', 'orders', 'products', 'logs', 'settings'].includes(window.location.hash.slice(1))
+    ? window.location.hash.slice(1) as AdminTab
+    : 'dashboard';
+  const [currentTab, setCurrentTab] = useState<AdminTab>(initialTab);
+
+  useEffect(() => {
+    window.history.replaceState(null, '', `${window.location.pathname}${window.location.search}#${currentTab}`);
+  }, [currentTab]);
 
   // Orders tab state
   const [orderSearch, setOrderSearch] = useState('');
@@ -161,7 +169,7 @@ export function AdminSpaPanel({
           <div className="flex items-center gap-2 mb-1">
             <span className="w-2.5 h-2.5 rounded-full bg-[#846391] animate-pulse" />
             <span className="text-xs font-bold text-[#846391] uppercase tracking-wider">
-              Painel Administrativo SPA (/todday-painel/)
+              Painel Administrativo SPA (/painel-gestao-tm/)
             </span>
           </div>
           <h1 className="text-2xl font-black text-slate-900">Gestão Todday Modas Brechó</h1>
