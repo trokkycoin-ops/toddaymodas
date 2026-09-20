@@ -16,20 +16,25 @@ class CustomersController {
         register_rest_route(RestController::NAMESPACE, '/customers', [
             'methods' => 'GET',
             'callback' => [self::class, 'get_customers'],
-            'permission_callback' => [CapabilityMatrix::class, 'can_access_vendor'],
+            'permission_callback' => [CapabilityMatrix::class, 'can_access_vendor_rest'],
         ]);
 
         register_rest_route(RestController::NAMESPACE, '/customers/(?P<id>\d+)', [
             'methods' => 'GET',
             'callback' => [self::class, 'get_customer'],
-            'permission_callback' => 'is_user_logged_in',
+            'permission_callback' => [self::class, 'can_access_customer_rest'],
         ]);
 
         register_rest_route(RestController::NAMESPACE, '/customers/(?P<id>\d+)/orders', [
             'methods' => 'GET',
             'callback' => [self::class, 'get_customer_orders'],
-            'permission_callback' => 'is_user_logged_in',
+            'permission_callback' => [self::class, 'can_access_customer_rest'],
         ]);
+    }
+
+    public static function can_access_customer_rest(WP_REST_Request $request): bool {
+        return is_user_logged_in()
+            && \ToddayModasBrecho\Security\Security::verify_rest_nonce($request);
     }
 
     public static function get_customers(WP_REST_Request $request): WP_REST_Response {

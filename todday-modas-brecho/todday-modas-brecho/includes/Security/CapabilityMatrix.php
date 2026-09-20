@@ -65,13 +65,25 @@ class CapabilityMatrix {
         return current_user_can(self::CAP_ADMIN) || current_user_can(self::CAP_GERENTE) || GestaoSession::is_valid();
     }
 
+    public static function can_manage_store_rest(\WP_REST_Request $request): bool {
+        return self::can_manage_store() && Security::verify_rest_nonce($request);
+    }
+
     /** Acesso a pedidos: dono logado WP, papel adequado OU sessão do painel de gestão. */
     public static function can_access_orders(): bool {
         return is_user_logged_in() || GestaoSession::is_valid();
     }
 
+    public static function can_access_orders_rest(\WP_REST_Request $request): bool {
+        return self::can_access_orders() && Security::verify_rest_nonce($request);
+    }
+
     public static function can_access_vendor(): bool {
         return current_user_can(self::CAP_ADMIN) || current_user_can(self::CAP_GERENTE) || current_user_can(self::CAP_VENDEDOR);
+    }
+
+    public static function can_access_vendor_rest(\WP_REST_Request $request): bool {
+        return self::can_access_vendor() && Security::verify_rest_nonce($request);
     }
 
     public static function can_access_customer(): bool {

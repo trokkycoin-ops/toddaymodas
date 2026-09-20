@@ -15,7 +15,7 @@ class LogsController {
         register_rest_route(RestController::NAMESPACE, '/logs', [
             'methods' => 'GET',
             'callback' => [self::class, 'get_logs'],
-            'permission_callback' => [CapabilityMatrix::class, 'can_manage_store'],
+            'permission_callback' => [CapabilityMatrix::class, 'can_manage_store_rest'],
         ]);
     }
 

@@ -4,7 +4,7 @@
 - **Causa**: O plugin WooCommerce está desativado ou não foi instalado.
 - **Solução**: Vá em **Plugins > Plugins Instalados** e ative o WooCommerce. O Todday Modas Brechó não gera erro fatal, mas degrada graciosamente até que o WooCommerce seja ativado.
 
-## 2. Rota `/todday-painel/` retorna erro 404
+## 2. Rota `/painel-gestao-tm/` retorna erro 404
 - **Causa**: As regras de reescrita do WordPress não foram atualizadas.
 - **Solução**: Acesse **Configurações > Links Permanentes** no wp-admin e clique em **Salvar Alterações** para forçar o recálculo dos permalinks.
 

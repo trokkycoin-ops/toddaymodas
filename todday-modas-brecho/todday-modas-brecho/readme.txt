@@ -22,7 +22,7 @@ O plugin **Todday Modas Brechó** transforma uma instalação padrão do WordPre
   - Cálculo de frete dinâmico via Melhor Envio (SEDEX, PAC, transportadoras) com fallback nativo controlado.
   - Gateway de pagamento Mercado Pago nativo com suporte a PIX instantâneo e Cartão de Crédito.
 * **Compatibilidade HPOS**: 100% compatível com WooCommerce High-Performance Order Storage (HPOS).
-* **Painel de Gestão SPA (/todday-painel/)**:
+* **Painel de Gestão SPA (/painel-gestao-tm/)**:
   - Painel autônomo fora do wp-admin para Gerentes e Administradores.
   - Gráficos nativos com Chart.js local (sem CDN externo).
   - Emissão de fatura/recibo em PDF server-side embutido.
@@ -38,7 +38,7 @@ O plugin **Todday Modas Brechó** transforma uma instalação padrão do WordPre
 2. Clique em **Instalar Agora** e, em seguida, em **Ativar Plugin**.
 3. Certifique-se de que o **WooCommerce** esteja ativo.
 4. Acesse o menu **Todday Modas > Configurações** para configurar suas credenciais do Mercado Pago e Melhor Envio.
-5. O painel SPA estará disponível na URL `https://seusite.com.br/todday-painel/`.
+5. O painel SPA estará disponível na URL `https://seusite.com.br/painel-gestao-tm/`.
 
 == Frequently Asked Questions ==
 

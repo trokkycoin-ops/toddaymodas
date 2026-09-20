@@ -17,31 +17,31 @@ class OrdersController {
         register_rest_route(RestController::NAMESPACE, '/orders', [
             'methods' => 'GET',
             'callback' => [self::class, 'get_orders'],
-            'permission_callback' => [CapabilityMatrix::class, 'can_access_orders'],
+            'permission_callback' => [CapabilityMatrix::class, 'can_access_orders_rest'],
         ]);
 
         register_rest_route(RestController::NAMESPACE, '/orders/(?P<id>\d+)', [
             'methods' => 'GET',
             'callback' => [self::class, 'get_order'],
-            'permission_callback' => [CapabilityMatrix::class, 'can_access_orders'],
+            'permission_callback' => [CapabilityMatrix::class, 'can_access_orders_rest'],
         ]);
 
         register_rest_route(RestController::NAMESPACE, '/orders/(?P<id>\d+)/status', [
             'methods' => 'PUT',
             'callback' => [self::class, 'update_status'],
-            'permission_callback' => [CapabilityMatrix::class, 'can_manage_store'],
+            'permission_callback' => [CapabilityMatrix::class, 'can_manage_store_rest'],
         ]);
 
         register_rest_route(RestController::NAMESPACE, '/orders/(?P<id>\d+)/pdf', [
             'methods' => 'GET',
             'callback' => [self::class, 'get_pdf'],
-            'permission_callback' => [CapabilityMatrix::class, 'can_access_orders'],
+            'permission_callback' => [CapabilityMatrix::class, 'can_access_orders_rest'],
         ]);
 
         register_rest_route(RestController::NAMESPACE, '/orders/(?P<id>\d+)/notify', [
             'methods' => 'POST',
             'callback' => [self::class, 'notify_order'],
-            'permission_callback' => [CapabilityMatrix::class, 'can_manage_store'],
+            'permission_callback' => [CapabilityMatrix::class, 'can_manage_store_rest'],
         ]);
     }
 

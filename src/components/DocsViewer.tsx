@@ -81,7 +81,7 @@ Todas as leituras e gravações de pedidos utilizam exclusivamente \`wc_get_orde
 | \`view_todday_own_orders\` | ✓ | ✗ | ✓ |
 | \`rate_todday_items\` | ✓ | ✗ | ✓ |
 
-O acesso ao Painel de Gestão SPA (\`/todday-painel/\`) e rotas administrativas é restrito aos usuários com \`manage_todday_brecho\`.`
+O acesso ao Painel de Gestão SPA (\`/painel-gestao-tm/\`) e rotas administrativas é protegido pela sessão privada do painel e pela matriz de permissões.`
   }
 ];
 

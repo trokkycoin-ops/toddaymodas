@@ -1,7 +1,7 @@
 # Guia de Configuração — Todday Modas Brechó
 
 ## 1. Configuração do Mercado Pago
-1. Acesse o **Painel de Gestão** (`/todday-painel/`) ou o menu **Todday Modas > Configurações**.
+1. Acesse o **Painel de Gestão** (`/painel-gestao-tm/`) ou o menu **Todday Modas > Configurações**.
 2. Na aba de integrações, selecione o ambiente (**Sandbox** para testes ou **Produção** para vendas reais).
 3. Insira sua **Public Key** e **Access Token** obtidos no painel do Mercado Pago Developers.
 4. Para ativar a validação de assinatura do Webhook, insira o **Webhook Secret Key**.

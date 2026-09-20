@@ -20,7 +20,7 @@ if (class_exists('WC_Payment_Gateway')) {
         public function __construct() {
             $this->id = 'todday_mercadopago';
             $this->icon = '';
-            $this->has_fields = true;
+            $this->has_fields = false;
             $this->method_title = __('Mercado Pago (Todday Modas)', 'todday-modas-brecho');
             $this->method_description = __('Receba pagamentos via PIX e Cartão de Crédito no Todday Modas Brechó.', 'todday-modas-brecho');
 
@@ -50,13 +50,12 @@ if (class_exists('WC_Payment_Gateway')) {
         }
 
         public function process_payment($order_id) {
-            $order = wc_get_order($order_id);
+            wc_add_notice(
+                __('Finalize o pagamento pela tela de checkout da Todday Modas.', 'todday-modas-brecho'),
+                'error'
+            );
 
-            // Redireciona para tela de checkout SPA ou finalização
-            return [
-                'result' => 'success',
-                'redirect' => $this->get_return_url($order),
-            ];
+            return ['result' => 'failure'];
         }
     }
 }

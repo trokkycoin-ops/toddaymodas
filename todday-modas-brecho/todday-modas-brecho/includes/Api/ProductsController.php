@@ -17,37 +17,37 @@ class ProductsController {
             [
                 'methods' => 'GET',
                 'callback' => [self::class, 'get_products'],
-                'permission_callback' => [CapabilityMatrix::class, 'can_manage_store'],
+                'permission_callback' => [CapabilityMatrix::class, 'can_manage_store_rest'],
             ],
             [
                 'methods' => 'POST',
                 'callback' => [self::class, 'save_product'],
-                'permission_callback' => [CapabilityMatrix::class, 'can_manage_store'],
+                'permission_callback' => [CapabilityMatrix::class, 'can_manage_store_rest'],
             ],
         ]);
 
         register_rest_route(RestController::NAMESPACE, '/products/(?P<id>\d+)', [
             'methods' => 'DELETE',
             'callback' => [self::class, 'delete_product'],
-            'permission_callback' => [CapabilityMatrix::class, 'can_manage_store'],
+            'permission_callback' => [CapabilityMatrix::class, 'can_manage_store_rest'],
         ]);
 
         register_rest_route(RestController::NAMESPACE, '/products/(?P<id>\d+)/inventory', [
             'methods' => 'PUT',
             'callback' => [self::class, 'update_inventory'],
-            'permission_callback' => [CapabilityMatrix::class, 'can_manage_store'],
+            'permission_callback' => [CapabilityMatrix::class, 'can_manage_store_rest'],
         ]);
 
         register_rest_route(RestController::NAMESPACE, '/products/import', [
             'methods' => 'POST',
             'callback' => [self::class, 'import_csv'],
-            'permission_callback' => [CapabilityMatrix::class, 'can_manage_store'],
+            'permission_callback' => [CapabilityMatrix::class, 'can_manage_store_rest'],
         ]);
 
         register_rest_route(RestController::NAMESPACE, '/products/export', [
             'methods' => 'GET',
             'callback' => [self::class, 'export_csv'],
-            'permission_callback' => [CapabilityMatrix::class, 'can_manage_store'],
+            'permission_callback' => [CapabilityMatrix::class, 'can_manage_store_rest'],
         ]);
     }
 

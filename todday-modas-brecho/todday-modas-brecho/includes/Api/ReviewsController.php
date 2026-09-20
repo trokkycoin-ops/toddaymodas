@@ -7,8 +7,13 @@ if (!defined('ABSPATH')) {
 
 use WP_REST_Request;
 use WP_REST_Response;
+use ToddayModasBrecho\Security\Security;
 
 class ReviewsController {
+    public static function can_submit_review(WP_REST_Request $request): bool {
+        return is_user_logged_in() && Security::verify_rest_nonce($request);
+    }
+
     public static function register_routes(): void {
         register_rest_route(RestController::NAMESPACE, '/reviews', [
             [
@@ -19,7 +24,7 @@ class ReviewsController {
             [
                 'methods' => 'POST',
                 'callback' => [self::class, 'submit_review'],
-                'permission_callback' => 'is_user_logged_in',
+                'permission_callback' => [self::class, 'can_submit_review'],
             ],
         ]);
     }

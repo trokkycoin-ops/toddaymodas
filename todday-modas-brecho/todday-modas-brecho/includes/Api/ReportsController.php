@@ -16,13 +16,13 @@ class ReportsController {
         register_rest_route(RestController::NAMESPACE, '/reports/summary', [
             'methods' => 'GET',
             'callback' => [self::class, 'get_summary'],
-            'permission_callback' => [CapabilityMatrix::class, 'can_manage_store'],
+            'permission_callback' => [CapabilityMatrix::class, 'can_manage_store_rest'],
         ]);
 
         register_rest_route(RestController::NAMESPACE, '/reports/export', [
             'methods' => 'GET',
             'callback' => [self::class, 'export_orders'],
-            'permission_callback' => [CapabilityMatrix::class, 'can_manage_store'],
+            'permission_callback' => [CapabilityMatrix::class, 'can_manage_store_rest'],
         ]);
     }
 

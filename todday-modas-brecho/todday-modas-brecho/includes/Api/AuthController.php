@@ -8,8 +8,13 @@ if (!defined('ABSPATH')) {
 use WP_REST_Request;
 use WP_REST_Response;
 use ToddayModasBrecho\Security\CapabilityMatrix;
+use ToddayModasBrecho\Security\Security;
 
 class AuthController {
+    public static function can_read_current_user(WP_REST_Request $request): bool {
+        return is_user_logged_in() && Security::verify_rest_nonce($request);
+    }
+
     public static function register_routes(): void {
         register_rest_route(RestController::NAMESPACE, '/auth/login', [
             'methods' => 'POST',
@@ -32,7 +37,7 @@ class AuthController {
         register_rest_route(RestController::NAMESPACE, '/auth/me', [
             'methods' => 'GET',
             'callback' => [self::class, 'me'],
-            'permission_callback' => 'is_user_logged_in',
+            'permission_callback' => [self::class, 'can_read_current_user'],
         ]);
     }
 

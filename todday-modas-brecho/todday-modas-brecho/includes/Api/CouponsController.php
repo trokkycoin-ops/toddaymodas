@@ -16,12 +16,12 @@ class CouponsController {
             [
                 'methods' => 'GET',
                 'callback' => [self::class, 'get_coupons'],
-                'permission_callback' => [CapabilityMatrix::class, 'can_manage_store'],
+                'permission_callback' => [CapabilityMatrix::class, 'can_manage_store_rest'],
             ],
             [
                 'methods' => 'POST',
                 'callback' => [self::class, 'create_coupon'],
-                'permission_callback' => [CapabilityMatrix::class, 'can_manage_store'],
+                'permission_callback' => [CapabilityMatrix::class, 'can_manage_store_rest'],
             ],
         ]);
 
@@ -29,12 +29,12 @@ class CouponsController {
             [
                 'methods' => 'PUT',
                 'callback' => [self::class, 'update_coupon'],
-                'permission_callback' => [CapabilityMatrix::class, 'can_manage_store'],
+                'permission_callback' => [CapabilityMatrix::class, 'can_manage_store_rest'],
             ],
             [
                 'methods' => 'DELETE',
                 'callback' => [self::class, 'delete_coupon'],
-                'permission_callback' => [CapabilityMatrix::class, 'can_manage_store'],
+                'permission_callback' => [CapabilityMatrix::class, 'can_manage_store_rest'],
             ],
         ]);
     }

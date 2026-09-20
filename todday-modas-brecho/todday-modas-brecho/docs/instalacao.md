@@ -20,7 +20,7 @@
 - Atribui as capacidades de gerenciamento e matriz de segurança.
 - Declara compatibilidade formal com HPOS.
 - Cria regras de reescrita amigáveis para os painéis:
-  - `/todday-painel/` (Painel de Gestão)
+  - `/painel-gestao-tm/` (Painel de Gestão)
   - `/todday-vendedor/` (Painel do Vendedor)
   - `/todday-cliente/` (Portal do Cliente)
 - Executa `flush_rewrite_rules()` uma única vez.

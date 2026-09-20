@@ -6,6 +6,11 @@ if (!defined('ABSPATH')) {
 }
 
 class Security {
+    public static function verify_rest_nonce(\WP_REST_Request $request): bool {
+        $nonce = $request->get_header('x-wp-nonce');
+        return is_string($nonce) && $nonce !== '' && (bool) wp_verify_nonce($nonce, 'wp_rest');
+    }
+
     public static function encrypt_secret(string $plain_text): string {
         if (empty($plain_text)) {
             return '';

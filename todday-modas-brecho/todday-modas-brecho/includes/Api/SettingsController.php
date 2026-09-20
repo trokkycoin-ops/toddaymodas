@@ -32,8 +32,9 @@ class SettingsController {
         ]);
     }
 
-    public static function check_admin_permission(): bool {
-        return \ToddayModasBrecho\Security\CapabilityMatrix::can_manage_store();
+    public static function check_admin_permission(WP_REST_Request $request): bool {
+        return \ToddayModasBrecho\Security\CapabilityMatrix::can_manage_store()
+            && Security::verify_rest_nonce($request);
     }
 
     public static function get_settings(): WP_REST_Response {

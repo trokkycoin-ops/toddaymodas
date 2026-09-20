@@ -185,6 +185,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
             headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': (window as any).tdmConfig?.nonce || '' },
             body: JSON.stringify({
               order_id: Number(json.data.order_id),
+              order_key: json.data.order_key,
               email,
               payment_type: paymentMethod === 'pix' ? 'pix' : 'credit_card',
                 token: paymentMethod === 'credit_card' ? cardToken : undefined,

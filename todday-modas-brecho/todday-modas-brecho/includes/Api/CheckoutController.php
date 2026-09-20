@@ -11,31 +11,32 @@ use ToddayModasBrecho\Integrations\ViaCep;
 use ToddayModasBrecho\Integrations\MelhorEnvio;
 use ToddayModasBrecho\Integrations\MercadoPago;
 use ToddayModasBrecho\Services\PedidosService;
+use ToddayModasBrecho\Security\Security;
 
 class CheckoutController {
     public static function register_routes(): void {
         register_rest_route(RestController::NAMESPACE, '/shipping/quote', [
             'methods' => 'POST',
             'callback' => [self::class, 'quote_shipping'],
-            'permission_callback' => '__return_true',
+            'permission_callback' => [Security::class, 'verify_rest_nonce'],
         ]);
 
         register_rest_route(RestController::NAMESPACE, '/checkout/place', [
             'methods' => 'POST',
             'callback' => [self::class, 'place_order'],
-            'permission_callback' => '__return_true',
+            'permission_callback' => [Security::class, 'verify_rest_nonce'],
         ]);
 
         register_rest_route(RestController::NAMESPACE, '/checkout/payment', [
             'methods' => 'POST',
             'callback' => [self::class, 'process_payment'],
-            'permission_callback' => '__return_true',
+            'permission_callback' => [Security::class, 'verify_rest_nonce'],
         ]);
 
         register_rest_route(RestController::NAMESPACE, '/checkout/status', [
             'methods' => 'GET',
             'callback' => [self::class, 'checkout_status'],
-            'permission_callback' => '__return_true',
+            'permission_callback' => [Security::class, 'verify_rest_nonce'],
         ]);
     }
 
@@ -56,11 +57,16 @@ class CheckoutController {
             return new WP_REST_Response(['success' => false, 'message' => 'Consulta não autorizada para esse pedido.'], 403);
         }
 
+        if (!is_user_logged_in() && !self::guest_order_key_matches($order, $request)) {
+            return new WP_REST_Response(['success' => false, 'message' => 'Chave do pedido inválida.'], 403);
+        }
+
         return new WP_REST_Response([
             'success' => true,
             'data' => [
                 'order_id' => $order->get_id(),
                 'order_number' => $order->get_order_number(),
+                'order_key' => $order->get_order_key(),
                 'status' => $order->get_status(),
                 'payment_status' => $order->is_paid() ? 'paid' : 'pending',
                 'total' => (float) $order->get_total(),
@@ -205,6 +211,7 @@ class CheckoutController {
             'data' => [
                 'order_id' => $order->get_id(),
                 'order_number' => $order->get_order_number(),
+                'order_key' => $order->get_order_key(),
                 'total' => (float) $order->get_total(),
             ],
         ]);
@@ -230,6 +237,9 @@ class CheckoutController {
             $email = sanitize_email($request->get_param('email') ?? '');
             if (!is_email($email) || strtolower($email) !== strtolower((string) $order->get_billing_email())) {
                 return new WP_REST_Response(['success' => false, 'message' => 'Confirme o e-mail usado no pedido.'], 403);
+            }
+            if (!self::guest_order_key_matches($order, $request)) {
+                return new WP_REST_Response(['success' => false, 'message' => 'Chave do pedido inválida.'], 403);
             }
         }
 
@@ -300,6 +310,12 @@ class CheckoutController {
         }
         $ip = isset($_SERVER['REMOTE_ADDR']) ? sanitize_text_field(wp_unslash($_SERVER['REMOTE_ADDR'])) : '0';
         return 'i' . md5($ip);
+    }
+
+    private static function guest_order_key_matches($order, WP_REST_Request $request): bool {
+        $provided_key = sanitize_text_field($request->get_param('order_key') ?? '');
+        $order_key = (string) $order->get_order_key();
+        return $provided_key !== '' && $order_key !== '' && hash_equals($order_key, $provided_key);
     }
 
     private static function rate_limit_exceeded(string $action, int $max): bool {
