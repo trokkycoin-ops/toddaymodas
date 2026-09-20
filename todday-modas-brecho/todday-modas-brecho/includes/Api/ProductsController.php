@@ -196,6 +196,8 @@ class ProductsController {
             $product->set_sale_price($regular_input > $price ? (string) $price : '');
             $product->set_price((string) $price);
             $product->save();
+            update_post_meta($product->get_id(), '_price', wc_format_decimal($price));
+            wc_delete_product_transients($product->get_id());
         } catch (\Throwable $e) {
             return new WP_REST_Response(['success' => false, 'message' => 'Falha ao salvar produto: ' . $e->getMessage()], 500);
         }
