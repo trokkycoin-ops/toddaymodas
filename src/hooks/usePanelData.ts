@@ -6,6 +6,7 @@ import {
   toOrder,
   toProduct,
   toSettings,
+  uploadMedia,
 } from '../lib/api';
 import { ActivityLog, Order, PluginSettings, Product } from '../types';
 
@@ -25,6 +26,7 @@ function productPayload(p: Partial<Product> & { id?: number }) {
     slug: p.slug,
     price: p.price,
     regular_price: p.regular_price,
+    sku: p.sku,
     category: p.category,
     condition: p.condition,
     size: p.size,
@@ -36,6 +38,9 @@ function productPayload(p: Partial<Product> & { id?: number }) {
     fabric: p.fabric,
     measurements: p.measurements,
     image: p.image,
+    image_id: p.image_id,
+    gallery_ids: p.gallery_ids,
+    video_url: p.video,
     stock: p.stock,
     status: 'publish',
   };
@@ -122,6 +127,8 @@ export function usePanelData(mode: AppMode) {
     [load]
   );
 
+  const uploadProductMedia = useCallback((file: File) => uploadMedia(file), []);
+
   const updateProduct = useCallback(
     async (product: Product) => {
       const result = await api('/products', { method: 'POST', body: productPayload(product) });
@@ -187,5 +194,6 @@ export function usePanelData(mode: AppMode) {
     updateSettings,
     testMercadoPago,
     testMelhorEnvio,
+    uploadProductMedia,
   };
 }

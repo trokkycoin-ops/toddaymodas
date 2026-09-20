@@ -63,6 +63,24 @@ export async function api<T = any>(path: string, options: { method?: string; bod
   return json as T;
 }
 
+export async function uploadMedia(file: File): Promise<{ id: number; url: string; type: 'image' | 'video' }> {
+  const cfg = getConfig();
+  const form = new FormData();
+  form.append('file', file);
+  const res = await fetch(cfg.restUrl.replace(/\/$/, '') + '/media/upload', {
+    method: 'POST',
+    headers: {
+      'X-WP-Nonce': cfg.nonce,
+      ...(cfg.panelNonce ? { 'X-TDM-Panel-Nonce': cfg.panelNonce } : {}),
+    },
+    credentials: 'same-origin',
+    body: form,
+  });
+  const json = await res.json().catch(() => ({} as any));
+  if (!res.ok || json.success === false) throw new Error(json.message || `Erro ${res.status}`);
+  return json.data;
+}
+
 function mapStatus(raw: string): Order['status'] {
   switch ((raw || '').replace(/^wc-/, '')) {
     case 'completed':
@@ -136,6 +154,7 @@ export function toProduct(p: any): Product {
     name: p.name || 'Peça',
     slug: p.slug || String(p.id),
     price: Number(p.price || 0),
+    sku: p.sku || '',
     regular_price: p.regular_price ? Number(p.regular_price) : undefined,
     category: cats[0] || 'Moda Feminina (Adulto)',
     condition: (p.condition || 'Peça Única Selecionada') as Product['condition'],
@@ -151,6 +170,7 @@ export function toProduct(p: any): Product {
     measurements: p.measurements || {},
     image: p.image || '',
     gallery: Array.isArray(p.gallery) ? p.gallery : p.image ? [p.image] : [],
+    video: p.video || '',
     rating: Number(p.rating || 0),
     review_count: Number(p.rating_count || 0),
     stock: Number.isFinite(Number(p.stock ?? p.stock_quantity)) ? Number(p.stock ?? p.stock_quantity) : 0,

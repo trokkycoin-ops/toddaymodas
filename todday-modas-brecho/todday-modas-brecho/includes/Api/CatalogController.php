@@ -185,6 +185,7 @@ class CatalogController {
             'sale_price' => $product->get_sale_price() ? (float) $product->get_sale_price() : null,
             'on_sale' => $product->is_on_sale(),
             'image' => $main_image,
+            'video' => get_post_meta($id, '_todday_video_url', true) ?: '',
             'categories' => is_array($cats) ? $cats : [],
             'rating' => (float) $product->get_average_rating(),
             'rating_count' => (int) $product->get_rating_count(),

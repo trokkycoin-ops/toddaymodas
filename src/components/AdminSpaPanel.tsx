@@ -33,6 +33,7 @@ interface AdminSpaPanelProps {
   onUpdateSettings: (settings: PluginSettings) => void;
   onTestMercadoPago: (accessToken: string) => Promise<any>;
   onTestMelhorEnvio: (apiToken: string, environment: 'sandbox' | 'production') => Promise<any>;
+  onUploadMedia: (file: File) => Promise<{ id: number; url: string; type: 'image' | 'video' }>;
 }
 
 export function AdminSpaPanel({
@@ -47,6 +48,7 @@ export function AdminSpaPanel({
   onUpdateSettings,
   onTestMercadoPago,
   onTestMelhorEnvio,
+  onUploadMedia,
 }: AdminSpaPanelProps) {
   type AdminTab = 'dashboard' | 'orders' | 'products' | 'logs' | 'settings';
   const savedTab = typeof window !== 'undefined' ? window.localStorage.getItem('tdm_admin_tab') : null;
@@ -102,6 +104,7 @@ export function AdminSpaPanel({
   const [melhorEnvioTestMessage, setMelhorEnvioTestMessage] = useState<string | null>(null);
   const [savingProduct, setSavingProduct] = useState(false);
   const [productSaveMessage, setProductSaveMessage] = useState<string | null>(null);
+  const [uploadingMedia, setUploadingMedia] = useState(false);
 
   useEffect(() => {
     setLocalSettings(settings);
@@ -163,6 +166,29 @@ export function AdminSpaPanel({
       setProductSaveMessage(error?.message || 'Não foi possível salvar o produto.');
     } finally {
       setSavingProduct(false);
+    }
+  };
+
+  const handleMediaUpload = async (event: React.ChangeEvent<HTMLInputElement>, kind: 'cover' | 'gallery' | 'video') => {
+    const files = Array.from(event.target.files || []) as File[];
+    if (!files.length) return;
+    setUploadingMedia(true);
+    setProductSaveMessage(null);
+    try {
+      const uploaded = await Promise.all(files.map((file) => onUploadMedia(file)));
+      const images = uploaded.filter((item) => item.type === 'image');
+      const videos = uploaded.filter((item) => item.type === 'video');
+      setProductForm((current) => ({
+        ...current,
+        ...(kind === 'cover' && images[0] ? { image: images[0].url, image_id: images[0].id } : {}),
+        ...(kind === 'gallery' ? { gallery: [...(current.gallery || []), ...images.map((item) => item.url)], gallery_ids: [...(current.gallery_ids || []), ...images.map((item) => item.id)] } : {}),
+        ...(kind === 'video' && videos[0] ? { video: videos[0].url } : {}),
+      }));
+    } catch (error: any) {
+      setProductSaveMessage(error?.message || 'Não foi possível enviar a mídia.');
+    } finally {
+      setUploadingMedia(false);
+      event.target.value = '';
     }
   };
 
@@ -904,6 +930,17 @@ export function AdminSpaPanel({
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
+                  <label className="block font-bold text-gray-700 mb-1">Estoque disponível</label>
+                  <input type="number" min="0" step="1" required value={productForm.stock} onChange={(e) => setProductForm({ ...productForm, stock: Math.max(0, Number(e.target.value) || 0) })} className="w-full px-3 py-2 bg-[#FAF7FA] border border-[#EBDDF0] rounded-xl" />
+                </div>
+                <div>
+                  <label className="block font-bold text-gray-700 mb-1">SKU / Código</label>
+                  <input type="text" value={productForm.sku || ''} onChange={(e) => setProductForm({ ...productForm, sku: e.target.value })} placeholder="Ex: TDM-VEST-001" className="w-full px-3 py-2 bg-[#FAF7FA] border border-[#EBDDF0] rounded-xl font-mono" />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
                   <label className="block font-bold text-gray-700 mb-1">Categoria</label>
                   <select
                     value={productForm.category}
@@ -947,6 +984,24 @@ export function AdminSpaPanel({
                   className="w-full px-3 py-2 bg-[#FAF7FA] border border-[#EBDDF0] rounded-xl font-mono text-[11px]"
                 />
               </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 rounded-2xl border border-[#EBDDF0] bg-[#FAF7FA] p-3">
+                <label className="cursor-pointer rounded-xl border border-dashed border-[#846391] bg-white p-3 text-center font-bold text-[#6d5276]">
+                  <span className="block mb-1">Capa</span><span className="text-[10px] font-normal">JPG, PNG, WebP</span>
+                  <input type="file" accept="image/jpeg,image/png,image/webp,image/gif" className="hidden" onChange={(e) => handleMediaUpload(e, 'cover')} />
+                </label>
+                <label className="cursor-pointer rounded-xl border border-dashed border-[#846391] bg-white p-3 text-center font-bold text-[#6d5276]">
+                  <span className="block mb-1">Galeria</span><span className="text-[10px] font-normal">Várias imagens</span>
+                  <input type="file" multiple accept="image/jpeg,image/png,image/webp,image/gif" className="hidden" onChange={(e) => handleMediaUpload(e, 'gallery')} />
+                </label>
+                <label className="cursor-pointer rounded-xl border border-dashed border-[#846391] bg-white p-3 text-center font-bold text-[#6d5276]">
+                  <span className="block mb-1">Vídeo</span><span className="text-[10px] font-normal">MP4, WebM, MOV</span>
+                  <input type="file" accept="video/mp4,video/webm,video/quicktime" className="hidden" onChange={(e) => handleMediaUpload(e, 'video')} />
+                </label>
+              </div>
+              {uploadingMedia && <p className="text-[11px] font-bold text-[#846391]">Enviando mídia para a Biblioteca do WordPress...</p>}
+              {productForm.gallery?.length ? <div className="flex gap-2 overflow-x-auto">{productForm.gallery.map((url) => <img key={url} src={url} alt="Prévia da galeria" className="h-14 w-14 rounded-lg object-cover border border-[#EBDDF0]" />)}</div> : null}
+              {productForm.video && <video src={productForm.video} controls className="w-full max-h-40 rounded-xl bg-black" />}
 
               <div>
                 <label className="block font-bold text-gray-700 mb-1">Descrição</label>

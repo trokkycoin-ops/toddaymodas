@@ -248,6 +248,7 @@ export function App() {
             onUpdateSettings={panel.updateSettings}
             onTestMercadoPago={panel.testMercadoPago}
             onTestMelhorEnvio={panel.testMelhorEnvio}
+            onUploadMedia={panel.uploadProductMedia}
           />
         )}
         {mode === 'vendor' && <VendorSpaPanel orders={panel.orders} />}
@@ -322,6 +323,7 @@ export function App() {
             onUpdateSettings={handleUpdateSettings}
             onTestMercadoPago={panel.testMercadoPago}
             onTestMelhorEnvio={panel.testMelhorEnvio}
+            onUploadMedia={panel.uploadProductMedia}
           />
         )}
 

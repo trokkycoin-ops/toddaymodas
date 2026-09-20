@@ -109,6 +109,8 @@ export const StoreFront: React.FC<StoreFrontProps> = ({
                       selectedSizeFilter !== 'all' || 
                       searchQuery.trim().length > 0;
 
+  const latestProducts = useMemo(() => [...products].sort((a, b) => b.id - a.id).slice(0, 4), [products]);
+
   return (
     <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-8">
       {/* 1. Carrossel Automático de Banners de Moda (By Sophi Style) */}
@@ -123,6 +125,30 @@ export const StoreFront: React.FC<StoreFrontProps> = ({
 
       {/* 2. Barra de Vantagens e Confiança */}
       <TrustBar />
+
+      {!isFiltering && latestProducts.length > 0 && (
+        <section className="mb-10 sm:mb-14 rounded-3xl border border-[#EBDDF0] bg-[#271E2D] p-5 sm:p-7 text-white shadow-lg">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-5">
+            <div>
+              <span className="text-[10px] font-black uppercase tracking-[0.18em] text-[#DFBA5A]">Curadoria da semana</span>
+              <h2 className="mt-1 text-2xl sm:text-3xl font-black font-serif">Peças que acabaram de chegar</h2>
+              <p className="mt-1 text-xs text-[#DAC9DF]">Novidades selecionadas para você garimpar antes que desapareçam.</p>
+            </div>
+            <button type="button" onClick={() => scrollToSection('catalogo-filtro')} className="inline-flex items-center gap-2 self-start rounded-xl bg-[#DAC9DF] px-4 py-2.5 text-xs font-black text-[#271E2D]">
+              Ver catálogo <ArrowRight className="h-4 w-4" />
+            </button>
+          </div>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+            {latestProducts.map((product) => (
+              <button key={product.id} type="button" onClick={() => onSelectProduct(product)} className="overflow-hidden rounded-2xl border border-white/10 bg-white/10 text-left backdrop-blur-sm transition hover:-translate-y-1 hover:bg-white/15">
+                <img src={product.image} alt={product.name} className="aspect-[4/5] w-full object-cover" />
+                <span className="block truncate px-3 pt-2 text-xs font-bold">{product.name}</span>
+                <span className="block px-3 pb-3 pt-1 text-sm font-black text-[#DFBA5A]">R$ {product.price.toFixed(2).replace('.', ',')}</span>
+              </button>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* 3. Navegação Rápida por Círculos de Categorias (Estilo Boutique) */}
       <section className="mb-10 sm:mb-14">

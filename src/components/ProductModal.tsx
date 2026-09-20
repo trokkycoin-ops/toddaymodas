@@ -162,6 +162,13 @@ export function ProductModal({
               </div>
             )}
 
+            {product.video && (
+              <div className="rounded-2xl border border-[#EBDDF0] bg-[#FAF7FA] p-2">
+                <p className="px-2 pb-2 text-[11px] font-black uppercase tracking-wider text-[#846391]">Vídeo da peça</p>
+                <video src={product.video} controls playsInline preload="metadata" className="w-full rounded-xl bg-black" />
+              </div>
+            )}
+
             {/* Trust highlights */}
             <div className="grid grid-cols-2 gap-2.5 pt-2">
               <div className="flex items-center gap-2 p-2.5 rounded-xl bg-[#FAF7FA] border border-[#EBDDF0]/70 text-xs text-gray-700">

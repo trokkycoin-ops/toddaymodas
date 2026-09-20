@@ -20,6 +20,7 @@ class RestController {
         ReportsController::register_routes();
         ReviewsController::register_routes();
         SettingsController::register_routes();
+        MediaController::register_routes();
         LogsController::register_routes();
         WebhooksController::register_routes();
     }

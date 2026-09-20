@@ -80,6 +80,7 @@ class ProductsController {
                     'in_stock' => $p->is_in_stock(),
                     'condition' => get_post_meta($p->get_id(), '_todday_condition', true) ?: 'Estado de Novo',
                     'image' => $p->get_image_id() ? wp_get_attachment_url($p->get_image_id()) : (get_post_meta($p->get_id(), '_todday_image_url', true) ?: ''),
+                    'video' => get_post_meta($p->get_id(), '_todday_video_url', true) ?: '',
                 ];
             }
         }
@@ -204,6 +205,19 @@ class ProductsController {
 
         $id = $product->get_id();
 
+        $image_id = absint($data['image_id'] ?? 0);
+        if ($image_id > 0 && get_post_type($image_id) === 'attachment') {
+            $product->set_image_id($image_id);
+        }
+
+        $gallery_ids = array_values(array_filter(array_map('absint', (array) ($data['gallery_ids'] ?? []))));
+        if ($gallery_ids) {
+            $product->set_gallery_image_ids($gallery_ids);
+        }
+        if ($image_id > 0 || $gallery_ids) {
+            $product->save();
+        }
+
         // Categoria (cria se não existir)
         $category = sanitize_text_field($data['category'] ?? '');
         if ($category !== '') {
@@ -225,6 +239,7 @@ class ProductsController {
             '_todday_brand' => sanitize_text_field($data['brand'] ?? ''),
             '_todday_fabric' => sanitize_text_field($data['fabric'] ?? ''),
             '_todday_image_url' => esc_url_raw($data['image'] ?? ''),
+            '_todday_video_url' => esc_url_raw($data['video_url'] ?? ''),
             '_todday_available_sizes' => wp_json_encode(array_map('sanitize_text_field', (array) ($data['available_sizes'] ?? []))),
             '_todday_colors' => wp_json_encode($data['available_colors'] ?? []),
             '_todday_measurements' => wp_json_encode($data['measurements'] ?? []),

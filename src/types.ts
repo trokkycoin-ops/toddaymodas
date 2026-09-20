@@ -21,6 +21,7 @@ export interface Product {
   slug: string;
   price: number;
   regular_price?: number;
+  sku?: string;
   category: string;
   condition: ThriftCondition;
   size: string;
@@ -40,6 +41,9 @@ export interface Product {
   detailed_measurements?: DetailedMeasurements;
   image: string;
   gallery?: string[];
+  video?: string;
+  image_id?: number;
+  gallery_ids?: number[];
   rating: number;
   review_count: number;
   stock: number;
