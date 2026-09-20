@@ -614,6 +614,7 @@ export function AdminSpaPanel({
               </div>
               <div>
                 <label className="block text-gray-700 font-bold mb-1">Token de Acesso (Access Token)</label>
+                {localSettings.mercadopago.has_access_token && !localSettings.mercadopago.access_token && <p className="mb-1 text-[11px] font-bold text-emerald-700">Credencial salva com segurança. Deixe vazio para reutilizá-la.</p>}
                 <input
                   type="password"
                   value={localSettings.mercadopago.access_token}
@@ -637,7 +638,7 @@ export function AdminSpaPanel({
                 />
               </div>
             </div>
-            <button type="button" onClick={handleTestMercadoPago} disabled={testingMercadoPago || !localSettings.mercadopago.access_token} className="inline-flex items-center gap-2 rounded-xl bg-[#271E2D] px-4 py-2.5 text-xs font-black text-white disabled:cursor-not-allowed disabled:opacity-50">
+            <button type="button" onClick={handleTestMercadoPago} disabled={testingMercadoPago || (!localSettings.mercadopago.access_token && !localSettings.mercadopago.has_access_token)} className="inline-flex items-center gap-2 rounded-xl bg-[#271E2D] px-4 py-2.5 text-xs font-black text-white disabled:cursor-not-allowed disabled:opacity-50">
               {testingMercadoPago ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <Check className="h-4 w-4" />}
               {testingMercadoPago ? 'Testando conexão...' : 'Testar e ativar Mercado Pago'}
             </button>
@@ -684,6 +685,7 @@ export function AdminSpaPanel({
               </div>
               <div>
                 <label className="block text-gray-700 font-bold mb-1">Token de Acesso</label>
+                {localSettings.melhorenvio.has_token && !localSettings.melhorenvio.api_token && <p className="mb-1 text-[11px] font-bold text-emerald-700">Credencial salva com segurança. Deixe vazio para reutilizá-la.</p>}
                 <input
                   type="password"
                   value={localSettings.melhorenvio.api_token}
@@ -725,7 +727,7 @@ export function AdminSpaPanel({
                 />
               </div>
             </div>
-            <button type="button" onClick={handleTestMelhorEnvio} disabled={testingMelhorEnvio || !localSettings.melhorenvio.api_token} className="inline-flex items-center gap-2 rounded-xl bg-[#271E2D] px-4 py-2.5 text-xs font-black text-white disabled:cursor-not-allowed disabled:opacity-50">
+            <button type="button" onClick={handleTestMelhorEnvio} disabled={testingMelhorEnvio || (!localSettings.melhorenvio.api_token && !localSettings.melhorenvio.has_token)} className="inline-flex items-center gap-2 rounded-xl bg-[#271E2D] px-4 py-2.5 text-xs font-black text-white disabled:cursor-not-allowed disabled:opacity-50">
               {testingMelhorEnvio ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <Check className="h-4 w-4" />}
               {testingMelhorEnvio ? 'Testando conexão...' : 'Testar e ativar Melhor Envio'}
             </button>

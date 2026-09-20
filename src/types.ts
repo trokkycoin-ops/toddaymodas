@@ -120,6 +120,7 @@ export interface PluginSettings {
     environment: 'sandbox' | 'production';
     public_key: string;
     access_token: string;
+    has_access_token?: boolean;
     webhook_secret: string;
   };
   melhorenvio: {
@@ -128,6 +129,7 @@ export interface PluginSettings {
     sender_cep: string;
     fallback_flat_rate: number;
     api_token: string;
+    has_token?: boolean;
   };
   whatsapp: {
     enabled: boolean;

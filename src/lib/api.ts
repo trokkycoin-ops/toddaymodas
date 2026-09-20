@@ -176,6 +176,7 @@ export function toSettings(s: any): PluginSettings {
       environment: mp.environment === 'production' ? 'production' : 'sandbox',
       public_key: mp.public_key || '',
       access_token: '',
+      has_access_token: !!mp.has_access_token,
       webhook_secret: mp.webhook_secret || '',
     },
     melhorenvio: {
@@ -184,6 +185,7 @@ export function toSettings(s: any): PluginSettings {
       sender_cep: me.sender_cep || '',
       fallback_flat_rate: Number(me.fallback_flat_rate || 0),
       api_token: '',
+      has_token: !!me.has_token,
     },
     whatsapp: {
       enabled: yes(wa.enabled),

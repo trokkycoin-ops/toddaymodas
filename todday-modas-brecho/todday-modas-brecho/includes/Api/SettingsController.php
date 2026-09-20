@@ -156,7 +156,9 @@ class SettingsController {
         if ($result['success']) {
             $settings = get_option('todday_settings_mercadopago', []);
             $settings['enabled'] = 'yes';
-            $settings['access_token'] = Security::encrypt_secret($token);
+            if ($token !== '') {
+                $settings['access_token'] = Security::encrypt_secret($token);
+            }
             update_option('todday_settings_mercadopago', $settings);
         }
 
@@ -174,7 +176,9 @@ class SettingsController {
             $settings = get_option('todday_settings_melhorenvio', []);
             $settings['enabled'] = 'yes';
             $settings['environment'] = $environment;
-            $settings['api_token'] = Security::encrypt_secret($token);
+            if ($token !== '') {
+                $settings['api_token'] = Security::encrypt_secret($token);
+            }
             update_option('todday_settings_melhorenvio', $settings);
         }
 
