@@ -124,8 +124,9 @@ export function usePanelData(mode: AppMode) {
 
   const updateProduct = useCallback(
     async (product: Product) => {
-      await api('/products', { method: 'POST', body: productPayload(product) });
+      const result = await api('/products', { method: 'POST', body: productPayload(product) });
       await load();
+      return result;
     },
     [load]
   );

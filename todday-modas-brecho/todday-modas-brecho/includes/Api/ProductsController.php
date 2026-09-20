@@ -146,11 +146,13 @@ class ProductsController {
             return (float) str_replace(',', '.', (string) $value);
         };
 
-        // Preços nunca negativos; promoção nunca acima do preço normal.
+        // O campo "Preço Venda" é o preço final; o preço original só vira
+        // preço normal quando for maior que o preço final.
         $price = max(0.0, $parse_price($data['price'] ?? 0));
-        $regular = isset($data['regular_price']) && $data['regular_price'] !== ''
-            ? max($price, $parse_price($data['regular_price']))
-            : 0;
+        $regular_input = isset($data['regular_price']) && $data['regular_price'] !== ''
+            ? max(0.0, $parse_price($data['regular_price']))
+            : 0.0;
+        $regular = $regular_input > $price ? $regular_input : $price;
 
         $sku = sanitize_text_field($data['sku'] ?? '');
         if ($sku !== '') {
@@ -190,6 +192,8 @@ class ProductsController {
         }
 
         try {
+            $product->set_regular_price((string) $regular);
+            $product->set_sale_price($regular_input > $price ? (string) $price : '');
             $product->save();
         } catch (\Throwable $e) {
             return new WP_REST_Response(['success' => false, 'message' => 'Falha ao salvar produto: ' . $e->getMessage()], 500);
@@ -228,7 +232,15 @@ class ProductsController {
 
         ActivityLogRepository::log('product_saved', 'product', (string) $id, ['name' => $name]);
 
-        return new WP_REST_Response(['success' => true, 'data' => ['id' => $id]]);
+        return new WP_REST_Response([
+            'success' => true,
+            'data' => [
+                'id' => $id,
+                'price' => (float) $product->get_price(),
+                'regular_price' => (float) $product->get_regular_price(),
+                'sale_price' => (float) $product->get_sale_price(),
+            ],
+        ]);
     }
 
     public static function delete_product(WP_REST_Request $request): WP_REST_Response {

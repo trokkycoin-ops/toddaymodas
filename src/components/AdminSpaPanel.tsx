@@ -28,7 +28,7 @@ interface AdminSpaPanelProps {
   settings: PluginSettings;
   onUpdateOrderStatus: (orderId: number, status: Order['status'], trackingCode?: string) => void;
   onAddProduct: (product: Omit<Product, 'id'>) => void;
-  onUpdateProduct: (product: Product) => void;
+  onUpdateProduct: (product: Product) => Promise<any>;
   onDeleteProduct: (productId: number) => void;
   onUpdateSettings: (settings: PluginSettings) => void;
   onTestMercadoPago: (accessToken: string) => Promise<any>;
@@ -100,6 +100,8 @@ export function AdminSpaPanel({
   const [mercadoPagoTestMessage, setMercadoPagoTestMessage] = useState<string | null>(null);
   const [testingMelhorEnvio, setTestingMelhorEnvio] = useState(false);
   const [melhorEnvioTestMessage, setMelhorEnvioTestMessage] = useState<string | null>(null);
+  const [savingProduct, setSavingProduct] = useState(false);
+  const [productSaveMessage, setProductSaveMessage] = useState<string | null>(null);
 
   useEffect(() => {
     setLocalSettings(settings);
@@ -145,14 +147,22 @@ export function AdminSpaPanel({
     }
   };
 
-  const handleSaveProduct = (e: React.FormEvent) => {
+  const handleSaveProduct = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (editingProduct) {
-      onUpdateProduct({ ...productForm, id: editingProduct.id });
-      setEditingProduct(null);
-    } else {
-      onAddProduct(productForm);
+    setSavingProduct(true);
+    setProductSaveMessage(null);
+    try {
+      if (editingProduct) {
+        await onUpdateProduct({ ...productForm, id: editingProduct.id });
+        setEditingProduct(null);
+      } else {
+        await onAddProduct(productForm);
+      }
       setIsAddProductOpen(false);
+    } catch (error: any) {
+      setProductSaveMessage(error?.message || 'Não foi possível salvar o produto.');
+    } finally {
+      setSavingProduct(false);
     }
   };
 
@@ -851,6 +861,7 @@ export function AdminSpaPanel({
             </div>
 
             <form onSubmit={handleSaveProduct} className="space-y-3.5 text-xs">
+              {productSaveMessage && <div className="rounded-xl border border-red-200 bg-red-50 px-3 py-2 font-bold text-red-700">{productSaveMessage}</div>}
               <div>
                 <label className="block font-bold text-gray-700 mb-1">Título da Peça</label>
                 <input
@@ -957,9 +968,10 @@ export function AdminSpaPanel({
                 </button>
                 <button
                   type="submit"
+                  disabled={savingProduct}
                   className="px-4 py-2 bg-[#271E2D] text-white rounded-xl text-xs font-bold hover:bg-[#382343]"
                 >
-                  Salvar Peça
+                  {savingProduct ? 'Salvando...' : 'Salvar Peça'}
                 </button>
               </div>
             </form>

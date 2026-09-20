@@ -201,7 +201,7 @@ export function App() {
     showToast(`Produto "${fullProduct.name}" cadastrado com sucesso!`);
   };
 
-  const handleUpdateProduct = (updatedProduct: Product) => {
+  const handleUpdateProduct = async (updatedProduct: Product) => {
     setProducts((prev) => prev.map((p) => (p.id === updatedProduct.id ? updatedProduct : p)));
     showToast(`Produto "${updatedProduct.name}" atualizado com sucesso!`);
   };
