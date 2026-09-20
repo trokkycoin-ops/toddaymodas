@@ -247,6 +247,7 @@ export function App() {
             onDeleteProduct={panel.deleteProduct}
             onUpdateSettings={panel.updateSettings}
             onTestMercadoPago={panel.testMercadoPago}
+            onTestMelhorEnvio={panel.testMelhorEnvio}
           />
         )}
         {mode === 'vendor' && <VendorSpaPanel orders={panel.orders} />}
@@ -320,6 +321,7 @@ export function App() {
             onDeleteProduct={handleDeleteProduct}
             onUpdateSettings={handleUpdateSettings}
             onTestMercadoPago={panel.testMercadoPago}
+            onTestMelhorEnvio={panel.testMelhorEnvio}
           />
         )}
 

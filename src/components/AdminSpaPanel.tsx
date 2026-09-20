@@ -32,6 +32,7 @@ interface AdminSpaPanelProps {
   onDeleteProduct: (productId: number) => void;
   onUpdateSettings: (settings: PluginSettings) => void;
   onTestMercadoPago: (accessToken: string) => Promise<any>;
+  onTestMelhorEnvio: (apiToken: string, environment: 'sandbox' | 'production') => Promise<any>;
 }
 
 export function AdminSpaPanel({
@@ -45,6 +46,7 @@ export function AdminSpaPanel({
   onDeleteProduct,
   onUpdateSettings,
   onTestMercadoPago,
+  onTestMelhorEnvio,
 }: AdminSpaPanelProps) {
   const [currentTab, setCurrentTab] = useState<'dashboard' | 'orders' | 'products' | 'logs' | 'settings'>('dashboard');
 
@@ -83,6 +85,8 @@ export function AdminSpaPanel({
   const [savedSettingsSuccess, setSavedSettingsSuccess] = useState(false);
   const [testingMercadoPago, setTestingMercadoPago] = useState(false);
   const [mercadoPagoTestMessage, setMercadoPagoTestMessage] = useState<string | null>(null);
+  const [testingMelhorEnvio, setTestingMelhorEnvio] = useState(false);
+  const [melhorEnvioTestMessage, setMelhorEnvioTestMessage] = useState<string | null>(null);
 
   // KPIs
   const totalRevenue = orders.reduce((sum, o) => sum + (o.status !== 'cancelled' ? o.total : 0), 0);
@@ -107,6 +111,20 @@ export function AdminSpaPanel({
       setMercadoPagoTestMessage(error?.message || 'Não foi possível conectar ao Mercado Pago.');
     } finally {
       setTestingMercadoPago(false);
+    }
+  };
+
+  const handleTestMelhorEnvio = async () => {
+    setTestingMelhorEnvio(true);
+    setMelhorEnvioTestMessage(null);
+    try {
+      const result = await onTestMelhorEnvio(localSettings.melhorenvio.api_token, localSettings.melhorenvio.environment);
+      setLocalSettings((current) => ({ ...current, melhorenvio: { ...current.melhorenvio, enabled: true } }));
+      setMelhorEnvioTestMessage(result.message || 'Melhor Envio conectado e ativado.');
+    } catch (error: any) {
+      setMelhorEnvioTestMessage(error?.message || 'Não foi possível conectar ao Melhor Envio.');
+    } finally {
+      setTestingMelhorEnvio(false);
     }
   };
 
@@ -647,7 +665,33 @@ export function AdminSpaPanel({
                 <span>Habilitado</span>
               </label>
             </div>
+            {melhorEnvioTestMessage && (
+              <div className={`rounded-xl border px-3 py-2 text-xs font-bold ${melhorEnvioTestMessage.includes('sucesso') || melhorEnvioTestMessage.includes('ativado') ? 'border-emerald-200 bg-emerald-50 text-emerald-800' : 'border-red-200 bg-red-50 text-red-700'}`}>
+                {melhorEnvioTestMessage}
+              </div>
+            )}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+              <div>
+                <label className="block text-gray-700 font-bold mb-1">Ambiente</label>
+                <select
+                  value={localSettings.melhorenvio.environment}
+                  onChange={(e) => setLocalSettings({ ...localSettings, melhorenvio: { ...localSettings.melhorenvio, environment: e.target.value as 'sandbox' | 'production' } })}
+                  className="w-full px-3 py-2 bg-[#FAF7FA] border border-[#EBDDF0] rounded-xl text-xs"
+                >
+                  <option value="sandbox">Sandbox / testes</option>
+                  <option value="production">Produção</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-gray-700 font-bold mb-1">Token de Acesso</label>
+                <input
+                  type="password"
+                  value={localSettings.melhorenvio.api_token}
+                  onChange={(e) => setLocalSettings({ ...localSettings, melhorenvio: { ...localSettings.melhorenvio, api_token: e.target.value } })}
+                  placeholder="Cole o token do Melhor Envio"
+                  className="w-full px-3 py-2 bg-[#FAF7FA] border border-[#EBDDF0] rounded-xl font-mono text-[11px]"
+                />
+              </div>
               <div>
                 <label className="block text-gray-700 font-bold mb-1">CEP de Origem da Loja</label>
                 <input
@@ -681,6 +725,10 @@ export function AdminSpaPanel({
                 />
               </div>
             </div>
+            <button type="button" onClick={handleTestMelhorEnvio} disabled={testingMelhorEnvio || !localSettings.melhorenvio.api_token} className="inline-flex items-center gap-2 rounded-xl bg-[#271E2D] px-4 py-2.5 text-xs font-black text-white disabled:cursor-not-allowed disabled:opacity-50">
+              {testingMelhorEnvio ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <Check className="h-4 w-4" />}
+              {testingMelhorEnvio ? 'Testando conexão...' : 'Testar e ativar Melhor Envio'}
+            </button>
           </div>
 
           <div className="flex justify-end">

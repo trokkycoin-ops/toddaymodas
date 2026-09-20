@@ -8,6 +8,46 @@ if (!defined('ABSPATH')) {
 use ToddayModasBrecho\Security\Security;
 
 class MelhorEnvio {
+    public static function test_connection(string $api_token = '', string $environment = 'sandbox'): array {
+        if ($api_token === '') {
+            $settings = get_option('todday_settings_melhorenvio', []);
+            $api_token = Security::decrypt_secret($settings['api_token'] ?? '');
+            $environment = $settings['environment'] ?? $environment;
+        }
+
+        if ($api_token === '') {
+            return ['success' => false, 'message' => 'Informe o token do Melhor Envio.'];
+        }
+
+        $endpoint = $environment === 'production'
+            ? 'https://melhorenvio.com.br/api/v2/me'
+            : 'https://sandbox.melhorenvio.com.br/api/v2/me';
+        $response = wp_remote_get($endpoint, [
+            'timeout' => 10,
+            'headers' => [
+                'Accept' => 'application/json',
+                'Authorization' => 'Bearer ' . $api_token,
+                'User-Agent' => 'ToddayModasBrecho/' . TODDAY_MODAS_VERSION . ' (contato@tselak.com.br)',
+            ],
+        ]);
+
+        if (is_wp_error($response)) {
+            return ['success' => false, 'message' => 'Não foi possível conectar ao Melhor Envio: ' . $response->get_error_message()];
+        }
+
+        $status_code = wp_remote_retrieve_response_code($response);
+        $data = json_decode(wp_remote_retrieve_body($response), true);
+        if ($status_code >= 400 || !is_array($data)) {
+            return ['success' => false, 'message' => $data['message'] ?? 'Token do Melhor Envio inválido ou recusado.'];
+        }
+
+        return [
+            'success' => true,
+            'message' => 'Melhor Envio conectado com sucesso.',
+            'data' => ['name' => sanitize_text_field($data['name'] ?? $data['user']['name'] ?? '')],
+        ];
+    }
+
     public static function calculate_shipping(string $destination_cep, array $items = []): array {
         $settings = get_option('todday_settings_melhorenvio', []);
         $enabled = ($settings['enabled'] ?? 'no') === 'yes';

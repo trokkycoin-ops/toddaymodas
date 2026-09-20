@@ -10,6 +10,7 @@ use WP_REST_Response;
 use ToddayModasBrecho\Security\Security;
 use ToddayModasBrecho\Database\ActivityLogRepository;
 use ToddayModasBrecho\Integrations\MercadoPago;
+use ToddayModasBrecho\Integrations\MelhorEnvio;
 
 class SettingsController {
     public static function register_routes(): void {
@@ -35,6 +36,12 @@ class SettingsController {
         register_rest_route(RestController::NAMESPACE, '/settings/test-mercadopago', [
             'methods' => 'POST',
             'callback' => [self::class, 'test_mercadopago'],
+            'permission_callback' => [self::class, 'check_admin_permission'],
+        ]);
+
+        register_rest_route(RestController::NAMESPACE, '/settings/test-melhorenvio', [
+            'methods' => 'POST',
+            'callback' => [self::class, 'test_melhorenvio'],
             'permission_callback' => [self::class, 'check_admin_permission'],
         ]);
     }
@@ -151,6 +158,24 @@ class SettingsController {
             $settings['enabled'] = 'yes';
             $settings['access_token'] = Security::encrypt_secret($token);
             update_option('todday_settings_mercadopago', $settings);
+        }
+
+        return new WP_REST_Response($result, $result['success'] ? 200 : 400);
+    }
+
+    public static function test_melhorenvio(WP_REST_Request $request): WP_REST_Response {
+        $params = $request->get_json_params() ?: $request->get_params();
+        $token = sanitize_text_field($params['api_token'] ?? '');
+        $environment = sanitize_text_field($params['environment'] ?? 'sandbox');
+        $environment = $environment === 'production' ? 'production' : 'sandbox';
+        $result = MelhorEnvio::test_connection($token, $environment);
+
+        if ($result['success']) {
+            $settings = get_option('todday_settings_melhorenvio', []);
+            $settings['enabled'] = 'yes';
+            $settings['environment'] = $environment;
+            $settings['api_token'] = Security::encrypt_secret($token);
+            update_option('todday_settings_melhorenvio', $settings);
         }
 
         return new WP_REST_Response($result, $result['success'] ? 200 : 400);

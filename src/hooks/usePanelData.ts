@@ -162,6 +162,15 @@ export function usePanelData(mode: AppMode) {
     return result;
   }, [load]);
 
+  const testMelhorEnvio = useCallback(async (apiToken: string, environment: 'sandbox' | 'production') => {
+    const result = await api('/settings/test-melhorenvio', {
+      method: 'POST',
+      body: { api_token: apiToken, environment },
+    });
+    await load();
+    return result;
+  }, [load]);
+
   return {
     orders,
     products,
@@ -176,5 +185,6 @@ export function usePanelData(mode: AppMode) {
     deleteProduct,
     updateSettings,
     testMercadoPago,
+    testMelhorEnvio,
   };
 }
