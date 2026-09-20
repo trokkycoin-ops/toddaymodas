@@ -25,9 +25,12 @@ import { Logo } from './Logo';
 
 interface CustomerSpaPanelProps {
   orders: Order[];
+  loading?: boolean;
+  error?: string | null;
+  onRefresh?: () => void;
 }
 
-export const CustomerSpaPanel: React.FC<CustomerSpaPanelProps> = ({ orders }) => {
+export const CustomerSpaPanel: React.FC<CustomerSpaPanelProps> = ({ orders, loading = false, error = null, onRefresh }) => {
   const [filterStatus, setFilterStatus] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
@@ -98,6 +101,10 @@ export const CustomerSpaPanel: React.FC<CustomerSpaPanelProps> = ({ orders }) =>
     return orders.reduce((acc, o) => acc + o.items.reduce((sum, i) => sum + i.quantity, 0), 0);
   }, [orders]);
 
+  const pendingPaymentCount = orders.filter((order) => order.payment_status === 'pending' || order.status === 'pending').length;
+  const activeOrderCount = orders.filter((order) => ['processing', 'shipped'].includes(order.status)).length;
+  const deliveredOrderCount = orders.filter((order) => order.status === 'completed').length;
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
       {/* ============================================================ */}
@@ -126,6 +133,14 @@ export const CustomerSpaPanel: React.FC<CustomerSpaPanelProps> = ({ orders }) =>
             <p className="text-xs sm:text-sm text-purple-200/90 leading-relaxed font-sans">
               Acompanhe suas compras em tempo real, baixe recibos oficiais com a marca d'água da loja e avalie suas peças especiais com facilidade.
             </p>
+            <div className="mt-5 flex flex-wrap items-center gap-2 text-[11px] font-bold text-purple-100/80">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/10 px-3 py-1.5">
+                <ShieldCheck className="h-3.5 w-3.5 text-[#DAC9DF]" /> Compra protegida
+              </span>
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/10 px-3 py-1.5">
+                <Truck className="h-3.5 w-3.5 text-[#DFBA5A]" /> Rastreio atualizado
+              </span>
+            </div>
           </div>
 
           {/* Cards de Métricas da Cliente */}
@@ -159,6 +174,27 @@ export const CustomerSpaPanel: React.FC<CustomerSpaPanelProps> = ({ orders }) =>
           </div>
         </div>
       </div>
+
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
+        {[
+          { label: 'Aguardando pagamento', value: pendingPaymentCount, tone: 'text-amber-700 bg-amber-50 border-amber-100' },
+          { label: 'Em andamento', value: activeOrderCount, tone: 'text-blue-700 bg-blue-50 border-blue-100' },
+          { label: 'Entregues', value: deliveredOrderCount, tone: 'text-emerald-700 bg-emerald-50 border-emerald-100' },
+          { label: 'Itens comprados', value: totalItemsCount, tone: 'text-[#6d5276] bg-[#FAF7FA] border-[#EBDDF0]' },
+        ].map((metric) => (
+          <div key={metric.label} className={`rounded-2xl border px-4 py-3 ${metric.tone}`}>
+            <span className="block text-xl font-black">{metric.value}</span>
+            <span className="text-[11px] font-bold opacity-80">{metric.label}</span>
+          </div>
+        ))}
+      </div>
+
+      {error && (
+        <div className="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-xs font-bold text-red-700">
+          <span>{error}</span>
+          {onRefresh && <button onClick={onRefresh} className="rounded-xl bg-white px-3 py-2 text-red-700 shadow-2xs">Tentar novamente</button>}
+        </div>
+      )}
 
       {/* ============================================================ */}
       {/* 2. BARRA DE BUSCA E FILTROS DE STATUS                        */}
@@ -203,7 +239,12 @@ export const CustomerSpaPanel: React.FC<CustomerSpaPanelProps> = ({ orders }) =>
       {/* 3. LISTAGEM DE PEDIDOS DA CLIENTE                            */}
       {/* ============================================================ */}
       <div className="space-y-6">
-        {filteredOrders.length === 0 ? (
+        {loading ? (
+          <div className="bg-white rounded-3xl border border-[#EBDDF0] p-12 text-center">
+            <div className="mx-auto mb-4 h-9 w-9 animate-spin rounded-full border-4 border-[#EBDDF0] border-t-[#846391]" />
+            <p className="text-sm font-bold text-[#271E2D]">Carregando seus pedidos...</p>
+          </div>
+        ) : filteredOrders.length === 0 ? (
           <div className="bg-white rounded-3xl border border-dashed border-[#DAC9DF] p-10 sm:p-16 text-center">
             <div className="w-16 h-16 rounded-full bg-[#FAF7FA] border border-[#EBDDF0] flex items-center justify-center mx-auto mb-4 text-[#846391]">
               <Package className="w-8 h-8" />

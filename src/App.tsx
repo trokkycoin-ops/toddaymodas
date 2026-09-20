@@ -249,7 +249,14 @@ export function App() {
           />
         )}
         {mode === 'vendor' && <VendorSpaPanel orders={panel.orders} />}
-        {mode === 'customer' && <CustomerSpaPanel orders={panel.orders} />}
+        {mode === 'customer' && (
+          <CustomerSpaPanel
+            orders={panel.orders}
+            loading={panel.loading}
+            error={panel.error}
+            onRefresh={panel.reload}
+          />
+        )}
         {mode === 'download' && <PluginDownloader />}
         {mode === 'docs' && <DocsViewer />}
       </div>
