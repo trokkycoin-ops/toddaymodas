@@ -8,6 +8,7 @@ import { OrderSuccessModal } from './components/OrderSuccessModal';
 import { AdminSpaPanel } from './components/AdminSpaPanel';
 import { VendorSpaPanel } from './components/VendorSpaPanel';
 import { CustomerSpaPanel } from './components/CustomerSpaPanel';
+import { CustomerAuthPanel } from './components/CustomerAuthPanel';
 import { PluginDownloader } from './components/PluginDownloader';
 import { DocsViewer } from './components/DocsViewer';
 import { FooterLuxury } from './components/FooterLuxury';
@@ -260,6 +261,7 @@ export function App() {
             onRefresh={panel.reload}
           />
         )}
+        {mode === 'customer-auth' && <CustomerAuthPanel />}
         {mode === 'download' && <PluginDownloader />}
         {mode === 'docs' && <DocsViewer />}
       </div>

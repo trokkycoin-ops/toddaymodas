@@ -42,7 +42,8 @@ class AuthController {
     }
 
     public static function login(WP_REST_Request $request): WP_REST_Response {
-        $username = sanitize_user($request->get_param('username') ?? '');
+        $raw_username = sanitize_text_field($request->get_param('username') ?? '');
+        $username = is_email($raw_username) ? sanitize_email($raw_username) : sanitize_user($raw_username);
         $password = (string) ($request->get_param('password') ?? '');
 
         if (empty($username) || empty($password)) {

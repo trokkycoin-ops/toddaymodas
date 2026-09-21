@@ -9,10 +9,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-if (!is_user_logged_in()) {
-    wp_safe_redirect(wp_login_url(home_url('/todday-cliente/')));
-    exit;
-}
+$app_mode = is_user_logged_in() ? 'customer' : 'customer-auth';
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -23,14 +20,14 @@ if (!is_user_logged_in()) {
     <title>Minha Conta — Todday Modas Brechó</title>
     <link rel="stylesheet" href="<?php echo esc_url(TODDAY_MODAS_URL . 'assets/react/index.css?v=' . TODDAY_MODAS_VERSION); ?>">
     <script>
-    window.tdmAppMode = 'customer';
+    window.tdmAppMode = <?php echo wp_json_encode($app_mode); ?>;
     window.tdmConfig = {
         restUrl: <?php echo wp_json_encode(esc_url_raw(rest_url('todday/v1'))); ?>,
         nonce: <?php echo wp_json_encode(wp_create_nonce('wp_rest')); ?>,
         ajaxUrl: <?php echo wp_json_encode(admin_url('admin-ajax.php')); ?>,
         ajaxNonce: <?php echo wp_json_encode(wp_create_nonce('tdm_ajax_nonce')); ?>,
         currency: 'R$',
-        isLoggedIn: true,
+        isLoggedIn: <?php echo is_user_logged_in() ? 'true' : 'false'; ?>,
         homeUrl: <?php echo wp_json_encode(home_url('/')); ?>
     };
     </script>

@@ -1,6 +1,6 @@
 import { Order, Product, ActivityLog, PluginSettings } from '../types';
 
-export type AppMode = 'store' | 'admin' | 'vendor' | 'customer' | 'download' | 'docs';
+export type AppMode = 'store' | 'admin' | 'vendor' | 'customer' | 'customer-auth' | 'download' | 'docs';
 
 export interface TdmConfig {
   restUrl: string;
