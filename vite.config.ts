@@ -11,6 +11,14 @@ export default defineConfig(() => {
         '@': path.resolve(__dirname, '.'),
       },
     },
+    optimizeDeps: {
+      exclude: ['@google/genai'],
+    },
+    build: {
+      rollupOptions: {
+        external: ['@google/genai'],
+      },
+    },
     server: {
       host: '0.0.0.0',
       port: 3000,
