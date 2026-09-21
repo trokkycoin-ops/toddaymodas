@@ -125,16 +125,16 @@ export const CustomerSpaPanel: React.FC<CustomerSpaPanelProps> = ({ orders, load
               >
                 Área da Cliente
               </span>
-              <span className="text-xs text-purple-200/70 hidden sm:inline">• Todday Modas Brechó</span>
+              <span className="text-xs text-[#dac9df]/80 hidden sm:inline">• Todday Modas Brechó</span>
             </div>
 
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-black font-serif tracking-tight text-white mb-2">
               Meus Pedidos & Peças
             </h1>
-            <p className="text-xs sm:text-sm text-purple-200/90 leading-relaxed font-sans">
+            <p className="text-xs sm:text-sm text-[#dac9df]/85 leading-relaxed font-sans">
               Acompanhe suas compras em tempo real, baixe recibos oficiais com a marca d'água da loja e avalie suas peças especiais com facilidade.
             </p>
-            <div className="mt-5 flex flex-wrap items-center gap-2 text-[11px] font-bold text-purple-100/80">
+            <div className="mt-5 flex flex-wrap items-center gap-2 text-[11px] font-bold text-[#dac9df]/85">
               <span className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/10 px-3 py-1.5">
                 <ShieldCheck className="h-3.5 w-3.5 text-[#DAC9DF]" /> Compra protegida
               </span>
@@ -150,7 +150,7 @@ export const CustomerSpaPanel: React.FC<CustomerSpaPanelProps> = ({ orders, load
               <span className="block text-lg sm:text-2xl font-black font-serif text-[#DAC9DF]">
                 {orders.length}
               </span>
-              <span className="text-[10px] sm:text-[11px] text-purple-200/80 font-medium leading-tight">
+              <span className="text-[10px] sm:text-[11px] text-[#dac9df]/80 font-medium leading-tight">
                 Pedidos Feitos
               </span>
             </div>
@@ -159,7 +159,7 @@ export const CustomerSpaPanel: React.FC<CustomerSpaPanelProps> = ({ orders, load
               <span className="block text-lg sm:text-2xl font-black font-serif text-[#DFBA5A]">
                 {totalItemsCount}
               </span>
-              <span className="text-[10px] sm:text-[11px] text-purple-200/80 font-medium leading-tight">
+              <span className="text-[10px] sm:text-[11px] text-[#dac9df]/80 font-medium leading-tight">
                 Peças Especiais
               </span>
             </div>
@@ -168,7 +168,7 @@ export const CustomerSpaPanel: React.FC<CustomerSpaPanelProps> = ({ orders, load
               <span className="block text-xs sm:text-sm font-black font-serif text-white pt-1">
                 R$ {totalSpent.toFixed(2).replace('.', ',')}
               </span>
-              <span className="text-[10px] sm:text-[11px] text-purple-200/80 font-medium leading-tight">
+              <span className="text-[10px] sm:text-[11px] text-[#dac9df]/80 font-medium leading-tight">
                 Total em Compras
               </span>
             </div>

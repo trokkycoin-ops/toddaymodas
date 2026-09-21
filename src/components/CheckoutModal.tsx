@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Logo } from './Logo';
 import { getConfig } from '../lib/api';
 import { CountdownTimer } from './CountdownTimer';
-import { X, CheckCircle2, QrCode, CreditCard, Truck, ShieldCheck, MapPin, Search, Loader2, AlertCircle } from 'lucide-react';
+import { X, CheckCircle2, QrCode, Truck, ShieldCheck, MapPin, Search, Loader2, AlertCircle } from 'lucide-react';
 import { CartItem, ShippingOption, Address, Order } from '../types';
+import { PAYMENT_METHODS, getPaymentIcon } from './PaymentIcons';
 
 interface CheckoutModalProps {
   isOpen: boolean;
@@ -547,7 +548,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                     }`}
                     style={paymentMethod === 'pix' ? { backgroundColor: '#dac9df' } : {}}
                   >
-                    <QrCode className="w-4 h-4" />
+                    <span className="w-4 h-4 flex-shrink-0" style={{ lineHeight: 0 }}>{getPaymentIcon('pix')}</span>
                     <span>PIX Instantâneo</span>
                   </button>
 
@@ -561,7 +562,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                     }`}
                     style={paymentMethod === 'credit_card' ? { backgroundColor: '#dac9df' } : {}}
                   >
-                    <CreditCard className="w-4 h-4" />
+                    <span className="w-4 h-4 flex-shrink-0" style={{ lineHeight: 0 }}>{getPaymentIcon('visa')}</span>
                     <span>Cartão de Crédito</span>
                   </button>
                 </div>
@@ -570,7 +571,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                 {paymentMethod === 'pix' ? (
                   <div className="p-4 rounded-xl bg-white border border-[#dac9df] text-xs text-slate-700">
                     <div className="flex items-center gap-2 font-bold text-[#382343] mb-1">
-                      <QrCode className="w-4 h-4 text-[#8a5d96]" />
+                      <span className="w-4 h-4 flex-shrink-0" style={{ lineHeight: 0 }}>{getPaymentIcon('pix')}</span>
                       <span>QR Code & Chave Copia e Cola gerados na confirmação</span>
                     </div>
                     <p className="text-slate-500 text-[11px]">

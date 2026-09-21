@@ -1,0 +1,46 @@
+{
+  "name": "Todday Modas Brechó",
+  "short_name": "Todday Modas",
+  "description": "Loja virtual especializada em moda modesta feminina, vestidos mídi, moda infantil e artigos de fé. Peças únicas com medidas reais na fita métrica, curadoria artesanal e entrega para todo o Brasil.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FAF7FB",
+  "theme_color": "#271E2D",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "pt-BR",
+  "icons": [
+    {
+      "src": "/logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["shopping", "lifestyle", "fashion"],
+  "shortcuts": [
+    {
+      "name": "Catálogo Completo",
+      "short_name": "Catálogo",
+      "description": "Ver todas as peças disponíveis",
+      "url": "/?tab=store#catalogo-filtro",
+      "icons": [{ "src": "/logo.svg", "sizes": "96x96" }]
+    },
+    {
+      "name": "Moda Modesta",
+      "short_name": "Modesta",
+      "description": "Vestidos mídi, saias e alfaiataria",
+      "url": "/?tab=store#sessao-adulto",
+      "icons": [{ "src": "/logo.svg", "sizes": "96x96" }]
+    },
+    {
+      "name": "Moda Infantil",
+      "short_name": "Kids",
+      "description": "Vestidinhos e conjuntos para crianças",
+      "url": "/?tab=store#sessao-kids",
+      "icons": [{ "src": "/logo.svg", "sizes": "96x96" }]
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false
+}

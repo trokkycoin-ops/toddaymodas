@@ -67,11 +67,11 @@ export const Header: React.FC<HeaderProps> = ({
             </span>
           </div>
 
-          <div className="hidden md:flex items-center gap-4 text-[11px] text-purple-200">
+          <div className="hidden md:flex items-center gap-4 text-[11px] text-[#dac9df]/90">
             <span className="inline-flex items-center gap-1">
               <Truck className="w-3.5 h-3.5 text-[#dac9df]" /> Frete Rápido para Todo o Brasil
             </span>
-            <span>•</span>
+            <span className="text-[#dac9df]/50">•</span>
             <span className="inline-flex items-center gap-1 text-white">
               <ShieldCheck className="w-3.5 h-3.5 text-[#dac9df]" /> Peças com Medidas Reais na Fita
             </span>
@@ -86,7 +86,7 @@ export const Header: React.FC<HeaderProps> = ({
             <div className="flex items-center gap-2">
               <Lock className="w-3.5 h-3.5 text-[#dac9df]" />
               <span className="font-bold">Painel de Gestão da Loja</span>
-              <span className="text-purple-200 text-[11px]">({currentTab.toUpperCase()})</span>
+              <span className="text-[#dac9df]/80 text-[11px]">({currentTab.toUpperCase()})</span>
             </div>
             <button
               onClick={() => onSelectTab('store')}

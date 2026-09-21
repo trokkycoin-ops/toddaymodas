@@ -252,7 +252,7 @@ export const Logo: React.FC<LogoProps> = ({
         {showTagline && (
           <div 
             className={`flex items-center gap-1 mt-1 font-semibold tracking-wider uppercase ${dimensions.subtitleClass} ${
-              isDark ? 'text-purple-200/75' : 'text-[#6b4b7a]'
+              isDark ? 'text-[#dac9df]/85' : 'text-[#6b4b7a]'
             }`}
           >
             <span className="text-[#C5A059] font-bold">♦</span>

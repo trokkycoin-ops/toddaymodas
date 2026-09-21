@@ -12,7 +12,14 @@ import {
   Shirt,
   Baby,
   BookOpen,
-  Footprints
+  Footprints,
+  Mail,
+  Crown,
+  Heart,
+  ShieldCheck,
+  Truck,
+  RotateCcw,
+  Sparkles as SparklesIcon,
 } from 'lucide-react';
 import { Product } from '../types';
 import { CATEGORIES, CONDITIONS } from '../data/products';
@@ -39,6 +46,16 @@ export const StoreFront: React.FC<StoreFrontProps> = ({
   const [searchQuery, setSearchQuery] = useState<string>(initialSearch);
   const [sortBy, setSortBy] = useState<'date' | 'price-asc' | 'price-desc' | 'rating'>('date');
   const [favorites, setFavorites] = useState<number[]>([]);
+  const [newsletterEmail, setNewsletterEmail] = useState('');
+  const [newsletterSubscribed, setNewsletterSubscribed] = useState(false);
+
+  const handleNewsletterSubscribe = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (newsletterEmail.trim() && !newsletterSubscribed) {
+      setNewsletterSubscribed(true);
+      setNewsletterEmail('');
+    }
+  };
 
   const toggleFavorite = (id: number, e: React.MouseEvent) => {
     e.stopPropagation();
@@ -125,6 +142,87 @@ export const StoreFront: React.FC<StoreFrontProps> = ({
 
       {/* 2. Barra de Vantagens e Confiança */}
       <TrustBar />
+
+      {/* 2.5. Newsletter VIP Capture */}
+      {!isFiltering && !newsletterSubscribed && (
+        <section className="mb-10 sm:mb-14">
+          <div className="relative overflow-hidden rounded-3xl p-6 sm:p-8 lg:p-12"
+            style={{ background: 'linear-gradient(135deg, #271E2D 0%, #3B0764 50%, #1A0F1E 100%)' }}
+          >
+            {/* Background Decorative Elements */}
+            <div className="absolute inset-0 -z-10 overflow-hidden" aria-hidden="true">
+              <div className="absolute top-0 left-1/4 w-72 h-72 rounded-full opacity-10 blur-3xl animate-float" style={{ backgroundColor: '#DFBA5A', animationDuration: '20s' }} />
+              <div className="absolute bottom-0 right-1/4 w-72 h-72 rounded-full opacity-10 blur-3xl animate-float" style={{ backgroundColor: '#8A5D96', animationDuration: '25s', animationDirection: 'reverse' }} />
+            </div>
+
+            <div className="relative z-10 max-w-2xl mx-auto text-center">
+              <div className="flex items-center justify-center gap-2 text-[10px] sm:text-xs font-black uppercase tracking-[0.2em] mb-3"
+                style={{ color: '#DFBA5A' }}
+              >
+                <Crown className="w-4 h-4" />
+                <span>CLUBE VIP TODDAY MODAS</span>
+              </div>
+              <h3 className="font-serif font-black text-2xl sm:text-3xl lg:text-4xl text-white leading-tight mb-3">
+                Cadastre-se e Receba <span style={{ color: '#DFBA5A' }}>10% OFF</span> na Primeira Compra
+              </h3>
+              <p className="text-xs sm:text-base text-[#DAC9DF]/80 max-w-xl mx-auto mb-6 leading-relaxed">
+                Receba novidades, reposições de vestidos mídi, peças infantis e artigos de fé antes de todo mundo. 
+                Acesso antecipado a peças únicas e promoções exclusivas do Clube VIP.
+              </p>
+              <form onSubmit={handleNewsletterSubscribe} className="flex flex-col sm:flex-row gap-3 w-full max-w-md mx-auto">
+                <div className="relative flex-1">
+                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5" style={{ color: '#DAC9DF' }} />
+                  <input
+                    type="email"
+                    required
+                    value={newsletterEmail}
+                    onChange={(e) => setNewsletterEmail(e.target.value)}
+                    placeholder="Digite seu e-mail..."
+                    className="w-full pl-12 pr-4 py-3.5 bg-[#1E1624] border border-[#3D2C47] rounded-xl text-sm text-white placeholder:text-[#DAC9DF]/50 focus:outline-none focus:border-[#DFBA5A] transition-all"
+                  />
+                </div>
+                <button
+                  type="submit"
+                  className="px-8 py-3.5 rounded-xl font-black text-sm text-[#271E2D] transition-all shadow-lg active:scale-[0.98] whitespace-nowrap cursor-pointer hover:bg-white"
+                  style={{ backgroundColor: '#DAC9DF' }}
+                >
+                  Quero Meu Desconto
+                  <SparklesIcon className="w-4 h-4 ml-2" />
+                </button>
+              </form>
+              <p className="mt-3 text-[11px] text-[#DAC9DF]/60">
+                Ao cadastrar, você concorda com nossa <a href="#" className="underline hover:text-white">Política de Privacidade</a>. Sem spam, apenas curadoria.
+              </p>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {newsletterSubscribed && !isFiltering && (
+        <section className="mb-10 sm:mb-14">
+          <div className="relative overflow-hidden rounded-3xl p-6 sm:p-8 lg:p-12 text-center"
+            style={{ background: 'linear-gradient(135deg, #065F46 0%, #047857 100%)' }}
+          >
+            <div className="relative z-10">
+              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full mb-4 mx-auto" style={{ backgroundColor: '#A7F3D0' }}>
+                <CheckCircle2 className="w-8 h-8" style={{ color: '#065F46' }} />
+              </div>
+              <h3 className="font-serif font-black text-2xl sm:text-3xl text-white mb-2">Inscrição Confirmada!</h3>
+              <p className="text-[#A7F3D0] text-base max-w-md mx-auto mb-4">
+                Verifique seu e-mail e use o cupom <strong className="text-[#271E2D] bg-[#DAC9DF] px-3 py-1 rounded font-mono font-bold">BEMVINDA10</strong> para 10% OFF na primeira compra.
+              </p>
+              <button
+                type="button"
+                onClick={() => setNewsletterSubscribed(false)}
+                className="px-6 py-2.5 rounded-xl font-bold text-sm text-[#065F46] transition-all shadow-md active:scale-[0.98] cursor-pointer"
+                style={{ backgroundColor: '#DAC9DF' }}
+              >
+                Fechar
+              </button>
+            </div>
+          </div>
+        </section>
+      )}
 
       {!isFiltering && latestProducts.length > 0 && (
         <section className="mb-10 sm:mb-14 rounded-3xl border border-[#DAC9DF] bg-[#271E2D] p-5 sm:p-7 text-white shadow-lg">
@@ -435,7 +533,7 @@ export const StoreFront: React.FC<StoreFrontProps> = ({
                 <h3 className="font-serif text-2xl sm:text-3xl font-black mb-2 text-white">
                   Vestidinhos & Conjuntos com Conforto para os Pequenos
                 </h3>
-                <p className="text-xs sm:text-sm text-purple-200 mb-4 max-w-xl">
+                <p className="text-xs sm:text-sm text-[#dac9df]/90 mb-4 max-w-xl">
                   Peças leves, tecidos em algodão puro que não pinicam o corpo delicado da criança e modelagens encantadoras para cultos e festividades.
                 </p>
                 <button
@@ -528,7 +626,7 @@ export const StoreFront: React.FC<StoreFrontProps> = ({
                 <h3 className="font-serif text-2xl sm:text-3xl font-black mb-2 text-white">
                   Capas Acolchoadas para Bíblia & Artigos Religiosos
                 </h3>
-                <p className="text-xs sm:text-sm text-purple-200 mb-4 max-w-xl">
+                <p className="text-xs sm:text-sm text-[#dac9df]/90 mb-4 max-w-xl">
                   Proteja as Sagradas Escrituras com capas resistentes feitas com zíper reforçado, repartição para caneta e lindo acabamento. Semijoias banhadas a ouro 18k.
                 </p>
                 <button
@@ -727,6 +825,111 @@ export const StoreFront: React.FC<StoreFrontProps> = ({
             <div className="border-t border-[#DAC9DF] pt-3">
               <strong className="block text-xs font-bold text-[#271E2D]">Maria Aparecida</strong>
               <span className="text-[11px] text-[#8A5D96]">Belo Horizonte - MG • Compra Verificada</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ======================================================== */}
+      {/* SESSÃO FINAL: NOSSA HISTÓRIA & PROPÓSITO (Brand Story)     */}
+      {/* ======================================================== */}
+      <section className="mb-16 sm:mb-20" aria-labelledby="brand-story-title">
+        <div className="relative overflow-hidden rounded-3xl p-8 sm:p-12 lg:p-16"
+          style={{ background: 'linear-gradient(135deg, #FAF7FB 0%, #F5EFF7 50%, #EBDDF0 100%)' }}
+        >
+          {/* Background Decorative */}
+          <div className="absolute inset-0 -z-10 overflow-hidden" aria-hidden="true">
+            <div className="absolute top-0 right-0 w-96 h-96 rounded-full opacity-10 blur-3xl" style={{ backgroundColor: '#DFBA5A' }} />
+            <div className="absolute bottom-0 left-0 w-96 h-96 rounded-full opacity-10 blur-3xl" style={{ backgroundColor: '#8A5D96' }} />
+          </div>
+
+          <div className="relative z-10 max-w-4xl mx-auto">
+            {/* Header */}
+            <div className="text-center mb-12">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-[10px] sm:text-xs font-black uppercase tracking-[0.2em] mb-4"
+                style={{ backgroundColor: 'rgba(223,186,90,0.1)', borderColor: 'rgba(223,186,90,0.3)', borderWidth: '1px', borderStyle: 'solid', color: '#DFBA5A' }}
+              >
+                <SparklesIcon className="w-4 h-4" />
+                <span>NOSSA HISTÓRIA</span>
+              </div>
+              <h2 id="brand-story-title" className="font-serif font-black text-3xl sm:text-4xl lg:text-5xl text-[#271E2D] leading-tight mb-4">
+                Mais que um Brechó,<br />Uma <span style={{ color: '#8A5D96' }}>Comunidade de Elegância</span>
+              </h2>
+              <p className="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
+                A Todday Modas nasceu do desejo de oferecer moda modesta premium com a curadoria 
+                que toda mulher merece: peças únicas, medidas reais, qualidade impecável e 
+                atendimento que faz você se sentir em casa.
+              </p>
+            </div>
+
+            {/* Pillars Grid */}
+            <div className="grid md:grid-cols-3 gap-6 mb-12">
+              {[
+                { icon: <Gem className="w-6 h-6" />, title: 'Curadoria Artesanal', desc: 'Cada peça é selecionada uma a uma, avaliada em tecido, caimento, acabamento e condição. Só entra no acervo o que passaríamos para nossas próprias filhas.' },
+                { icon: <Ruler className="w-6 h-6" />, title: 'Medidas Reais, Zero Surpresa', desc: 'Busto, cintura, quadril, comprimento, ombro — tudo medido na fita métrica sobre a peça. Sem "tamanho único", sem猜测.' },
+                { icon: <Heart className="w-6 h-6" />, title: 'Modéstia com Estilo', desc: 'Acreditamos que elegância e modéstia caminham juntas. Vestidos mídi, saias godê, alfaiataria — peças que honram seus valores sem abrir mão da beleza.' },
+              ].map((pillar, i) => (
+                <article key={i} className="relative group text-center p-6 rounded-2xl transition-all duration-500 hover:-translate-y-1"
+                  style={{ backgroundColor: '#FAF7FB', borderColor: '#EBDDF0', borderWidth: '1px', borderStyle: 'solid' }}
+                >
+                  <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    style={{ background: 'linear-gradient(135deg, #DFBA5A10 0%, transparent 100%)' }} />
+                  <div className="absolute inset-0 rounded-2xl p-[1px] opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div className="w-full h-full rounded-[inherit] border" style={{ borderColor: '#DFBA5A30' }} />
+                  </div>
+                  <div className="relative z-10">
+                    <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl mb-4 mx-auto transition-transform duration-300 group-hover:scale-110"
+                      style={{ backgroundColor: '#DFBA5A15', color: '#DFBA5A' }}
+                    >
+                      {pillar.icon}
+                    </div>
+                    <h4 className="font-serif font-bold text-xl text-[#271E2D] mb-2">{pillar.title}</h4>
+                    <p className="text-slate-600 leading-relaxed">{pillar.desc}</p>
+                  </div>
+                </article>
+              ))}
+            </div>
+
+            {/* Founder Note / CTA */}
+            <div className="relative rounded-3xl p-8 sm:p-10 text-center"
+              style={{ background: 'linear-gradient(135deg, #271E2D 0%, #3B0764 100%)' }}
+            >
+              <div className="absolute inset-0 -z-10 overflow-hidden" aria-hidden="true">
+                <div className="absolute top-0 right-0 w-72 h-72 rounded-full opacity-10 blur-3xl" style={{ backgroundColor: '#DFBA5A' }} />
+                <div className="absolute bottom-0 left-0 w-72 h-72 rounded-full opacity-10 blur-3xl" style={{ backgroundColor: '#8A5D96' }} />
+              </div>
+              <div className="relative z-10 max-w-xl mx-auto">
+                <div className="flex items-center justify-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] mb-3" style={{ color: '#DFBA5A' }}>
+                  <SparklesIcon className="w-4 h-4" />
+                  <span>UMA CARTA DA FUNDADORA</span>
+                </div>
+                <blockquote className="font-serif italic text-xl sm:text-2xl text-white/90 leading-relaxed mb-6">
+                  &ldquo;Cada mulher merece se vestir com dignidade, elegância e alegria. 
+                  A Todday Modas existe para tornar isso acessível, sem abrir mão da qualidade 
+                  nem dos valores.&rdquo;
+                </blockquote>
+                <cite className="not-italic text-[#DAC9DF]/80 text-sm">
+                  — <span className="font-bold text-white">Fundadora, Todday Modas Brechó</span>
+                </cite>
+                <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+                  <button
+                    type="button"
+                    onClick={() => scrollToSection('sessao-adulto')}
+                    className="px-8 py-3.5 rounded-xl font-black text-base text-[#271E2D] transition-all shadow-lg active:scale-[0.98] cursor-pointer hover:bg-white"
+                    style={{ backgroundColor: '#DAC9DF' }}
+                  >
+                    Explorar Coleção
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => scrollToSection('catalogo-filtro')}
+                    className="px-8 py-3.5 rounded-xl font-black text-base text-white transition-all border-2 active:scale-[0.98] cursor-pointer hover:bg-white/10"
+                    style={{ borderColor: 'rgba(255,255,255,0.3)', backgroundColor: 'rgba(255,255,255,0.05)' }}
+                  >
+                    Ver Catálogo Completo
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>

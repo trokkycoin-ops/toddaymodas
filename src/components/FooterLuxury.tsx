@@ -13,6 +13,7 @@ import {
   PhoneCall,
   RotateCcw
 } from 'lucide-react';
+import { PAYMENT_METHODS } from './PaymentIcons';
 
 interface FooterLuxuryProps {
   onSelectTab: (tab: 'store' | 'admin' | 'vendor' | 'customer' | 'download' | 'docs') => void;
@@ -52,7 +53,7 @@ export const FooterLuxury: React.FC<FooterLuxuryProps> = ({
                 <strong className="block text-white font-bold text-xs sm:text-sm">
                   Envio para Todo o Brasil
                 </strong>
-                <span className="text-purple-200/70 text-[11px]">
+                <span className="text-[#dac9df]/90 text-[11px]">
                   Correios e transportadoras com seguro
                 </span>
               </div>
@@ -69,7 +70,7 @@ export const FooterLuxury: React.FC<FooterLuxuryProps> = ({
                 <strong className="block text-white font-bold text-xs sm:text-sm">
                   Medidas na Fita Métrica
                 </strong>
-                <span className="text-purple-200/70 text-[11px]">
+                <span className="text-[#dac9df]/90 text-[11px]">
                   Peças únicas medidas com precisão
                 </span>
               </div>
@@ -86,7 +87,7 @@ export const FooterLuxury: React.FC<FooterLuxuryProps> = ({
                 <strong className="block text-white font-bold text-xs sm:text-sm">
                   Troca Fácil em 7 Dias
                 </strong>
-                <span className="text-purple-200/70 text-[11px]">
+                <span className="text-[#dac9df]/90 text-[11px]">
                   Garantia total para o seu pedido
                 </span>
               </div>
@@ -103,7 +104,7 @@ export const FooterLuxury: React.FC<FooterLuxuryProps> = ({
                 <strong className="block text-white font-bold text-xs sm:text-sm">
                   Pagamento 100% Seguro
                 </strong>
-                <span className="text-purple-200/70 text-[11px]">
+                <span className="text-[#dac9df]/90 text-[11px]">
                   Criptografia SSL de ponta a ponta
                 </span>
               </div>
@@ -124,7 +125,7 @@ export const FooterLuxury: React.FC<FooterLuxuryProps> = ({
               <h3 className="font-serif font-black text-xl sm:text-2xl text-white">
                 Cadastre-se e Receba 10% OFF na Primeira Compra
               </h3>
-              <p className="text-xs text-purple-200/80 mt-1">
+              <p className="text-xs text-[#dac9df]/90 mt-1">
                 Receba novidades, reposições de vestidos mídi e peças infantis antes de todo mundo.
               </p>
             </div>
@@ -187,11 +188,11 @@ export const FooterLuxury: React.FC<FooterLuxuryProps> = ({
               />
             </div>
 
-            <p className="text-purple-200/80 text-xs leading-relaxed mb-4">
+            <p className="text-[#dac9df]/90 text-xs leading-relaxed mb-4">
               Loja virtual especializada em moda modesta feminina, vestidos mídi, moda infantil e artigos de fé. Peças selecionadas com medidas reais e muito carinho.
             </p>
 
-            <div className="flex items-center gap-2 text-[11px] text-purple-200/70">
+            <div className="flex items-center gap-2 text-[11px] text-[#dac9df]/90">
               <Sparkles className="w-3.5 h-3.5 text-[#dac9df]" />
               <span>"Vestida de força e dignidade" (Pv 31:25)</span>
             </div>
@@ -202,7 +203,7 @@ export const FooterLuxury: React.FC<FooterLuxuryProps> = ({
             <h4 className="font-bold text-white text-xs uppercase tracking-wider mb-3.5">
               Departamentos
             </h4>
-            <ul className="space-y-2 text-xs text-purple-200/80">
+            <ul className="space-y-2 text-xs text-[#dac9df]/90">
               <li>
                 <button 
                   onClick={() => {
@@ -259,7 +260,7 @@ export const FooterLuxury: React.FC<FooterLuxuryProps> = ({
             <h4 className="font-bold text-white text-xs uppercase tracking-wider mb-3.5">
               Atendimento & Suporte
             </h4>
-            <ul className="space-y-2 text-xs text-purple-200/80">
+            <ul className="space-y-2 text-xs text-[#dac9df]/90">
               <li>
                 <button 
                   onClick={() => onSelectTab('customer')}
@@ -269,12 +270,12 @@ export const FooterLuxury: React.FC<FooterLuxuryProps> = ({
                 </button>
               </li>
               <li>
-                <span className="text-purple-200/60 block">
+                <span className="text-[#dac9df]/90 block">
                   Segunda a Sexta: 09h às 18h
                 </span>
               </li>
               <li>
-                <span className="text-purple-200/60 block">
+                <span className="text-[#dac9df]/90 block">
                   Envio para todo o território nacional
                 </span>
               </li>
@@ -297,29 +298,38 @@ export const FooterLuxury: React.FC<FooterLuxuryProps> = ({
             <h4 className="font-bold text-white text-xs uppercase tracking-wider mb-3.5">
               Formas de Pagamento
             </h4>
-            <div className="flex flex-wrap gap-2 mb-4">
-              {['PIX', 'Visa', 'Mastercard', 'Elo', 'Boleto'].map((method) => (
-                <span 
-                  key={method}
-                  className="px-2.5 py-1 rounded bg-[#271E2D] border border-[#3D2C47] text-white text-[11px] font-bold"
+            <div className="flex flex-wrap gap-2.5 mb-4">
+              {PAYMENT_METHODS.map((method) => (
+                <button
+                  key={method.id}
+                  type="button"
+                  disabled
+                  className="flex items-center gap-1.5 px-3 py-2 rounded-xl border-2 transition-all cursor-default"
+                  style={{
+                    backgroundColor: method.color,
+                    borderColor: method.color,
+                    color: 'white',
+                  }}
+                  aria-label={`${method.label} aceito`}
                 >
-                  {method}
-                </span>
+                  <span className="w-5 h-5 flex-shrink-0" style={{ lineHeight: 0 }}>{method.icon}</span>
+                  <span className="text-[10px] font-bold uppercase tracking-wider">{method.label}</span>
+                </button>
               ))}
             </div>
 
             <h4 className="font-bold text-white text-xs uppercase tracking-wider mb-2">
               Segurança
             </h4>
-            <div className="flex items-center gap-2 text-[11px] text-purple-200/70">
+            <div className="flex items-center gap-2 text-[11px] text-[#dac9df]">
               <ShieldCheck className="w-4 h-4 text-[#dac9df]" />
-              <span>Certificado SSL 256 bits</span>
+              <span className="font-medium">Certificado SSL 256 bits</span>
             </div>
           </div>
         </div>
 
         {/* 4. Linha de Copyright & Acesso da Equipe */}
-        <div className="pt-6 border-t border-[#2F2238] flex flex-col sm:flex-row items-center justify-between text-[11px] text-purple-200/60 gap-3">
+        <div className="pt-6 border-t border-[#2F2238] flex flex-col sm:flex-row items-center justify-between text-[11px] text-[#dac9df]/80 gap-3">
           <p>© 2026 Todday Modas Brechó. Todos os direitos reservados.</p>
           
           <div className="flex items-center gap-4">
