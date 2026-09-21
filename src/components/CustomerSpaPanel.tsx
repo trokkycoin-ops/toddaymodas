@@ -22,6 +22,7 @@ import {
 import { Order } from '../types';
 import { generateOrderReceipt } from '../utils/pdfGenerator';
 import { Logo } from './Logo';
+import { getConfig } from '../lib/api';
 
 interface CustomerSpaPanelProps {
   orders: Order[];
@@ -258,8 +259,7 @@ export const CustomerSpaPanel: React.FC<CustomerSpaPanelProps> = ({ orders, load
                 : 'Você ainda não possui pedidos com este status. Suas compras na loja virtual aparecerão aqui automaticamente.'}
             </p>
             <a
-              href="#tdm-hero-carousel"
-              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              href={`${getConfig().homeUrl.replace(/\/?$/, '/') }#tdm-hero-carousel`}
               className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-xs font-black text-[#271E2D] bg-[#DAC9DF] hover:bg-white border border-[#271E2D]/20 shadow-xs transition-all"
             >
               <Sparkles className="w-3.5 h-3.5 text-[#271E2D]" />
