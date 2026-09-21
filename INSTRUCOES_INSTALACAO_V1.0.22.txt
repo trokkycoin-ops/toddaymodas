@@ -1,0 +1,189 @@
+═══════════════════════════════════════════════════════════════════════════════
+  TODDAY MODAS BRECHÓ v1.0.22 
+  Layout Marketplace Moderno - Mercado Livre/Shopee Style
+═══════════════════════════════════════════════════════════════════════════════
+
+📦 VERSÃO ATUAL: 1.0.22
+📅 DATA: Setembro 2026
+✨ NOVO: Layout marketplace com design profissional
+
+───────────────────────────────────────────────────────────────────────────────
+ARQUIVOS DISPONÍVEIS PARA INSTALAÇÃO
+───────────────────────────────────────────────────────────────────────────────
+
+✅ INSTALAÇÃO LIMPA (recomendado):
+   📁 C:\Users\marco\OneDrive\Documentos\Todday Modas\todday-modas-brecho-prod.zip
+   • Arquivo limpo para instalação no WordPress
+   • Versão: 1.0.22
+   • Tamanho: ~250 KB
+
+✅ BACKUP/VERSIONAMENTO:
+   📁 C:\Users\marco\OneDrive\Documentos\Todday Modas\versions\todday-modas-v1.0.22.zip
+   📁 C:\Users\marco\OneDrive\Documentos\Todday Modas\versions\todday-modas-v1.0.22-deploy-backup.zip
+   
+✅ VERSÃO ANTERIOR (para rollback):
+   📁 C:\Users\marco\OneDrive\Documentos\Todday Modas\versions\todday-modas-v1.0.21-deploy-backup.zip
+
+───────────────────────────────────────────────────────────────────────────────
+PASSO A PASSO - INSTALAR NO WORDPRESS
+───────────────────────────────────────────────────────────────────────────────
+
+1️⃣ FAZER BACKUP (importante!)
+   • Acesse C:\Users\marco\OneDrive\Documentos\Todday Modas\versions\
+   • Copie todday-modas-v1.0.21-deploy-backup.zip para local seguro
+   
+2️⃣ DESATIVAR PLUGIN ANTIGO (se já existir)
+   • WordPress Admin → Plugins
+   • Procure "Todday Modas Brechó"
+   • Se ativado, clique em "Desativar"
+   • Aguarde 5 segundos
+
+3️⃣ DELETAR PLUGIN ANTIGO (se necessário)
+   • WordPress Admin → Plugins
+   • Se aparecer "Todday Modas Brechó", clique em "Excluir"
+   • OU acesse wp-content/plugins e delete a pasta manualmente
+
+4️⃣ INSTALAR NOVO PLUGIN
+   • WordPress Admin → Plugins → Adicionar novo
+   • Clique em "Enviar plugin"
+   • Selecione arquivo: todday-modas-brecho-prod.zip
+   • Clique em "Instalar agora"
+   
+5️⃣ ATIVAR PLUGIN
+   • Clique em "Ativar plugin"
+   
+6️⃣ VERIFICAR INSTALAÇÃO
+   • WordPress Admin → Plugins
+   • Procure "Todday Modas Brechó v1.0.22"
+   • Status deve ser: ✅ Ativado
+
+7️⃣ ACESSAR A LOJA
+   • Acesse a página que contém: [todday_loja] ou [tm_home]
+   • Limpe cache do navegador: Ctrl+Shift+Delete
+   • Pressione F5 para recarregar
+   • 🎉 PRONTO! Novo layout está ativo!
+
+───────────────────────────────────────────────────────────────────────────────
+NOVO LAYOUT - O QUE MUDOU
+───────────────────────────────────────────────────────────────────────────────
+
+✨ INTERFACE MODERNA
+  ✓ Top bar com promoções
+  ✓ Header sticky com blur effect
+  ✓ Logo com gradiente roxo/azul
+  ✓ Buscador inteligente
+  ✓ Navegação por categorias com dropdown
+  ✓ Ações rápidas (favoritos, carrinho, conta)
+
+📱 VITRINE DE PRODUTOS
+  ✓ Grid responsivo (5 colunas desktop → 2 mobile)
+  ✓ Cards com imagens grandes
+  ✓ Badges "NOVO" e desconto %
+  ✓ Avaliações com stars
+  ✓ Preço atual + original (cortado)
+  ✓ Parcelamento destacado
+  ✓ Botão "COMPRAR" em roxo vibrante
+  ✓ Hover effects elegantes
+
+🔍 FILTROS E BUSCA
+  ✓ Ordenar por: Relevância, Preço, Avaliação
+  ✓ Filtro de preço com slider
+  ✓ Filtro de tamanho
+  ✓ Busca por texto
+
+🎨 DESIGN E CORES
+  ✓ Roxo vibrante (#7C3AED) - cor principal
+  ✓ Dourado (#F59E0B) - destaque
+  ✓ Cores neutras - legibilidade alta
+  ✓ Tipografia Inter (moderna e limpa)
+  ✓ Sombras sofisticadas
+  ✓ Animações smooth
+
+🔗 FOOTER PROFISSIONAL
+  ✓ Seções: Sobre, Compra, Atendimento, Redes
+  ✓ Links para informações importantes
+  ✓ Telefone e email destacados
+  ✓ Redes sociais integradas
+
+───────────────────────────────────────────────────────────────────────────────
+TROUBLESHOOTING
+───────────────────────────────────────────────────────────────────────────────
+
+❌ "Plugin não tem arquivo principal"
+   → ZIP está corrompido
+   → Solução: Use o arquivo: todday-modas-brecho-prod.zip
+   → Se ainda não funcionar, reinstale do arquivo novo
+
+❌ Layout não mudou
+   → Cache do navegador
+   → Solução 1: Ctrl+Shift+Delete → Limpar tudo → F5
+   → Solução 2: Desativar/Reativar o plugin
+   → Solução 3: Limpar cache do WordPress (se houver plugin de cache)
+
+❌ Erro ao ativar
+   → Versão PHP incompatível
+   → Requerimento: PHP 8.1+
+   → Solução: Contate provedor de hospedagem
+
+───────────────────────────────────────────────────────────────────────────────
+VERSIONAMENTO - HISTÓRICO
+───────────────────────────────────────────────────────────────────────────────
+
+Versões disponíveis em: C:\Users\marco\OneDrive\Documentos\Todday Modas\versions\
+
+v1.0.22 (ATUAL)
+  ✨ Novo layout marketplace estilo Mercado Livre/Shopee
+  ✨ Design moderno com cores vibrantes
+  ✨ Grid responsivo de produtos
+  ✨ Header sticky e navegação intuitiva
+  ✨ Filtros funcionais
+  ✨ Footer profissional
+
+v1.0.21 (ANTERIOR)
+  → Disponível em: todday-modas-v1.0.21-deploy-backup.zip
+  → Para rollback, desinstale v1.0.22 e instale v1.0.21
+
+───────────────────────────────────────────────────────────────────────────────
+CUSTOMIZAÇÃO
+───────────────────────────────────────────────────────────────────────────────
+
+Para alterar cores e design:
+
+1. Abra: todday-modas-brecho/templates/vitrine-marketplace.php
+2. Procure pela tag <style>
+3. Altere as cores CSS:
+   --primary-color: #7C3AED (roxo - cor principal)
+   --primary-dark: #5B21B6 (roxo escuro)
+   --accent-color: #F59E0B (dourado)
+   --error-color: #EF4444 (vermelho)
+
+4. Altere textos conforme necessário
+5. Recrie o ZIP
+6. Reinstale
+
+───────────────────────────────────────────────────────────────────────────────
+GIT & VERSIONAMENTO
+───────────────────────────────────────────────────────────────────────────────
+
+✅ Repositório Git configurado
+✅ Todas as versões mantidas como backup
+✅ Commit v1.0.22: "v1.0.22: Layout marketplace com novo design"
+✅ Histórico completo: git log
+
+Para recuperar versão anterior:
+  git log  # Ver histórico
+  git checkout <commit-hash>  # Voltar para commit específico
+
+───────────────────────────────────────────────────────────────────────────────
+SUPORTE
+───────────────────────────────────────────────────────────────────────────────
+
+Arquivo de instruções anterior: INSTRUCOES_NOVO_LAYOUT.txt
+Logs: Windows Event Viewer (se houver errors no PHP)
+Documentação: C:\Users\marco\OneDrive\Documentos\Todday Modas\README.md
+
+═══════════════════════════════════════════════════════════════════════════════
+
+Boa sorte! Sua loja agora tem um design profissional e moderno! 🚀
+
+═══════════════════════════════════════════════════════════════════════════════
