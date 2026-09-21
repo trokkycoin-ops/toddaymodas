@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Product } from '../types';
+import { CountdownTimer } from './CountdownTimer';
 import {
   X,
   ShoppingBag,
@@ -15,6 +16,8 @@ import {
   Copy,
   Info,
   Sparkles,
+  AlertCircle,
+  Clock,
 } from 'lucide-react';
 
 interface ProductModalProps {
@@ -104,13 +107,13 @@ export function ProductModal({
       id="product-detail-modal"
     >
       <div
-        className="bg-white rounded-3xl w-full max-w-5xl max-h-[94vh] shadow-2xl border border-[#EBDDF0] relative flex flex-col overflow-y-auto scrollbar-thin scrollbar-thumb-[#dac9df]"
+        className="bg-white rounded-3xl w-full max-w-5xl max-h-[94vh] shadow-2xl border border-[#DAC9DF] relative flex flex-col overflow-y-auto scrollbar-thin scrollbar-thumb-[#DAC9DF]"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 z-20 p-2.5 rounded-full bg-white/90 text-gray-400 hover:text-[#271E2D] hover:bg-white shadow-md transition-all cursor-pointer"
+          className="absolute top-4 right-4 z-20 p-2.5 rounded-full bg-white/90 text-slate-400 hover:text-[#271E2D] hover:bg-[#FAF7FB] shadow-md transition-all cursor-pointer"
           aria-label="Fechar modal"
         >
           <X className="w-5 h-5" />
@@ -120,7 +123,7 @@ export function ProductModal({
           {/* Gallery Column */}
           <div className="lg:col-span-6 flex flex-col gap-4">
             <div
-              className="relative aspect-3/4 rounded-2xl overflow-hidden bg-slate-100 border border-[#EBDDF0] group cursor-zoom-in"
+              className="relative aspect-3/4 rounded-2xl overflow-hidden bg-slate-50 border border-[#DAC9DF] group cursor-zoom-in"
               onClick={() => setIsZoomed(!isZoomed)}
             >
               <img
@@ -131,7 +134,7 @@ export function ProductModal({
                 }`}
               />
               <div className="absolute bottom-3 left-3 bg-black/60 backdrop-blur-md text-white px-3 py-1.5 rounded-xl text-[11px] font-medium flex items-center gap-1.5 opacity-90">
-                <ZoomIn className="w-3.5 h-3.5 text-[#dac9df]" />
+                <ZoomIn className="w-3.5 h-3.5 text-[#DAC9DF]" />
                 <span>Passe o cursor ou clique para zoom</span>
               </div>
               <div className="absolute top-3 left-3 bg-[#271E2D] text-[#dac9df] text-xs font-bold px-3 py-1 rounded-full shadow-md">
@@ -163,20 +166,20 @@ export function ProductModal({
             )}
 
             {product.video && (
-              <div className="rounded-2xl border border-[#EBDDF0] bg-[#FAF7FA] p-2">
-                <p className="px-2 pb-2 text-[11px] font-black uppercase tracking-wider text-[#846391]">Vídeo da peça</p>
+              <div className="rounded-2xl border border-[#DAC9DF] bg-[#FAF7FB] p-2">
+                <p className="px-2 pb-2 text-[11px] font-black uppercase tracking-wider text-[#8A5D96]">Vídeo da peça</p>
                 <video src={product.video} controls playsInline preload="metadata" className="w-full rounded-xl bg-black" />
               </div>
             )}
 
             {/* Trust highlights */}
             <div className="grid grid-cols-2 gap-2.5 pt-2">
-              <div className="flex items-center gap-2 p-2.5 rounded-xl bg-[#FAF7FA] border border-[#EBDDF0]/70 text-xs text-gray-700">
-                <Ruler className="w-4 h-4 text-[#846391] shrink-0" />
+              <div className="flex items-center gap-2 p-2.5 rounded-xl bg-[#FAF7FB] border border-[#DAC9DF]/70 text-xs text-slate-700">
+                <Ruler className="w-4 h-4 text-[#8A5D96] shrink-0" />
                 <span className="text-[11px] leading-tight font-medium">Medidas reais na fita métrica</span>
               </div>
-              <div className="flex items-center gap-2 p-2.5 rounded-xl bg-[#FAF7FA] border border-[#EBDDF0]/70 text-xs text-gray-700">
-                <ShieldCheck className="w-4 h-4 text-[#846391] shrink-0" />
+              <div className="flex items-center gap-2 p-2.5 rounded-xl bg-[#FAF7FB] border border-[#DAC9DF]/70 text-xs text-slate-700">
+                <ShieldCheck className="w-4 h-4 text-[#8A5D96] shrink-0" />
                 <span className="text-[11px] leading-tight font-medium">Peça única higienizada</span>
               </div>
             </div>
@@ -187,13 +190,13 @@ export function ProductModal({
             <div>
               {/* Brand & Category */}
               <div className="flex items-center justify-between gap-2 mb-1.5">
-                <span className="text-xs font-bold uppercase tracking-wider text-[#846391]">
+                <span className="text-xs font-bold uppercase tracking-wider text-[#8A5D96]">
                   {product.brand}
                 </span>
                 <div className="flex items-center gap-2">
                   <button
                     onClick={handleShare}
-                    className="p-1.5 rounded-lg text-gray-400 hover:text-[#271E2D] hover:bg-[#FAF7FA] transition-colors cursor-pointer"
+                    className="p-1.5 rounded-lg text-slate-400 hover:text-[#271E2D] hover:bg-[#FAF7FB] transition-colors cursor-pointer"
                     title="Compartilhar"
                   >
                     <Share2 className="w-4 h-4" />
@@ -212,38 +215,47 @@ export function ProductModal({
               </h1>
 
               {/* Pricing Box */}
-              <div className="p-4 rounded-2xl bg-gradient-to-br from-[#FAF7FA] to-white border border-[#EBDDF0] mb-5">
-                <div className="flex items-baseline gap-3">
+              <div className="p-4 rounded-2xl bg-gradient-to-br from-[#FAF7FB] via-white to-[#F5EFF7] border border-[#DAC9DF] mb-5 relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-tr from-[#DFBA5A]/5 to-transparent" />
+                
+                {/* Scarcity Timer */}
+                <CountdownTimer 
+                  durationMinutes={15}
+                  className="mb-4"
+                  warningThresholdMinutes={5}
+                />
+
+                <div className="flex items-baseline gap-3 relative z-10">
                   <span className="text-2xl sm:text-3xl font-serif font-black text-[#271E2D]">
                     R$ {product.price.toFixed(2).replace('.', ',')}
                   </span>
                   {product.regular_price && product.regular_price > product.price && (
-                    <span className="text-sm text-gray-400 line-through">
+                    <span className="text-sm text-slate-400 line-through">
                       R$ {product.regular_price.toFixed(2).replace('.', ',')}
                     </span>
                   )}
                 </div>
 
                 {/* PIX box */}
-                <div className="mt-2.5 pt-2.5 border-t border-[#EBDDF0] flex items-center justify-between text-xs">
+                <div className="mt-2.5 pt-2.5 border-t border-[#DAC9DF] flex items-center justify-between text-xs relative z-10">
                   <div className="flex items-center gap-1.5">
-                    <span className="px-2 py-0.5 rounded-md font-bold text-[#271E2D] bg-[#dac9df] text-[10px]">
+                    <span className="px-2 py-0.5 rounded-md font-bold text-[#271E2D] bg-gradient-to-r from-[#DAC9DF] to-[#DFBA5A]/50 text-[10px]">
                       PIX 10% OFF
                     </span>
                     <span className="font-bold text-emerald-700 text-sm">
                       R$ {pixPrice.toFixed(2).replace('.', ',')}
                     </span>
                   </div>
-                  <span className="text-[11px] text-gray-500">
+                  <span className="text-[11px] text-slate-500">
                     Economia de R$ {pixDiscount.toFixed(2).replace('.', ',')}
                   </span>
                 </div>
 
-                <div className="mt-2 text-[11px] text-gray-500 flex items-center justify-between">
+                <div className="mt-2 text-[11px] text-slate-500 flex items-center justify-between relative z-10">
                   <span>ou 3x de R$ {(product.price / 3).toFixed(2).replace('.', ',')} sem juros</span>
                   <button
                     onClick={handleCopyCoupon}
-                    className="text-[#846391] font-bold hover:underline flex items-center gap-1 cursor-pointer"
+                    className="text-[#8A5D96] font-bold hover:underline flex items-center gap-1 cursor-pointer"
                   >
                     <Copy className="w-3 h-3" />
                     <span>{copiedCoupon ? 'Copiado!' : 'Cupom: BEMVINDA10'}</span>
@@ -255,13 +267,13 @@ export function ProductModal({
               {product.available_sizes && product.available_sizes.length > 0 && (
                 <div className="mb-4">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-xs font-bold text-gray-800">
-                      Tamanho: <span className="text-[#846391]">{selectedSize}</span>
+                    <span className="text-xs font-bold text-slate-800">
+                      Tamanho: <span className="text-[#8A5D96]">{selectedSize}</span>
                     </span>
                     <button
                       type="button"
                       onClick={() => setActiveTab('measures')}
-                      className="text-xs font-bold text-[#846391] hover:underline flex items-center gap-1 cursor-pointer"
+                      className="text-xs font-bold text-[#8A5D96] hover:underline flex items-center gap-1 cursor-pointer"
                     >
                       <Ruler className="w-3.5 h-3.5" />
                       <span>Guia de Medidas</span>
@@ -276,7 +288,7 @@ export function ProductModal({
                         className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                           selectedSize === sz
                             ? 'bg-[#271E2D] text-white shadow-xs'
-                            : 'bg-[#FAF7FA] text-gray-700 border border-[#EBDDF0] hover:border-[#dac9df]'
+                            : 'bg-[#FAF7FB] text-slate-700 border border-[#DAC9DF] hover:border-[#8A5D96]'
                         }`}
                       >
                         {sz}
@@ -289,8 +301,8 @@ export function ProductModal({
               {/* Color Selector */}
               {product.available_colors && product.available_colors.length > 0 && (
                 <div className="mb-4">
-                  <span className="text-xs font-bold text-gray-800 block mb-2">
-                    Cor: <span className="text-[#846391]">{selectedColor}</span>
+                  <span className="text-xs font-bold text-slate-800 block mb-2">
+                    Cor: <span className="text-[#8A5D96]">{selectedColor}</span>
                   </span>
                   <div className="flex flex-wrap gap-2.5">
                     {product.available_colors.map((c) => (
@@ -300,8 +312,8 @@ export function ProductModal({
                         onClick={() => setSelectedColor(c.name)}
                         className={`group relative flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs transition-all cursor-pointer ${
                           selectedColor === c.name
-                            ? 'border-[#271E2D] bg-[#FAF7FA] font-bold text-[#271E2D] shadow-xs'
-                            : 'border-[#EBDDF0] text-gray-600 hover:border-[#dac9df]'
+                            ? 'border-[#271E2D] bg-[#FAF7FB] font-bold text-[#271E2D] shadow-xs'
+                            : 'border-[#DAC9DF] text-slate-600 hover:border-[#8A5D96]'
                         }`}
                       >
                         <span
@@ -317,12 +329,12 @@ export function ProductModal({
 
               {/* Quantity Selector */}
               <div className="flex items-center gap-3 mb-6">
-                <span className="text-xs font-bold text-gray-800">Quantidade:</span>
-                <div className="flex items-center border border-[#EBDDF0] rounded-xl text-xs bg-[#FAF7FA]">
+                <span className="text-xs font-bold text-slate-800">Quantidade:</span>
+                <div className="flex items-center border border-[#DAC9DF] rounded-xl text-xs bg-[#FAF7FB]">
                   <button
                     type="button"
                     onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                    className="px-3 py-1.5 text-gray-600 hover:bg-[#EBDDF0] font-bold transition-colors cursor-pointer"
+                    className="px-3 py-1.5 text-slate-600 hover:bg-[#DAC9DF]/50 font-bold transition-colors cursor-pointer"
                   >
                     -
                   </button>
@@ -330,12 +342,12 @@ export function ProductModal({
                   <button
                     type="button"
                     onClick={() => setQuantity((q) => q + 1)}
-                    className="px-3 py-1.5 text-gray-600 hover:bg-[#EBDDF0] font-bold transition-colors cursor-pointer"
+                    className="px-3 py-1.5 text-slate-600 hover:bg-[#DAC9DF]/50 font-bold transition-colors cursor-pointer"
                   >
                     +
                   </button>
                 </div>
-                <span className="text-[11px] text-gray-500">
+                <span className="text-[11px] text-slate-500">
                   {product.stock > 0 ? `${product.stock} em estoque` : 'Peça única'}
                 </span>
               </div>
@@ -347,7 +359,7 @@ export function ProductModal({
                   onClick={() => {
                     onAddToCart(product, selectedSize, selectedColor, quantity);
                   }}
-                  className="w-full flex items-center justify-center gap-2 py-3.5 px-4 rounded-xl font-bold text-xs text-[#271E2D] border-2 border-[#271E2D] hover:bg-[#FAF7FA] transition-all shadow-xs active:scale-98 cursor-pointer"
+                  className="w-full flex items-center justify-center gap-2 py-3.5 px-4 rounded-xl font-bold text-xs text-[#271E2D] border-2 border-[#271E2D] hover:bg-[#FAF7FB] transition-all shadow-xs active:scale-98 cursor-pointer"
                 >
                   <ShoppingBag className="w-4 h-4" />
                   <span>Adicionar à Sacola</span>
@@ -360,13 +372,13 @@ export function ProductModal({
                   }}
                   className="w-full flex items-center justify-center gap-2 py-3.5 px-4 rounded-xl font-bold text-xs text-white bg-[#271E2D] hover:bg-[#382343] transition-all shadow-md active:scale-98 cursor-pointer"
                 >
-                  <Zap className="w-4 h-4 text-[#dac9df]" />
+                  <Zap className="w-4 h-4 text-[#DAC9DF]" />
                   <span>Comprar Agora</span>
                 </button>
               </div>
 
               {/* Navigation Tabs */}
-              <div className="border-b border-[#EBDDF0] flex gap-4 text-xs font-bold text-gray-500 mb-4">
+              <div className="border-b border-[#DAC9DF] flex gap-4 text-xs font-bold text-slate-500 mb-4">
                 <button
                   type="button"
                   onClick={() => setActiveTab('desc')}
@@ -426,8 +438,8 @@ export function ProductModal({
                   <div className="space-y-3">
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center">
                       {product.measurements?.bust && (
-                        <div className="p-2 rounded-xl bg-[#FAF7FA] border border-[#EBDDF0]">
-                          <span className="block text-[10px] uppercase text-gray-400 font-bold">
+                        <div className="p-2 rounded-xl bg-[#FAF7FB] border border-[#DAC9DF]">
+                          <span className="block text-[10px] uppercase text-slate-400 font-bold">
                             Busto
                           </span>
                           <span className="font-bold text-slate-800">
@@ -436,8 +448,8 @@ export function ProductModal({
                         </div>
                       )}
                       {product.measurements?.waist && (
-                        <div className="p-2 rounded-xl bg-[#FAF7FA] border border-[#EBDDF0]">
-                          <span className="block text-[10px] uppercase text-gray-400 font-bold">
+                        <div className="p-2 rounded-xl bg-[#FAF7FB] border border-[#DAC9DF]">
+                          <span className="block text-[10px] uppercase text-slate-400 font-bold">
                             Cintura
                           </span>
                           <span className="font-bold text-slate-800">
@@ -446,8 +458,8 @@ export function ProductModal({
                         </div>
                       )}
                       {product.measurements?.length && (
-                        <div className="p-2 rounded-xl bg-[#FAF7FA] border border-[#EBDDF0]">
-                          <span className="block text-[10px] uppercase text-gray-400 font-bold">
+                        <div className="p-2 rounded-xl bg-[#FAF7FB] border border-[#DAC9DF]">
+                          <span className="block text-[10px] uppercase text-slate-400 font-bold">
                             Comprimento
                           </span>
                           <span className="font-bold text-slate-800">
@@ -456,8 +468,8 @@ export function ProductModal({
                         </div>
                       )}
                       {product.measurements?.shoulder && (
-                        <div className="p-2 rounded-xl bg-[#FAF7FA] border border-[#EBDDF0]">
-                          <span className="block text-[10px] uppercase text-gray-400 font-bold">
+                        <div className="p-2 rounded-xl bg-[#FAF7FB] border border-[#DAC9DF]">
+                          <span className="block text-[10px] uppercase text-slate-400 font-bold">
                             Ombro
                           </span>
                           <span className="font-bold text-slate-800">
@@ -466,7 +478,7 @@ export function ProductModal({
                         </div>
                       )}
                     </div>
-                    <p className="text-[11px] text-gray-500 italic">
+                    <p className="text-[11px] text-slate-500 italic">
                       Todas as medidas são aferidas manualmente peça por peça com fita métrica sobre a bancada sem esticar o tecido.
                     </p>
                   </div>
@@ -481,7 +493,7 @@ export function ProductModal({
                         onChange={(e) => setCepInput(e.target.value)}
                         placeholder="Digite seu CEP (ex: 01310-100)"
                         maxLength={9}
-                        className="flex-1 px-3 py-2 bg-[#FAF7FA] border border-[#EBDDF0] rounded-xl text-xs focus:outline-none focus:border-[#271E2D]"
+                        className="flex-1 px-3 py-2 bg-[#FAF7FB] border border-[#DAC9DF] rounded-xl text-xs focus:outline-none focus:border-[#271E2D]"
                       />
                       <button
                         type="submit"
@@ -493,7 +505,7 @@ export function ProductModal({
                     </form>
 
                     {cepResult && (
-                      <div className="space-y-1.5 p-3 rounded-xl bg-[#FAF7FA] border border-[#EBDDF0] text-xs">
+                      <div className="space-y-1.5 p-3 rounded-xl bg-[#FAF7FB] border border-[#DAC9DF] text-xs">
                         <div className="flex justify-between items-center">
                           <span>📦 Correios PAC (5 a 8 dias úteis)</span>
                           <strong className="text-slate-800">
@@ -514,8 +526,8 @@ export function ProductModal({
 
               {/* Related products */}
               {relatedProducts.length > 0 && (
-                <div className="pt-4 border-t border-[#EBDDF0]">
-                  <span className="text-xs font-bold text-gray-800 block mb-3">
+                <div className="pt-4 border-t border-[#DAC9DF]">
+                  <span className="text-xs font-bold text-slate-800 block mb-3">
                     Você também pode gostar
                   </span>
                   <div className="grid grid-cols-3 gap-2.5">
@@ -526,14 +538,14 @@ export function ProductModal({
                         onClick={() => onSelectProduct(p)}
                         className="text-left group cursor-pointer"
                       >
-                        <div className="aspect-3/4 rounded-xl overflow-hidden bg-slate-100 border border-[#EBDDF0] mb-1.5">
+                        <div className="aspect-3/4 rounded-xl overflow-hidden bg-slate-50 border border-[#DAC9DF] mb-1.5">
                           <img
                             src={p.image}
                             alt={p.name}
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform"
                           />
                         </div>
-                        <h4 className="text-[11px] font-bold text-gray-800 line-clamp-1 group-hover:text-[#846391]">
+                        <h4 className="text-[11px] font-bold text-slate-800 line-clamp-1 group-hover:text-[#8A5D96]">
                           {p.name}
                         </h4>
                         <span className="text-[11px] font-bold text-[#271E2D]">

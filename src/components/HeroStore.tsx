@@ -10,7 +10,10 @@ import {
   Heart, 
   Star,
   CheckCircle2,
-  Crown
+  Crown,
+  Leaf,
+  Gem,
+  Award
 } from 'lucide-react';
 import { Logo } from './Logo';
 
@@ -36,97 +39,107 @@ interface HeroSlide {
   image: string;
   ratingScore: string;
   ratingCount: string;
-  pillars: Array<{ title: string; desc: string }>;
+  pillars: Array<{ title: string; desc: string; icon: React.ReactNode }>;
+  gradient: string;
+  accentColor: string;
 }
 
 const HERO_SLIDES: HeroSlide[] = [
   {
     id: 'moda-modesta-principal',
-    badge: 'Proposta de Valor Exclusiva • Moda Modesta',
+    badge: 'COLEÇÃO EXCLUSIVA • MODA MODESTA PREMIUM',
     titlePrefix: 'Elegância e Graça para Celebrar a Sua Essência com',
     highlight: 'Modéstia e Dignidade',
     subtitle: 'Vestidos mídi plissados, saias estruturadas e alfaiataria fina especialmente selecionados com medidas reais na fita métrica, caimento seguro e zero transparência para cultos e celebrações.',
     tagline: 'Modelagens que valorizam você sem abrir mão dos seus princípios e valores.',
     measurementPill: 'Medidas Reais na Fita • Comprimentos Mídi Seguros',
-    biblicalVerse: 'Vestida de força e dignidade — Provérbios 31:25',
+    biblicalVerse: '"Vestida de força e dignidade" — Provérbios 31:25',
     ctaText: 'Explorar Moda Modesta',
     secondaryCtaText: 'Ver Vestidos Mídi',
     categoryTarget: 'Moda Feminina (Adulto)',
     sectionTarget: 'sessao-adulto',
-    image: 'https://images.unsplash.com/photo-1496747611176-843222e1e57c?auto=format&fit=crop&w=1200&q=85',
+    image: 'https://images.unsplash.com/photo-1496747611176-843222e1e57c?auto=format&fit=crop&w=1920&q=85',
     ratingScore: '4.9',
     ratingCount: '+1.200 irmãs atendidas',
     pillars: [
-      { title: 'Medidas na Fita', desc: 'Busto, cintura e mídi' },
-      { title: 'Zero Transparência', desc: 'Tecidos encorpados' },
-      { title: 'Peças Impecáveis', desc: 'Higienizadas e revisadas' },
-    ]
+      { title: 'Medidas na Fita', desc: 'Busto, cintura e mídi', icon: <Ruler className="w-5 h-5" /> },
+      { title: 'Zero Transparência', desc: 'Tecidos encorpados', icon: <ShieldCheck className="w-5 h-5" /> },
+      { title: 'Peças Impecáveis', desc: 'Higienizadas e revisadas', icon: <Gem className="w-5 h-5" /> },
+    ],
+    gradient: 'from-[#271E2D] via-[#3B0764] to-[#1A0F1E]',
+    accentColor: '#DFBA5A',
   },
   {
     id: 'alfaiataria-e-saias',
-    badge: 'Cortes Nobres & Decotes Respeitosos',
+    badge: 'CORTES NOBRES & DECOTES RESPEITOSOS',
     titlePrefix: 'A Perfeita Sintonia entre o Clássico e a',
     highlight: 'Postura Cristã Virtuosa',
     subtitle: 'Saias godê evasê, camisas de tecido nobre e sobreposições elegantes. Peças únicas com acabamento primoroso prontas para vestir você com respeito e sofisticação.',
     tagline: 'Tecidos encorpados de alta qualidade que não marcam e proporcionam total liberdade de movimento.',
     measurementPill: 'Cintura Alta Anatômica • Caimento Impecável',
-    biblicalVerse: 'Beleza que reflete serenidade e propósito',
+    biblicalVerse: '"Beleza que reflete serenidade e propósito"',
     ctaText: 'Conhecer Alfaiataria',
     secondaryCtaText: 'Ver Saias Godê',
     categoryTarget: 'Moda Feminina (Adulto)',
     sectionTarget: 'sessao-adulto',
-    image: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1200&q=85',
+    image: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1920&q=85',
     ratingScore: '5.0',
     ratingCount: 'Seleção 100% aprovada',
     pillars: [
-      { title: 'Tecido Encorpado', desc: 'Não marca o corpo' },
-      { title: 'Alfaiataria Fina', desc: 'Cortes alinhados' },
-      { title: 'Peças Únicas', desc: 'Exclusividade de brechó' },
-    ]
+      { title: 'Tecido Encorpado', desc: 'Não marca o corpo', icon: <Leaf className="w-5 h-5" /> },
+      { title: 'Alfaiataria Fina', desc: 'Cortes alinhados', icon: <Award className="w-5 h-5" /> },
+      { title: 'Peças Únicas', desc: 'Exclusividade de brechó', icon: <Gem className="w-5 h-5" /> },
+    ],
+    gradient: 'from-[#1A0F1E] via-[#2D1B3D] to-[#3B0764]',
+    accentColor: '#DAC9DF',
   },
   {
     id: 'linha-infantil-modesta',
-    badge: 'Delicadeza Infantil • Kids com Conforto',
+    badge: 'DELICADEZA INFANTIL • KIDS COM CONFORTO',
     titlePrefix: 'Pureza, Liberdade & Ternura para Vestir',
     highlight: 'Crianças com Muito Amor',
     subtitle: 'Vestidinhos encantadores para meninas e conjuntinhos sociais de algodão respirável para meninos. A pureza da infância celebrada com graciosidade.',
     tagline: 'Modelagens infantis confortáveis para ir à igreja, encontros de família e momentos alegres.',
     measurementPill: '100% Algodão Suave • Costuras Antialérgicas',
-    biblicalVerse: 'Ensina a criança no caminho em que deve andar',
+    biblicalVerse: '"Ensina a criança no caminho em que deve andar"',
     ctaText: 'Ver Linha Infantil',
     secondaryCtaText: 'Vestidinhos Kids',
     categoryTarget: 'Moda Infantil',
     sectionTarget: 'sessao-kids',
-    image: 'https://images.unsplash.com/photo-1518831959646-742c3a14ebf7?auto=format&fit=crop&w=1200&q=85',
+    image: 'https://images.unsplash.com/photo-1518831959646-742c3a14ebf7?auto=format&fit=crop&w=1920&q=85',
     ratingScore: '4.9',
     ratingCount: 'Conforto infantil comprovado',
     pillars: [
-      { title: '100% Algodão', desc: 'Toque macio na pele' },
-      { title: 'Conforto Total', desc: 'Liberdade para brincar' },
-      { title: 'Modelagem Doce', desc: 'Elegância infantil' },
-    ]
+      { title: '100% Algodão', desc: 'Toque macio na pele', icon: <Leaf className="w-5 h-5" /> },
+      { title: 'Conforto Total', desc: 'Liberdade para brincar', icon: <Heart className="w-5 h-5" /> },
+      { title: 'Modelagem Doce', desc: 'Elegância infantil', icon: <Sparkles className="w-5 h-5" /> },
+    ],
+    gradient: 'from-[#F5EFF7] via-[#FAF7FB] to-[#F0E6F5]',
+    accentColor: '#8A5D96',
   },
   {
     id: 'artigos-cristaos-biblia',
-    badge: 'Espaço Cristão • Artigos de Fé',
+    badge: 'ESPAÇO CRISTÃO • ARTIGOS DE FÉ PREMIUM',
     titlePrefix: 'Zelo e Carinho para Guardar e Proteger as',
     highlight: 'Sagradas Escrituras',
     subtitle: 'Capas acolchoadas em matelassê, couro ecológico nobre e semijoias com passagens bíblicas. Um toque de reverência ao seu momento devocional diário.',
     tagline: 'Fechamento com zíper duplo reforçado e compartimento para caneta e marcadores de leitura.',
     measurementPill: 'Compatível com Bíblias Médias e Grandes',
-    biblicalVerse: 'Lâmpada para os meus pés é tua palavra — Sl 119:105',
+    biblicalVerse: '"Lâmpada para os meus pés é tua palavra" — Sl 119:105',
     ctaText: 'Ver Artigos de Fé',
     secondaryCtaText: 'Capas para Bíblia',
     categoryTarget: 'Acessórios Cristãos',
     sectionTarget: 'sessao-cristao',
-    image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=1200&q=85',
+    image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=1920&q=85',
     ratingScore: '5.0',
     ratingCount: 'Proteção comprovada',
     pillars: [
-      { title: 'Alta Proteção', desc: 'Zíper reforçado' },
-      { title: 'Couro Ecológico', desc: 'Matelassê resistente' },
-      { title: 'Compartimento Útil', desc: 'Marcadores e caneta' },
-    ]
+      { title: 'Alta Proteção', desc: 'Zíper reforçado', icon: <ShieldCheck className="w-5 h-5" /> },
+      { title: 'Couro Ecológico', desc: 'Matelassê resistente', icon: <Leaf className="w-5 h-5" /> },
+      { title: 'Compartimento Útil', desc: 'Marcadores e caneta', icon: <Gem className="w-5 h-5" /> },
+    ],
+    gradient: 'from-[#271E2D] via-[#1A0F1E] to-[#0D080F]',
+    accentColor: '#DFBA5A',
   }
 ];
 
@@ -137,25 +150,39 @@ export const HeroStore: React.FC<HeroStoreProps> = ({
 }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
   const touchStartXRef = useRef<number | null>(null);
   const touchEndXRef = useRef<number | null>(null);
+  const slideRef = useRef<HTMLDivElement>(null);
 
   const totalSlides = HERO_SLIDES.length;
+  const slide = HERO_SLIDES[currentSlide];
 
   const handleNext = useCallback(() => {
+    setIsAnimating(true);
     setCurrentSlide((prev) => (prev + 1) % totalSlides);
+    setTimeout(() => setIsAnimating(false), 600);
   }, [totalSlides]);
 
   const handlePrev = useCallback(() => {
+    setIsAnimating(true);
     setCurrentSlide((prev) => (prev - 1 + totalSlides) % totalSlides);
+    setTimeout(() => setIsAnimating(false), 600);
   }, [totalSlides]);
 
-  // Troca automática de banners a cada 6 segundos, pausada ao passar o mouse ou focar
+  const goToSlide = useCallback((index: number) => {
+    if (index === currentSlide) return;
+    setIsAnimating(true);
+    setCurrentSlide(index);
+    setTimeout(() => setIsAnimating(false), 600);
+  }, [currentSlide]);
+
+  // Troca automática de banners a cada 7 segundos, pausada ao passar o mouse ou focar
   useEffect(() => {
     if (isPaused) return;
     const interval = setInterval(() => {
       handleNext();
-    }, 6000);
+    }, 7000);
     return () => clearInterval(interval);
   }, [isPaused, handleNext]);
 
@@ -171,257 +198,280 @@ export const HeroStore: React.FC<HeroStoreProps> = ({
   const handleTouchEnd = () => {
     if (touchStartXRef.current === null || touchEndXRef.current === null) return;
     const distance = touchStartXRef.current - touchEndXRef.current;
-    const minSwipeDistance = 45;
+    const minSwipeDistance = 50;
 
     if (distance > minSwipeDistance) {
-      // Arrastou para a esquerda -> próximo slide
       handleNext();
     } else if (distance < -minSwipeDistance) {
-      // Arrastou para a direita -> slide anterior
       handlePrev();
     }
-
     touchStartXRef.current = null;
     touchEndXRef.current = null;
   };
 
-  const handleAction = (slide: HeroSlide, targetType: 'primary' | 'secondary' = 'primary') => {
-    if (targetType === 'secondary' && onScrollToSection && slide.sectionTarget) {
-      onScrollToSection(slide.sectionTarget);
-      return;
-    }
-
-    if (onScrollToSection && slide.sectionTarget) {
-      onScrollToSection(slide.sectionTarget);
-    } else if (onSelectCategory && slide.categoryTarget) {
-      onSelectCategory(slide.categoryTarget);
-    } else {
-      onExploreClick();
-    }
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'ArrowLeft') handlePrev();
+    if (e.key === 'ArrowRight') handleNext();
   };
 
   return (
     <section 
-      className="relative w-full max-w-full overflow-hidden rounded-2xl sm:rounded-3xl mb-8 sm:mb-12 shadow-2xl border border-[#3D2C47] bg-gradient-to-br from-[#1E1624] via-[#271E2D] to-[#150F1A]"
+      ref={slideRef}
+      className="relative w-full overflow-hidden rounded-3xl mb-10 sm:mb-14"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
-      aria-label="Carrossel Principal de Moda Modesta"
-      id="tdm-hero-carousel"
+      onKeyDown={handleKeyDown}
+      tabIndex={0}
+      role="region"
+      aria-label="Carrossel de destaque Todday Modas"
     >
-      {/* Background Decorativo com Padrões Suaves e Blur */}
-      <div className="absolute inset-0 pointer-events-none opacity-30 overflow-hidden">
-        <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-[#DAC9DF]/15 blur-3xl" />
-        <div className="absolute -bottom-24 -left-24 w-96 h-96 rounded-full bg-[#DFBA5A]/10 blur-3xl" />
+      {/* Background Image with Gradient Overlay */}
+      <div className="absolute inset-0 z-0">
+        <img
+          src={slide.image}
+          alt=""
+          className={`w-full h-full object-cover transition-all duration-1000 ease-out ${isAnimating ? 'scale-105 opacity-50' : 'scale-100 opacity-100'}`}
+          loading={currentSlide === 0 ? 'eager' : 'lazy'}
+        />
+        <div className="absolute inset-0 bg-gradient-to-r" style={{ background: slide.gradient }} />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_0%,_rgba(39,30,45,0.4)_100%)]" />
       </div>
 
-      {/* ============================================================ */}
-      {/* TRILHO DE TRANSIÇÃO LATERAL (SLIDER TRACK)                   */}
-      {/* Cada slide ocupa exatamente 100% da largura do contêiner     */}
-      {/* Desliza suavemente sem cortes, vazios ou overflow lateral   */}
-      {/* ============================================================ */}
-      <div 
-        className="flex w-full transition-transform duration-600 ease-out will-change-transform"
-        style={{ transform: `translateX(-${currentSlide * 100}%)` }}
-      >
-        {HERO_SLIDES.map((slide, idx) => (
-          <div 
-            key={slide.id}
-            className="w-full min-w-full shrink-0 flex-none box-border"
-            aria-hidden={idx !== currentSlide}
-          >
-            <div className="grid grid-cols-1 lg:grid-cols-12 items-stretch min-h-[460px] sm:min-h-[520px] lg:min-h-[540px]">
-              
-              {/* ---------------------------------------------------- */}
-              {/* COLUNA ESQUERDA: PROPOSTA DE VALOR & CTAs           */}
-              {/* ---------------------------------------------------- */}
-              <div className="lg:col-span-7 p-5 sm:p-8 md:p-10 lg:p-12 xl:p-14 flex flex-col justify-center relative z-10">
-                {/* 1. Badge Superior com Emblema e Versículo */}
-                <div className="flex flex-wrap items-center gap-2 sm:gap-2.5 mb-3 sm:mb-4">
-                  <div 
-                    className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] sm:text-xs font-black uppercase tracking-wider text-[#271E2D] shadow-sm border border-white/60 shrink-0"
-                    style={{ backgroundColor: '#DAC9DF' }}
-                  >
-                    <Crown className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#271E2D]" />
-                    <span>{slide.badge}</span>
-                  </div>
+      {/* Floating Decorative Elements */}
+      <div className="absolute inset-0 z-5 overflow-hidden pointer-events-none">
+        <div className="absolute top-1/4 left-5 w-24 h-24 rounded-full opacity-10 animate-pulse-slow" style={{ backgroundColor: slide.accentColor, animationDuration: '8s' }} />
+        <div className="absolute bottom-1/3 right-10 w-32 h-32 rounded-full opacity-5 animate-float" style={{ backgroundColor: slide.accentColor, animationDuration: '12s' }} />
+        <div className="absolute top-1/3 right-1/4 w-16 h-16 rounded-full opacity-10 animate-pulse-slow" style={{ backgroundColor: slide.accentColor, animationDuration: '10s' }} />
+        <div className="absolute bottom-20 left-1/3 w-20 h-20 rounded-full opacity-5 animate-float" style={{ backgroundColor: slide.accentColor, animationDuration: '15s' }} />
+      </div>
 
-                  {slide.biblicalVerse && (
-                    <span className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-medium text-purple-200/90 bg-white/10 backdrop-blur-md border border-white/15">
-                      <Heart className="w-3 h-3 text-[#DAC9DF]" />
-                      <span>{slide.biblicalVerse}</span>
-                    </span>
-                  )}
-                </div>
+      {/* Content */}
+      <div className="relative z-10 min-h-[520px] sm:min-h-[600px] flex items-center p-6 sm:p-10 lg:p-16">
+        <div className="max-w-7xl mx-auto w-full">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+            {/* Left Column - Copy */}
+            <div className="text-white animate-slide-up" style={{ animationDelay: isAnimating ? '200ms' : '0ms' }}>
+              {/* Badge */}
+              <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-[10px] sm:text-xs font-black uppercase tracking-[0.2em] border backdrop-blur-sm"
+                style={{ backgroundColor: `${slide.accentColor}20`, borderColor: `${slide.accentColor}40`, color: slide.accentColor }}
+              >
+                <span className="w-1.5 h-1.5 rounded-full animate-ping" style={{ backgroundColor: slide.accentColor }} />
+                {slide.badge}
+              </span>
 
-                {/* 2. Título Principal em Tipografia Serifada */}
-                <h1 className="font-serif text-2xl sm:text-3.5xl md:text-4xl lg:text-4.5xl xl:text-5xl font-black text-white leading-tight sm:leading-[1.15] mb-3 sm:mb-4 tracking-tight">
-                  {slide.titlePrefix}{' '}
-                  <span className="text-[#DAC9DF] relative inline-block underline decoration-[#DAC9DF]/50 decoration-2 sm:decoration-4 underline-offset-4">
-                    {slide.highlight}
-                  </span>
-                </h1>
+              {/* Title */}
+              <h1 className="mt-6 font-serif font-black leading-[1.1] text-4xl sm:text-5xl lg:text-6xl xl:text-7xl tracking-tight">
+                <span className="block text-white/90">{slide.titlePrefix}</span>
+                <span className="block relative inline-block" style={{ color: slide.accentColor }}>
+                  {slide.highlight}
+                  <span className="absolute bottom-0 left-0 right-0 h-1.5 -translate-y-1/2 opacity-30" style={{ backgroundColor: slide.accentColor }} />
+                </span>
+              </h1>
 
-                {/* 3. Subtítulo Explicativo da Proposta de Valor */}
-                <p className="text-xs sm:text-sm md:text-base text-purple-100/90 leading-relaxed mb-5 sm:mb-6 max-w-xl font-normal">
-                  {slide.subtitle}
-                </p>
+              {/* Subtitle */}
+              <p className="mt-6 text-lg sm:text-xl text-white/80 leading-relaxed max-w-xl">
+                {slide.subtitle}
+              </p>
 
-                {/* 4. Os 3 Pilares da Proposta de Valor */}
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-2.5 mb-6 sm:mb-7 py-2.5 sm:py-3 px-3 sm:px-3.5 rounded-2xl bg-black/25 backdrop-blur-sm border border-white/10 text-left">
-                  {slide.pillars.map((pillar, pIdx) => (
-                    <div key={pIdx} className="flex items-center gap-2">
-                      <div className="w-6 h-6 rounded-full bg-[#DAC9DF]/20 flex items-center justify-center shrink-0">
-                        {pIdx === 0 ? (
-                          <Ruler className="w-3.5 h-3.5 text-[#DAC9DF]" />
-                        ) : pIdx === 1 ? (
-                          <ShieldCheck className="w-3.5 h-3.5 text-[#DAC9DF]" />
-                        ) : (
-                          <CheckCircle2 className="w-3.5 h-3.5 text-[#DAC9DF]" />
-                        )}
-                      </div>
-                      <div className="min-w-0">
-                        <strong className="block text-white text-[11px] font-bold leading-tight truncate">
-                          {pillar.title}
-                        </strong>
-                        <span className="text-[10px] text-purple-200/70 truncate block">
-                          {pillar.desc}
-                        </span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+              {/* Tagline */}
+              <p className="mt-5 text-base sm:text-lg italic text-white/60 leading-relaxed max-w-xl border-l-2 pl-4" style={{ borderColor: slide.accentColor }}>
+                {slide.tagline}
+              </p>
 
-                {/* 5. Botões de Chamada para Ação (CTAs) */}
-                <div className="flex flex-wrap items-center gap-2.5 sm:gap-3.5">
-                  <button
-                    type="button"
-                    onClick={() => handleAction(slide, 'primary')}
-                    className="group flex items-center justify-center gap-2.5 px-6 sm:px-8 py-3.5 sm:py-4 rounded-full font-black text-xs sm:text-sm text-[#271E2D] transition-all hover:scale-105 active:scale-95 shadow-xl hover:shadow-[#DAC9DF]/30 cursor-pointer border-2 border-white/60 min-w-[170px]"
-                    style={{ backgroundColor: '#DAC9DF' }}
-                    id={`hero-cta-btn-${slide.id}`}
-                  >
-                    <ShoppingBag className="w-4 h-4 text-[#271E2D] group-hover:rotate-6 transition-transform" />
-                    <span>{slide.ctaText}</span>
-                    <ArrowRight className="w-4 h-4 text-[#271E2D] group-hover:translate-x-1 transition-transform" />
-                  </button>
+              {/* Measurement Pill */}
+              <div className="mt-8 flex flex-wrap gap-3">
+                <span className="inline-flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-bold uppercase tracking-wider backdrop-blur-sm"
+                  style={{ backgroundColor: 'rgba(255,255,255,0.1)', borderColor: 'rgba(255,255,255,0.2)', borderWidth: '1px', borderStyle: 'solid', color: slide.accentColor }}
+                >
+                  <Ruler className="w-4 h-4" />
+                  {slide.measurementPill}
+                </span>
+              </div>
 
-                  <button
-                    type="button"
-                    onClick={() => handleAction(slide, 'secondary')}
-                    className="flex items-center justify-center gap-2 px-5 sm:px-6 py-3.5 sm:py-4 rounded-full font-bold text-xs sm:text-sm text-white bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/25 transition-all cursor-pointer hover:border-white/50 active:scale-95"
-                  >
-                    <span>{slide.secondaryCtaText}</span>
-                  </button>
-                </div>
-
-                {/* 6. Avaliação e Prova Social */}
-                <div className="flex items-center gap-2 sm:gap-3 mt-5 sm:mt-6 pt-4 sm:pt-5 border-t border-white/10 text-xs text-purple-200/80">
-                  <div className="flex items-center gap-0.5 text-[#DFBA5A]">
+              {/* Rating & Social Proof */}
+              <div className="mt-8 flex items-center gap-6">
+                <div className="flex items-center gap-2">
+                  <div className="flex -space-x-1" aria-hidden="true">
                     {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="w-3.5 h-3.5 fill-[#DFBA5A]" />
+                      <Star key={i} className="w-5 h-5 fill-current" style={{ color: slide.accentColor }} />
                     ))}
                   </div>
-                  <span className="text-white font-bold">{slide.ratingScore}</span>
-                  <span className="text-purple-300">•</span>
-                  <span>{slide.ratingCount}</span>
+                  <span className="text-xl font-black" style={{ color: slide.accentColor }}>{slide.ratingScore}</span>
+                </div>
+                <div className="hidden sm:block">
+                  <p className="text-white/70 text-sm">{slide.ratingCount}</p>
+                  {slide.biblicalVerse && (
+                    <p className="text-white/50 text-xs italic mt-0.5">{slide.biblicalVerse}</p>
+                  )}
                 </div>
               </div>
 
-              {/* ---------------------------------------------------- */}
-              {/* COLUNA DIREITA: VITRINE VISUAL EDITORIAL             */}
-              {/* ---------------------------------------------------- */}
-              <div className="lg:col-span-5 relative min-h-[300px] sm:min-h-[380px] lg:min-h-[500px] p-4 sm:p-6 lg:p-8 flex items-center justify-center">
-                <div className="relative w-full h-full min-h-[280px] sm:min-h-[360px] lg:min-h-[460px] rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl border border-white/20 group">
+              {/* CTAs */}
+              <div className="mt-10 flex flex-col sm:flex-row gap-4">
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (onSelectCategory) onSelectCategory(slide.categoryTarget);
+                    if (onScrollToSection) onScrollToSection(slide.sectionTarget);
+                    onExploreClick();
+                  }}
+                  className="group inline-flex items-center justify-center gap-3 px-8 py-4 rounded-2xl font-black text-base sm:text-lg transition-all duration-300 shadow-xl hover:shadow-2xl hover:-translate-y-1 focus:outline-none focus:ring-4 focus:ring-offset-2 focus:ring-offset-[#271E2D]"
+                  style={{ backgroundColor: slide.accentColor, color: '#271E2D' }}
+                >
+                  <span className="relative z-10">{slide.ctaText}</span>
+                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  <span className="absolute inset-0 bg-white/20 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (onSelectCategory) onSelectCategory(slide.categoryTarget);
+                    if (onScrollToSection) onScrollToSection(slide.sectionTarget);
+                  }}
+                  className="inline-flex items-center justify-center gap-3 px-8 py-4 rounded-2xl font-black text-base sm:text-lg transition-all duration-300 border-2 hover:-translate-y-1 focus:outline-none focus:ring-4 focus:ring-offset-2 focus:ring-offset-[#271E2D]"
+                  style={{ borderColor: 'rgba(255,255,255,0.3)', color: 'white', backgroundColor: 'rgba(255,255,255,0.05)' }}
+                >
+                  <span className="relative z-10">{slide.secondaryCtaText}</span>
+                  <Sparkles className="w-5 h-5" />
+                </button>
+              </div>
+
+              {/* Pillars */}
+              <div className="mt-12 grid grid-cols-3 gap-4 pt-8 border-t" style={{ borderColor: 'rgba(255,255,255,0.1)' }}>
+                {slide.pillars.map((pillar, i) => (
+                  <div key={i} className="text-center group" style={{ animationDelay: `${i * 100}ms` }}>
+                    <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl mb-4 transition-all duration-300 group-hover:scale-110"
+                      style={{ backgroundColor: 'rgba(255,255,255,0.05)', borderColor: 'rgba(255,255,255,0.1)', borderWidth: '1px', borderStyle: 'solid', color: slide.accentColor }}
+                    >
+                      {pillar.icon}
+                    </div>
+                    <h4 className="font-bold text-white text-sm mb-1">{pillar.title}</h4>
+                    <p className="text-white/60 text-xs leading-tight">{pillar.desc}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Right Column - Visual */}
+            <div className="relative animate-fade-in" style={{ animationDelay: '300ms' }}>
+              {/* Decorative Frame */}
+              <div className="relative">
+                {/* Corner Accents */}
+                <div className="absolute -top-4 -left-4 w-8 h-8 border-t-2 border-l-2 rounded-tl-xl transition-opacity duration-300" style={{ borderColor: slide.accentColor, opacity: 0.6 }} />
+                <div className="absolute -top-4 -right-4 w-8 h-8 border-t-2 border-r-2 rounded-tr-xl transition-opacity duration-300" style={{ borderColor: slide.accentColor, opacity: 0.6 }} />
+                <div className="absolute -bottom-4 -left-4 w-8 h-8 border-b-2 border-l-2 rounded-bl-xl transition-opacity duration-300" style={{ borderColor: slide.accentColor, opacity: 0.6 }} />
+                <div className="absolute -bottom-4 -right-4 w-8 h-8 border-b-2 border-r-2 rounded-br-xl transition-opacity duration-300" style={{ borderColor: slide.accentColor, opacity: 0.6 }} />
+
+                {/* Main Image with Parallax Effect */}
+                <div className="relative aspect-[3/4] sm:aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl bg-gradient-to-br" style={{ boxShadow: `0 25px 50px -12px ${slide.accentColor}40` }}>
                   <img
                     src={slide.image}
-                    alt={slide.highlight}
-                    referrerPolicy="no-referrer"
-                    className="w-full h-full object-cover object-center absolute inset-0 transition-transform duration-700 group-hover:scale-105"
+                    alt={slide.badge}
+                    className="w-full h-full object-cover transition-transform duration-1000 ease-out hover:scale-102"
+                    loading="eager"
                   />
-                  {/* Gradiente de proteção para textos sobre a foto */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#1E1624] via-transparent to-black/25" />
+                  {/* Gradient overlay on image */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
+                </div>
 
-                  {/* Tag Flutuante Superior de Medidas Reais */}
-                  <div className="absolute top-3 sm:top-4 left-3 sm:left-4 z-20 bg-[#271E2D]/90 backdrop-blur-md border border-[#DAC9DF]/50 px-3 sm:px-3.5 py-1.5 rounded-full flex items-center gap-1.5 shadow-lg text-[10px] sm:text-[11px] font-bold text-white max-w-[90%] truncate">
-                    <Ruler className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#DAC9DF] shrink-0" />
-                    <span className="truncate">{slide.measurementPill}</span>
+                {/* Floating badges on image */}
+                <div className="absolute top-6 left-6 flex flex-col gap-2">
+                  <span className="px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider backdrop-blur-sm"
+                    style={{ backgroundColor: 'rgba(39,30,45,0.9)', color: slide.accentColor, borderColor: 'rgba(255,255,255,0.1)', borderWidth: '1px', borderStyle: 'solid' }}
+                  >
+                    PEÇA ÚNICA
+                  </span>
+                  <span className="px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider backdrop-blur-sm"
+                    style={{ backgroundColor: 'rgba(255,255,255,0.15)', color: 'white', borderColor: 'rgba(255,255,255,0.2)', borderWidth: '1px', borderStyle: 'solid' }}
+                  >
+                    EXCLUSIVO TODDAY
+                  </span>
+                </div>
+
+                {/* Bottom right - Rating */}
+                <div className="absolute bottom-6 right-6 flex items-center gap-3 px-4 py-3 rounded-2xl backdrop-blur-xl"
+                  style={{ backgroundColor: 'rgba(39,30,45,0.85)', borderColor: 'rgba(255,255,255,0.1)', borderWidth: '1px', borderStyle: 'solid' }}
+                >
+                  <div className="flex items-center gap-1" style={{ color: slide.accentColor }}>
+                    <Star className="w-5 h-5 fill-current" />
+                    <Star className="w-5 h-5 fill-current" />
+                    <Star className="w-5 h-5 fill-current" />
+                    <Star className="w-5 h-5 fill-current" />
+                    <Star className="w-5 h-5 fill-current" />
                   </div>
-
-                  {/* Card Flutuante Inferior com Ícone de Cabide da Todday Modas */}
-                  <div className="absolute bottom-3 sm:bottom-4 left-3 sm:left-4 right-3 sm:right-4 z-20 bg-[#1E1624]/92 backdrop-blur-md border border-white/20 p-3 sm:p-4 rounded-2xl shadow-xl flex items-center justify-between gap-3">
-                    <div className="flex items-center gap-2.5 min-w-0">
-                      <Logo variant="symbol" size="sm" theme="dark" />
-                      <div className="min-w-0">
-                        <strong className="block text-white text-xs font-serif font-black truncate">
-                          Todday Modas Ateliê
-                        </strong>
-                        <span className="text-[10px] text-purple-200/80 line-clamp-1">
-                          {slide.tagline}
-                        </span>
-                      </div>
-                    </div>
-
-                    <button
-                      type="button"
-                      onClick={() => handleAction(slide, 'primary')}
-                      className="px-3 py-1.5 rounded-xl font-bold text-[11px] text-[#271E2D] bg-[#DAC9DF] hover:bg-white transition-colors cursor-pointer shrink-0 shadow-xs"
-                    >
-                      Ver Peças
-                    </button>
+                  <div className="text-left">
+                    <p className="font-black text-white text-sm">{slide.ratingScore}</p>
+                    <p className="text-white/70 text-[11px]">{slide.ratingCount}</p>
                   </div>
                 </div>
               </div>
 
+              {/* Slide Indicators */}
+              <div className="mt-8 flex items-center justify-center gap-2">
+                {HERO_SLIDES.map((_, i) => (
+                  <button
+                    key={i}
+                    type="button"
+                    onClick={() => goToSlide(i)}
+                    className={`w-2.5 h-2.5 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2`}
+                    style={{
+                      backgroundColor: i === currentSlide ? slide.accentColor : 'rgba(255,255,255,0.3)',
+                      width: i === currentSlide ? '2rem' : '0.625rem',
+                      borderRadius: i === currentSlide ? '9999px' : '9999px',
+                    }}
+                    aria-label={`Ir para slide ${i + 1}`}
+                    aria-current={i === currentSlide ? 'true' : 'false'}
+                  />
+                ))}
+              </div>
             </div>
           </div>
-        ))}
+        </div>
       </div>
 
-      {/* ============================================================ */}
-      {/* BOTÕES DE NAVEGAÇÃO LATERAL (ANTERIOR / PRÓXIMO)             */}
-      {/* Dimensionados e posicionados sem cortes ou bugs visuais      */}
-      {/* ============================================================ */}
+      {/* Navigation Arrows */}
       <button
         type="button"
         onClick={handlePrev}
-        className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-30 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-black/50 hover:bg-[#271E2D] text-white flex items-center justify-center backdrop-blur-md border border-white/25 transition-all cursor-pointer shadow-lg hover:scale-110 active:scale-95"
-        title="Coleção Anterior"
-        aria-label="Slide Anterior"
+        className="absolute left-4 sm:left-6 top-1/2 -translate-y-1/2 z-20 p-3 rounded-full transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-offset-2"
+        style={{ 
+          backgroundColor: 'rgba(39,30,45,0.7)', 
+          color: 'white',
+          borderColor: 'rgba(255,255,255,0.2)',
+          borderWidth: '1px',
+          borderStyle: 'solid',
+          opacity: isPaused ? 1 : 0.7,
+        }}
+        aria-label="Slide anterior"
       >
-        <ChevronLeft className="w-5 h-5 text-white" />
+        <ChevronLeft className="w-6 h-6" />
       </button>
-
       <button
         type="button"
         onClick={handleNext}
-        className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-30 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-black/50 hover:bg-[#271E2D] text-white flex items-center justify-center backdrop-blur-md border border-white/25 transition-all cursor-pointer shadow-lg hover:scale-110 active:scale-95"
-        title="Próxima Coleção"
-        aria-label="Próximo Slide"
+        className="absolute right-4 sm:right-6 top-1/2 -translate-y-1/2 z-20 p-3 rounded-full transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-offset-2"
+        style={{ 
+          backgroundColor: 'rgba(39,30,45,0.7)', 
+          color: 'white',
+          borderColor: 'rgba(255,255,255,0.2)',
+          borderWidth: '1px',
+          borderStyle: 'solid',
+          opacity: isPaused ? 1 : 0.7,
+        }}
+        aria-label="Próximo slide"
       >
-        <ChevronRight className="w-5 h-5 text-white" />
+        <ChevronRight className="w-6 h-6" />
       </button>
 
-      {/* ============================================================ */}
-      {/* INDICADORES EM PONTOS (DOTS DE PAGINAÇÃO)                   */}
-      {/* ============================================================ */}
-      <div className="absolute bottom-3 sm:bottom-4 left-1/2 -translate-x-1/2 z-30 flex items-center gap-1.5 sm:gap-2 bg-black/45 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/15">
-        {HERO_SLIDES.map((item, idx) => (
-          <button
-            key={item.id}
-            type="button"
-            onClick={() => setCurrentSlide(idx)}
-            className={`h-2 rounded-full transition-all cursor-pointer ${
-              idx === currentSlide 
-                ? 'w-6 sm:w-8 bg-[#DAC9DF] shadow-sm' 
-                : 'w-2 bg-white/40 hover:bg-white/75'
-            }`}
-            title={`Slide ${idx + 1}: ${item.highlight}`}
-            aria-label={`Ir para Slide ${idx + 1}`}
-          />
-        ))}
+      {/* Scroll Indicator */}
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce-gentle">
+        <div className="w-6 h-10 border-2 rounded-full flex justify-center pt-2" style={{ borderColor: 'rgba(255,255,255,0.4)' }}>
+          <div className="w-1.5 h-1.5 rounded-full animate-scroll-indicator" style={{ backgroundColor: slide.accentColor }} />
+        </div>
       </div>
     </section>
   );

@@ -1,3 +1,4 @@
+// BUILD_TRACE: AdminSpaPanel v20260921-0115 - imageInputMethod feature
 import React, { useEffect, useState } from 'react';
 import { Order, Product, ActivityLog, PluginSettings } from '../types';
 import {
@@ -19,6 +20,7 @@ import {
   X,
   ExternalLink,
   LoaderCircle,
+  AlertCircle,
 } from 'lucide-react';
 
 interface AdminSpaPanelProps {
@@ -105,6 +107,13 @@ export function AdminSpaPanel({
   const [savingProduct, setSavingProduct] = useState(false);
   const [productSaveMessage, setProductSaveMessage] = useState<string | null>(null);
   const [uploadingMedia, setUploadingMedia] = useState(false);
+  const [imageInputMethod, setImageInputMethod] = useState<'upload' | 'url'>('url');
+  const [uploadToast, setUploadToast] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
+
+  const showUploadToast = (type: 'success' | 'error', message: string) => {
+    setUploadToast({ type, message });
+    setTimeout(() => setUploadToast(null), 4000);
+  };
 
   useEffect(() => {
     setLocalSettings(settings);
@@ -162,6 +171,7 @@ export function AdminSpaPanel({
         await onAddProduct(productForm);
       }
       setIsAddProductOpen(false);
+      setImageInputMethod('url');
     } catch (error: any) {
       setProductSaveMessage(error?.message || 'Não foi possível salvar o produto.');
     } finally {
@@ -172,8 +182,35 @@ export function AdminSpaPanel({
   const handleMediaUpload = async (event: React.ChangeEvent<HTMLInputElement>, kind: 'cover' | 'gallery' | 'video') => {
     const files = Array.from(event.target.files || []) as File[];
     if (!files.length) return;
+
+    // Validação client-side antes de enviar
+    const maxSize = 50 * 1024 * 1024; // 50MB
+    const allowedImages = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+    const allowedVideos = ['video/mp4', 'video/webm', 'video/quicktime'];
+
+    for (const file of files) {
+      if (file.size > maxSize) {
+        showUploadToast('error', `Arquivo "${file.name}" excede 50 MB. Tamanho máximo: 50 MB.`);
+        event.target.value = '';
+        return;
+      }
+      const isImage = allowedImages.includes(file.type);
+      const isVideo = allowedVideos.includes(file.type);
+      if (kind === 'video' && !isVideo) {
+        showUploadToast('error', `Formato "${file.type || file.name}" não permitido para vídeo. Use MP4, WebM ou MOV.`);
+        event.target.value = '';
+        return;
+      }
+      if (kind !== 'video' && !isImage) {
+        showUploadToast('error', `Formato "${file.type || file.name}" não permitido para imagem. Use JPG, PNG, WebP ou GIF.`);
+        event.target.value = '';
+        return;
+      }
+    }
+
     setUploadingMedia(true);
     setProductSaveMessage(null);
+    setImageInputMethod('upload');
     try {
       const uploaded = await Promise.all(files.map((file) => onUploadMedia(file)));
       const images = uploaded.filter((item) => item.type === 'image');
@@ -184,8 +221,10 @@ export function AdminSpaPanel({
         ...(kind === 'gallery' ? { gallery: [...(current.gallery || []), ...images.map((item) => item.url)], gallery_ids: [...(current.gallery_ids || []), ...images.map((item) => item.id)] } : {}),
         ...(kind === 'video' && videos[0] ? { video: videos[0].url } : {}),
       }));
+      const count = images.length + videos.length;
+      showUploadToast('success', count === 1 ? 'Mídia enviada com sucesso!' : `${count} arquivos enviados com sucesso!`);
     } catch (error: any) {
-      setProductSaveMessage(error?.message || 'Não foi possível enviar a mídia.');
+      showUploadToast('error', error?.message || 'Falha no upload. Verifique o arquivo e tente novamente.');
     } finally {
       setUploadingMedia(false);
       event.target.value = '';
@@ -208,6 +247,30 @@ export function AdminSpaPanel({
 
   return (
     <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-8">
+      {/* Upload Toast */}
+      {uploadToast && (
+        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3 px-4 py-3 rounded-2xl shadow-2xl text-sm font-bold animate-in slide-in-from-bottom-2 transition-all min-w-[280px] max-w-md"
+          style={{
+            backgroundColor: uploadToast.type === 'success' ? '#ECFDF5' : '#FEF2F2',
+            borderColor: uploadToast.type === 'success' ? '#A7F3D0' : '#FECACA',
+            color: uploadToast.type === 'success' ? '#065F46' : '#991B1B',
+            borderWidth: '1px',
+            borderStyle: 'solid'
+          }}
+        >
+          <div className="w-6 h-6 rounded-full flex items-center justify-center shrink-0 flex-shrink-0"
+            style={{ backgroundColor: uploadToast.type === 'success' ? '#A7F3D0' : '#FECACA' }}
+          >
+            {uploadToast.type === 'success' ? (
+              <CheckCircle className="w-4 h-4" style={{ color: '#065F46' }} />
+            ) : (
+              <AlertCircle className="w-4 h-4" style={{ color: '#991B1B' }} />
+            )}
+          </div>
+          <span className="text-center">{uploadToast.message}</span>
+        </div>
+      )}
+
       {/* Header */}
       <div className="bg-white p-6 rounded-2xl border border-[#EBDDF0] shadow-xs mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
@@ -496,6 +559,7 @@ export function AdminSpaPanel({
                   review_count: 1,
                   stock: 1,
                 });
+                setImageInputMethod('url');
                 setIsAddProductOpen(true);
               }}
               className="flex items-center gap-1.5 px-4 py-2.5 bg-[#271E2D] text-white text-xs font-bold rounded-xl hover:bg-[#382343] transition-all cursor-pointer shadow-xs"
@@ -536,6 +600,7 @@ export function AdminSpaPanel({
                         onClick={() => {
                           setEditingProduct(p);
                           setProductForm(p);
+                          setImageInputMethod('url');
                           setIsAddProductOpen(true);
                         }}
                         className="p-1.5 text-gray-400 hover:text-[#271E2D] rounded-lg transition-colors cursor-pointer"
@@ -879,7 +944,10 @@ export function AdminSpaPanel({
               </h3>
               <button
                 type="button"
-                onClick={() => setIsAddProductOpen(false)}
+                onClick={() => {
+                  setIsAddProductOpen(false);
+                  setImageInputMethod('url');
+                }}
                 className="text-gray-400 hover:text-gray-600"
               >
                 <X className="w-5 h-5" />
@@ -974,32 +1042,112 @@ export function AdminSpaPanel({
                 </div>
               </div>
 
-              <div>
-                <label className="block font-bold text-gray-700 mb-1">URL da Imagem</label>
-                <input
-                  type="url"
-                  required
-                  value={productForm.image}
-                  onChange={(e) => setProductForm({ ...productForm, image: e.target.value })}
-                  className="w-full px-3 py-2 bg-[#FAF7FA] border border-[#EBDDF0] rounded-xl font-mono text-[11px]"
-                />
-              </div>
+              <div className="space-y-3">
+                {/* Seletor de método de entrada da imagem */}
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setImageInputMethod('url');
+                      // Manter a URL atual se houver
+                    }}
+                    className={`flex-1 px-3 py-2 rounded-xl text-xs font-bold transition-all ${
+                      imageInputMethod === 'url'
+                        ? 'bg-[#271E2D] text-white shadow-xs'
+                        : 'bg-white text-slate-600 border border-[#DAC9DF] hover:border-[#8A5D96]'
+                    }`}
+                  >
+                    Link URL
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setImageInputMethod('upload')}
+                    className={`flex-1 px-3 py-2 rounded-xl text-xs font-bold transition-all ${
+                      imageInputMethod === 'upload'
+                        ? 'bg-[#271E2D] text-white shadow-xs'
+                        : 'bg-white text-slate-600 border border-[#DAC9DF] hover:border-[#8A5D96]'
+                    }`}
+                  >
+                    Upload de Arquivo
+                  </button>
+                </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 rounded-2xl border border-[#EBDDF0] bg-[#FAF7FA] p-3">
-                <label className="cursor-pointer rounded-xl border border-dashed border-[#846391] bg-white p-3 text-center font-bold text-[#6d5276]">
-                  <span className="block mb-1">Capa</span><span className="text-[10px] font-normal">JPG, PNG, WebP</span>
-                  <input type="file" accept="image/jpeg,image/png,image/webp,image/gif" className="hidden" onChange={(e) => handleMediaUpload(e, 'cover')} />
-                </label>
-                <label className="cursor-pointer rounded-xl border border-dashed border-[#846391] bg-white p-3 text-center font-bold text-[#6d5276]">
-                  <span className="block mb-1">Galeria</span><span className="text-[10px] font-normal">Várias imagens</span>
-                  <input type="file" multiple accept="image/jpeg,image/png,image/webp,image/gif" className="hidden" onChange={(e) => handleMediaUpload(e, 'gallery')} />
-                </label>
-                <label className="cursor-pointer rounded-xl border border-dashed border-[#846391] bg-white p-3 text-center font-bold text-[#6d5276]">
-                  <span className="block mb-1">Vídeo</span><span className="text-[10px] font-normal">MP4, WebM, MOV</span>
-                  <input type="file" accept="video/mp4,video/webm,video/quicktime" className="hidden" onChange={(e) => handleMediaUpload(e, 'video')} />
-                </label>
+                {/* Campo URL - ativo apenas quando método = 'url' */}
+                <div>
+                  <label className="block font-bold text-gray-700 mb-1">URL da Imagem da Capa</label>
+                  <input
+                    type="url"
+                    required={imageInputMethod === 'url'}
+                    disabled={imageInputMethod !== 'url'}
+                    value={productForm.image}
+                    onChange={(e) => {
+                      setProductForm({ ...productForm, image: e.target.value });
+                      setImageInputMethod('url');
+                    }}
+                    placeholder="https://exemplo.com/imagem.jpg"
+                    className={`w-full px-3 py-2 rounded-xl font-mono text-[11px] transition-all ${
+                      imageInputMethod === 'url'
+                        ? 'bg-[#FAF7FB] border border-[#DAC9DF] focus:border-[#8A5D96]'
+                        : 'bg-[#F5F5F5] border border-[#E5E5E5] text-slate-400 cursor-not-allowed'
+                    }`}
+                  />
+                  {imageInputMethod !== 'url' && (
+                    <p className="text-[10px] text-slate-400 mt-1">Selecione "Link URL" para editar este campo</p>
+                  )}
+                </div>
+
+                {/* Upload de arquivos - ativo apenas quando método = 'upload' */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 rounded-2xl border border-[#DAC9DF] bg-[#FAF7FB] p-3">
+                  <label className={`cursor-pointer rounded-xl border border-dashed p-3 text-center font-bold text-[#6d5276] transition-all relative ${
+                    imageInputMethod === 'upload'
+                      ? 'border-[#8A5D96] bg-white shadow-xs'
+                      : 'border-[#DAC9DF] opacity-50 pointer-events-none'
+                  }`}>
+                    <span className="block mb-1">Capa</span><span className="text-[10px] font-normal">JPG, PNG, WebP</span>
+                    <input type="file" accept="image/jpeg,image/png,image/webp,image/gif" className="hidden" onChange={(e) => handleMediaUpload(e, 'cover')} disabled={imageInputMethod !== 'upload' || uploadingMedia} />
+                    {uploadingMedia && (
+                      <div className="absolute inset-0 flex items-center justify-center bg-white/90 backdrop-blur-sm rounded-xl z-10">
+                        <LoaderCircle className="w-6 h-6 text-[#8A5D96] animate-spin" />
+                      </div>
+                    )}
+                  </label>
+                  <label className={`cursor-pointer rounded-xl border border-dashed p-3 text-center font-bold text-[#6d5276] transition-all relative ${
+                    imageInputMethod === 'upload'
+                      ? 'border-[#8A5D96] bg-white shadow-xs'
+                      : 'border-[#DAC9DF] opacity-50 pointer-events-none'
+                  }`}>
+                    <span className="block mb-1">Galeria</span><span className="text-[10px] font-normal">Várias imagens</span>
+                    <input type="file" multiple accept="image/jpeg,image/png,image/webp,image/gif" className="hidden" onChange={(e) => handleMediaUpload(e, 'gallery')} disabled={imageInputMethod !== 'upload' || uploadingMedia} />
+                    {uploadingMedia && (
+                      <div className="absolute inset-0 flex items-center justify-center bg-white/90 backdrop-blur-sm rounded-xl z-10">
+                        <LoaderCircle className="w-6 h-6 text-[#8A5D96] animate-spin" />
+                      </div>
+                    )}
+                  </label>
+                  <label className={`cursor-pointer rounded-xl border border-dashed p-3 text-center font-bold text-[#6d5276] transition-all relative ${
+                    imageInputMethod === 'upload'
+                      ? 'border-[#8A5D96] bg-white shadow-xs'
+                      : 'border-[#DAC9DF] opacity-50 pointer-events-none'
+                  }`}>
+                    <span className="block mb-1">Vídeo</span><span className="text-[10px] font-normal">MP4, WebM, MOV</span>
+                    <input type="file" accept="video/mp4,video/webm,video/quicktime" className="hidden" onChange={(e) => handleMediaUpload(e, 'video')} disabled={imageInputMethod !== 'upload' || uploadingMedia} />
+                    {uploadingMedia && (
+                      <div className="absolute inset-0 flex items-center justify-center bg-white/90 backdrop-blur-sm rounded-xl z-10">
+                        <LoaderCircle className="w-6 h-6 text-[#8A5D96] animate-spin" />
+                      </div>
+                    )}
+                  </label>
+                </div>
+                {imageInputMethod !== 'upload' && (
+                  <p className="text-[10px] text-slate-400 text-center">Selecione "Upload de Arquivo" para enviar mídia</p>
+                )}
               </div>
-              {uploadingMedia && <p className="text-[11px] font-bold text-[#846391]">Enviando mídia para a Biblioteca do WordPress...</p>}
+              {uploadingMedia && (
+                <div className="flex items-center justify-center gap-2 p-3 rounded-xl bg-[#FAF7FB] border border-[#DAC9DF]">
+                  <LoaderCircle className="w-5 h-5 text-[#8A5D96] animate-spin" />
+                  <span className="text-sm font-semibold text-[#382343]">Enviando mídia para a Biblioteca do WordPress...</span>
+                </div>
+              )}
               {productForm.gallery?.length ? <div className="flex gap-2 overflow-x-auto">{productForm.gallery.map((url) => <img key={url} src={url} alt="Prévia da galeria" className="h-14 w-14 rounded-lg object-cover border border-[#EBDDF0]" />)}</div> : null}
               {productForm.video && <video src={productForm.video} controls className="w-full max-h-40 rounded-xl bg-black" />}
 
@@ -1016,11 +1164,29 @@ export function AdminSpaPanel({
               <div className="flex justify-end gap-2 pt-2">
                 <button
                   type="button"
-                  onClick={() => setIsAddProductOpen(false)}
-                  className="px-4 py-2 border border-[#EBDDF0] rounded-xl text-xs font-bold text-gray-600 hover:bg-[#FAF7FA]"
+                  onClick={() => {
+                    setIsAddProductOpen(false);
+                    setImageInputMethod('url');
+                  }}
+                  className="px-4 py-2 border border-[#DAC9DF] rounded-xl text-xs font-bold text-slate-600 hover:bg-[#FAF7FB]"
                 >
                   Cancelar
                 </button>
+                {editingProduct && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (window.confirm(`Tem certeza que deseja excluir "${editingProduct.name}"? Esta ação não pode ser desfeita.`)) {
+                        onDeleteProduct(editingProduct.id);
+                        setIsAddProductOpen(false);
+                        setImageInputMethod('url');
+                      }
+                    }}
+                    className="px-4 py-2 bg-red-600 text-white rounded-xl text-xs font-bold hover:bg-red-700 transition-colors"
+                  >
+                    Excluir Peça
+                  </button>
+                )}
                 <button
                   type="submit"
                   disabled={savingProduct}

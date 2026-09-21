@@ -127,7 +127,7 @@ export const StoreFront: React.FC<StoreFrontProps> = ({
       <TrustBar />
 
       {!isFiltering && latestProducts.length > 0 && (
-        <section className="mb-10 sm:mb-14 rounded-3xl border border-[#EBDDF0] bg-[#271E2D] p-5 sm:p-7 text-white shadow-lg">
+        <section className="mb-10 sm:mb-14 rounded-3xl border border-[#DAC9DF] bg-[#271E2D] p-5 sm:p-7 text-white shadow-lg">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-5">
             <div>
               <span className="text-[10px] font-black uppercase tracking-[0.18em] text-[#DFBA5A]">Curadoria da semana</span>
@@ -223,16 +223,16 @@ export const StoreFront: React.FC<StoreFrontProps> = ({
                   scrollToSection(cat.target);
                 }
               }}
-              className="flex flex-col items-center p-2.5 sm:p-3 rounded-2xl bg-white border border-[#EBDDF0] hover:border-[#dac9df] hover:shadow-md transition-all group cursor-pointer"
+              className="flex flex-col items-center p-2.5 sm:p-3 rounded-2xl bg-white border border-[#DAC9DF] hover:border-[#8A5D96] hover:shadow-md transition-all group cursor-pointer"
             >
-              <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden mb-2 border-2 border-[#dac9df] group-hover:scale-105 transition-transform shadow-xs">
+              <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden mb-2 border-2 border-[#DAC9DF] group-hover:scale-105 transition-transform shadow-xs">
                 <img 
                   src={cat.img} 
                   alt={cat.name} 
                   className="w-full h-full object-cover" 
                 />
               </div>
-              <strong className="text-[11px] sm:text-xs font-bold text-[#271E2D] group-hover:text-[#846391] transition-colors text-center line-clamp-1">
+              <strong className="text-[11px] sm:text-xs font-bold text-[#271E2D] group-hover:text-[#8A5D96] transition-colors text-center line-clamp-1">
                 {cat.name}
               </strong>
               <span className="text-[10px] text-gray-500 mt-0.5">{cat.count}</span>
@@ -243,7 +243,7 @@ export const StoreFront: React.FC<StoreFrontProps> = ({
 
       {/* 4. Barra de Busca e Filtros Rápidos */}
       <section id="catalogo-filtro" className="scroll-mt-24 mb-8">
-        <div className="bg-white p-4 sm:p-5 rounded-2xl border border-[#EBDDF0] shadow-xs">
+        <div className="bg-white p-4 sm:p-5 rounded-2xl border border-[#DAC9DF] shadow-xs">
           <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
             {/* Campo de Busca */}
             <div className="relative flex-1">
@@ -691,13 +691,13 @@ export const StoreFront: React.FC<StoreFrontProps> = ({
                 "Comprei o vestido mídi plissado para um congresso. A peça chegou super bem embalada, cheirosa e com medidas exatas na fita. Amei!"
               </p>
             </div>
-            <div className="border-t border-[#EBDDF0] pt-3">
+            <div className="border-t border-[#DAC9DF] pt-3">
               <strong className="block text-xs font-bold text-[#271E2D]">Sarah Ribeiro</strong>
-              <span className="text-[11px] text-[#846391]">São Paulo - SP • Compra Verificada</span>
+              <span className="text-[11px] text-[#8A5D96]">São Paulo - SP • Compra Verificada</span>
             </div>
           </div>
 
-          <div className="bg-[#FAF7FA] p-5 sm:p-6 rounded-2xl border border-[#EBDDF0] flex flex-col justify-between">
+          <div className="bg-[#FAF7FB] p-5 sm:p-6 rounded-2xl border border-[#DAC9DF] flex flex-col justify-between">
             <div>
               <div className="flex items-center gap-1 text-amber-400 mb-3">
                 {[...Array(5)].map((_, i) => (
@@ -708,13 +708,12 @@ export const StoreFront: React.FC<StoreFrontProps> = ({
                 "A capa de Bíblia acolchoada em couro é de altíssima qualidade. O zíper é super macio e coube perfeitamente na minha Bíblia de estudo."
               </p>
             </div>
-            <div className="border-t border-[#EBDDF0] pt-3">
+<div className="border-t border-[#DAC9DF] pt-3">
               <strong className="block text-xs font-bold text-[#271E2D]">Débora Silveira</strong>
-              <span className="text-[11px] text-[#846391]">Curitiba - PR • Compra Verificada</span>
+              <span className="text-[11px] text-[#8A5D96]">Curitiba - PR • Compra Verificada</span>
             </div>
           </div>
-
-          <div className="bg-[#FAF7FA] p-5 sm:p-6 rounded-2xl border border-[#EBDDF0] flex flex-col justify-between">
+          <div className="bg-[#FAF7FB] p-5 sm:p-6 rounded-2xl border border-[#DAC9DF] flex flex-col justify-between">
             <div>
               <div className="flex items-center gap-1 text-amber-400 mb-3">
                 {[...Array(5)].map((_, i) => (
@@ -725,9 +724,9 @@ export const StoreFront: React.FC<StoreFrontProps> = ({
                 "O vestidinho infantil da minha filha é maravilhoso. Não pinica nada e ela amou usar na igreja. O atendimento da loja é nota 10!"
               </p>
             </div>
-            <div className="border-t border-[#EBDDF0] pt-3">
+            <div className="border-t border-[#DAC9DF] pt-3">
               <strong className="block text-xs font-bold text-[#271E2D]">Maria Aparecida</strong>
-              <span className="text-[11px] text-[#846391]">Belo Horizonte - MG • Compra Verificada</span>
+              <span className="text-[11px] text-[#8A5D96]">Belo Horizonte - MG • Compra Verificada</span>
             </div>
           </div>
         </div>

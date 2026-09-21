@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Logo } from './Logo';
 import { getConfig } from '../lib/api';
-import { X, CheckCircle2, QrCode, CreditCard, Truck, ShieldCheck, MapPin, Search, Loader2 } from 'lucide-react';
+import { CountdownTimer } from './CountdownTimer';
+import { X, CheckCircle2, QrCode, CreditCard, Truck, ShieldCheck, MapPin, Search, Loader2, AlertCircle } from 'lucide-react';
 import { CartItem, ShippingOption, Address, Order } from '../types';
 
 interface CheckoutModalProps {
@@ -22,6 +23,10 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
   onOrderCompleted,
 }) => {
   const [step, setStep] = useState<'form' | 'processing'>('form');
+
+  // Timer de escassez (15 minutos)
+  const [checkoutTimer, setCheckoutTimer] = useState(15 * 60);
+  const [timerExpired, setTimerExpired] = useState(false);
 
   // Dados Pessoais
   const [firstName, setFirstName] = useState('');
@@ -51,6 +56,30 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
   const [cardCvv, setCardCvv] = useState('');
   const [cardCpf, setCardCpf] = useState('');
   const [installments, setInstallments] = useState('1');
+
+  // Reset timer when modal opens
+  useEffect(() => {
+    if (isOpen) {
+      setCheckoutTimer(15 * 60);
+      setTimerExpired(false);
+    }
+  }, [isOpen]);
+
+  // Countdown timer effect
+  useEffect(() => {
+    if (!isOpen || timerExpired || step === 'processing') return;
+    const interval = setInterval(() => {
+      setCheckoutTimer((prev) => {
+        if (prev <= 1) {
+          clearInterval(interval);
+          setTimerExpired(true);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [isOpen, timerExpired, step]);
 
   if (!isOpen) return null;
 
@@ -623,6 +652,16 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                 <h3 className="font-black text-sm text-[#382343] mb-4 pb-2 border-b border-[#dac9df] font-serif">
                   Resumo da Compra ({items.reduce((s, i) => s + i.quantity, 0)} itens)
                 </h3>
+
+                {/* Timer de Escassez / Urgência */}
+                <CountdownTimer 
+                  durationMinutes={15} 
+                  onExpire={() => {
+                    alert('Tempo de reserva esgotado! As peças foram liberadas para outros clientes.');
+                    onClose();
+                  }}
+                  className="mb-4"
+                />
 
                 <div className="space-y-3 max-h-48 overflow-y-auto mb-4 divide-y divide-[#dac9df]/40 pr-1">
                   {items.map((item) => (
