@@ -1,0 +1,169 @@
+/* Todday Modas Brechó — isolamento do storefront React.
+   Carregado somente na página da loja. Sem @layer para vencer o tema. */
+
+#masthead,
+header.site-header,
+#ast-desktop-header,
+#ast-mobile-header,
+.ast-primary-header-bar,
+footer.site-footer,
+#colophon,
+.ast-footer-overlay,
+.entry-header,
+h1.entry-title,
+.ast-single-entry-breadcrumbs,
+.ast-breadcrumbs-wrapper,
+#secondary,
+.widget-area {
+  display: none !important;
+}
+
+.site-content,
+.content-area,
+#primary,
+#content,
+.ast-separate-container .ast-article-post,
+.ast-separate-container .ast-article-single,
+.ast-separate-container #primary {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+.site-content .ast-container,
+.ast-container {
+  max-width: 100% !important;
+  width: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+#root {
+  width: 100%;
+}
+
+html,
+body {
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow-x: hidden;
+}
+
+/* Isola a vitrine dos estilos globais do WooCommerce e do tema. */
+#root button,
+#root input,
+#root select,
+#root textarea {
+  font-family: inherit;
+}
+
+#root button {
+  background-image: none;
+  text-transform: none;
+  background-color: #dac9df !important;
+  color: #382343 !important;
+  border-color: #8a5d96 !important;
+}
+
+#root button[class*="bg-white"],
+#root button[class*="bg-\\[\\#FAF7FA\\]"] {
+  background-color: #ffffff !important;
+  color: #382343 !important;
+}
+
+#root button[class*="bg-\\[\\#271E2D\\]"] {
+  background-color: #271e2d !important;
+  color: #ffffff !important;
+  border-color: #271e2d !important;
+}
+
+#root button[class*="bg-white\\/10"] {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.25) !important;
+}
+
+#root #tdm-hero-carousel h1,
+#root #tdm-hero-carousel h2,
+#root #tdm-hero-carousel h3 {
+  color: #ffffff !important;
+}
+
+#root #tdm-hero-carousel p,
+#root #tdm-hero-carousel li,
+#root #tdm-hero-carousel span {
+  color: #f5eff7 !important;
+}
+
+#root #tdm-hero-carousel button {
+  color: #382343 !important;
+}
+
+#root #tdm-hero-carousel button[class*="bg-white\\/10"] {
+  color: #ffffff !important;
+}
+
+#root button[class*="bg-blue-"],
+#root a[class*="bg-blue-"],
+#root button[class*="bg-indigo-"],
+#root a[class*="bg-indigo-"] {
+  background-color: #dac9df !important;
+  border-color: #8a5d96 !important;
+  color: #382343 !important;
+}
+
+#root button[class*="bg-blue-"]:hover,
+#root a[class*="bg-blue-"]:hover,
+#root button[class*="bg-indigo-"]:hover,
+#root a[class*="bg-indigo-"]:hover {
+  background-color: #cbb6d2 !important;
+  color: #271e2d !important;
+}
+
+#root [class*="text-blue-"],
+#root [class*="text-indigo-"] {
+  color: #6b4b7a !important;
+}
+
+#root [class*="border-blue-"],
+#root [class*="border-indigo-"] {
+  border-color: #cbb6d2 !important;
+}
+
+#root [class*="text-slate-"],
+#root [class*="text-gray-"] {
+  color: #514456 !important;
+}
+
+#root input,
+#root select,
+#root textarea {
+  color: #382343 !important;
+  background-color: #ffffff !important;
+  border-color: #cbb6d2 !important;
+}
+
+#root input::placeholder,
+#root textarea::placeholder {
+  color: #75697a !important;
+  opacity: 1 !important;
+}
+
+#root button:focus-visible,
+#root a:focus-visible,
+#root input:focus,
+#root select:focus,
+#root textarea:focus {
+  outline: 3px solid rgba(138, 93, 150, 0.32) !important;
+  outline-offset: 2px;
+}
+
+#root .tdm-checkout-panel button,
+#root .tdm-checkout-panel input[type="submit"] {
+  border-radius: 12px;
+  box-shadow: none;
+}

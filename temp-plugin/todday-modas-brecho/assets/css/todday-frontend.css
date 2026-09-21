@@ -1,0 +1,411 @@
+/**
+ * Todday Modas Brechó — Estilos Oficiais do Plugin
+ * Paleta: Verde Esmeralda (#0E9B75) & Lilás Violeta (#8B5CF6)
+ * @version 1.0.0
+ */
+
+:root {
+  --tdm-primary: #0E9B75;
+  --tdm-primary-dark: #0A7956;
+  --tdm-accent: #8B5CF6;
+  --tdm-accent-light: #C4B5FD;
+  --tdm-bg-light: #F6FFF9;
+  --tdm-bg-lilac: #F7F5FF;
+  --tdm-text-main: #12201B;
+  --tdm-text-muted: #4A5A54;
+  --tdm-surface: #FFFFFF;
+  --tdm-surface-dark: #1A241F;
+  --tdm-border: #E2E8F0;
+  --tdm-radius: 12px;
+  --tdm-radius-sm: 8px;
+  --tdm-radius-pill: 9999px;
+  --tdm-shadow: 0 4px 16px rgba(14, 155, 117, 0.08);
+  --tdm-shadow-hover: 0 8px 24px rgba(139, 92, 246, 0.14);
+}
+
+/* Isolamento total: todos os seletores usam o prefixo .tdm- */
+.tdm-store-wrapper,
+.tdm-cart-wrapper,
+.tdm-checkout-wrapper,
+.tdm-success-wrapper,
+.tdm-panel-body {
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  color: var(--tdm-text-main);
+  background-color: var(--tdm-bg-light);
+  box-sizing: border-box;
+}
+
+.tdm-store-wrapper *,
+.tdm-cart-wrapper *,
+.tdm-checkout-wrapper *,
+.tdm-success-wrapper *,
+.tdm-panel-body * {
+  box-sizing: border-box;
+}
+
+/* Header bar da vitrine */
+.tdm-header-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.tdm-search-box {
+  display: flex;
+  flex: 1;
+  max-width: 520px;
+}
+
+.tdm-input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid var(--tdm-border);
+  border-radius: var(--tdm-radius-sm);
+  background: var(--tdm-surface);
+  color: var(--tdm-text-main);
+  font-size: 15px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.tdm-input:focus {
+  outline: none;
+  border-color: var(--tdm-primary);
+  box-shadow: 0 0 0 3px rgba(14, 155, 117, 0.15);
+}
+
+.tdm-select {
+  padding: 12px 16px;
+  border: 1px solid var(--tdm-border);
+  border-radius: var(--tdm-radius-sm);
+  background: var(--tdm-surface);
+  color: var(--tdm-text-main);
+  font-size: 15px;
+  cursor: pointer;
+}
+
+/* Botões */
+.tdm-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  font-weight: 600;
+  font-size: 15px;
+  border-radius: var(--tdm-radius-sm);
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.tdm-btn-primary {
+  background-color: var(--tdm-primary);
+  color: #FFFFFF;
+}
+
+.tdm-btn-primary:hover {
+  background-color: var(--tdm-primary-dark);
+  transform: translateY(-1px);
+}
+
+.tdm-btn-secondary {
+  background-color: var(--tdm-accent);
+  color: #FFFFFF;
+}
+
+.tdm-btn-secondary:hover {
+  background-color: #7C3AED;
+}
+
+.tdm-btn-outline {
+  background-color: transparent;
+  border: 1px solid var(--tdm-border);
+  color: var(--tdm-text-main);
+}
+
+.tdm-btn-outline:hover {
+  border-color: var(--tdm-primary);
+  color: var(--tdm-primary);
+}
+
+.tdm-btn-block {
+  width: 100%;
+}
+
+/* Filtros em pílulas */
+.tdm-filter-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 28px;
+}
+
+.tdm-pill {
+  padding: 8px 18px;
+  border-radius: var(--tdm-radius-pill);
+  background: var(--tdm-surface);
+  border: 1px solid var(--tdm-border);
+  color: var(--tdm-text-muted);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tdm-pill:hover,
+.tdm-pill.active {
+  background: var(--tdm-primary);
+  color: #FFFFFF;
+  border-color: var(--tdm-primary);
+}
+
+/* Grid de Produtos */
+.tdm-products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 24px;
+  margin-bottom: 36px;
+}
+
+/* Card de Produto */
+.tdm-product-card {
+  background: var(--tdm-surface);
+  border-radius: var(--tdm-radius);
+  border: 1px solid var(--tdm-border);
+  overflow: hidden;
+  box-shadow: var(--tdm-shadow);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.tdm-product-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--tdm-shadow-hover);
+  border-color: var(--tdm-accent-light);
+}
+
+.tdm-card-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: rgba(18, 32, 27, 0.85);
+  color: #FFFFFF;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 4px 10px;
+  border-radius: var(--tdm-radius-pill);
+  backdrop-filter: blur(4px);
+  z-index: 2;
+}
+
+.tdm-card-image-wrapper {
+  position: relative;
+  width: 100%;
+  padding-top: 120%; /* Proporção editorial de moda 4:5 */
+  background: #F1F5F9;
+  overflow: hidden;
+}
+
+.tdm-card-image-wrapper img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.tdm-product-card:hover .tdm-card-image-wrapper img {
+  transform: scale(1.05);
+}
+
+.tdm-card-info {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.tdm-card-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 6px 0;
+  color: var(--tdm-text-main);
+  line-height: 1.3;
+}
+
+.tdm-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--tdm-text-muted);
+  margin-bottom: 12px;
+}
+
+.tdm-card-price-row {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.tdm-price-current {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--tdm-primary);
+}
+
+.tdm-price-regular {
+  font-size: 14px;
+  text-decoration: line-through;
+  color: #94A3B8;
+  margin-left: 6px;
+}
+
+/* WhatsApp Floating Button */
+.tdm-wa-floating {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 58px;
+  height: 58px;
+  background-color: #25D366;
+  color: #FFFFFF;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+  z-index: 9999;
+  transition: transform 0.2s ease;
+}
+
+.tdm-wa-floating:hover {
+  transform: scale(1.1);
+  color: #FFFFFF;
+}
+
+/* Spinner e estados */
+.tdm-loading-state,
+.tdm-empty-state {
+  text-align: center;
+  padding: 48px 16px;
+  color: var(--tdm-text-muted);
+  grid-column: 1 / -1;
+}
+
+.tdm-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(14, 155, 117, 0.15);
+  border-top-color: var(--tdm-primary);
+  border-radius: 50%;
+  animation: tdm-spin 0.8s linear infinite;
+  margin: 0 auto 16px auto;
+}
+
+@keyframes tdm-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Checkout e Carrinho */
+.tdm-cart-layout,
+.tdm-checkout-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+}
+
+@media (min-width: 900px) {
+  .tdm-cart-layout,
+  .tdm-checkout-grid {
+    grid-template-columns: 2fr 1.2fr;
+  }
+}
+
+.tdm-card {
+  background: var(--tdm-surface);
+  border-radius: var(--tdm-radius);
+  border: 1px solid var(--tdm-border);
+  padding: 24px;
+  margin-bottom: 20px;
+  box-shadow: var(--tdm-shadow);
+}
+
+.tdm-summary-card {
+  background: var(--tdm-surface);
+  border-radius: var(--tdm-radius);
+  border: 1px solid var(--tdm-accent-light);
+  padding: 24px;
+  position: sticky;
+  top: 24px;
+  box-shadow: var(--tdm-shadow);
+}
+
+.tdm-summary-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  font-size: 15px;
+}
+
+.tdm-total-row {
+  font-size: 18px;
+  border-top: 1px solid var(--tdm-border);
+  padding-top: 16px;
+  margin-top: 16px;
+  color: var(--tdm-primary);
+}
+
+/* Responsividade de formulários */
+.tdm-form-row {
+  display: grid;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.tdm-form-row-2 {
+  grid-template-columns: 1fr 1fr;
+}
+
+.tdm-form-row-3 {
+  grid-template-columns: 1fr 1fr 80px;
+}
+
+@media (max-width: 600px) {
+  .tdm-form-row-2,
+  .tdm-form-row-3 {
+    grid-template-columns: 1fr;
+  }
+}
+
+.tdm-form-group label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: var(--tdm-text-main);
+}
+
+.tdm-input-with-action {
+  display: flex;
+  gap: 8px;
+}
+
+/* Painel SPA Dark Mode */
+.tdm-panel-body.dark-mode {
+  --tdm-bg-light: #121B17;
+  --tdm-surface: #1A241F;
+  --tdm-text-main: #F1F5F9;
+  --tdm-text-muted: #94A3B8;
+  --tdm-border: #2D3D35;
+}

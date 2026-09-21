@@ -1,0 +1,116 @@
+═════════════════════════════════════════════════════════════════
+  NOVO LAYOUT MERCADO LIVRE/SHOPEE ATIVADO!
+═════════════════════════════════════════════════════════════════
+
+✅ O novo template foi criado e ativado com sucesso!
+
+ARQUIVO CRIADO:
+  templates/vitrine-marketplace.php
+
+O novo layout estilo Mercado Livre/Shopee está agora ativo.
+
+═════════════════════════════════════════════════════════════════
+PARA VER AS MUDANÇAS NO SEU SITE:
+═════════════════════════════════════════════════════════════════
+
+1. LIMPAR CACHE DO NAVEGADOR:
+   - Pressione: Ctrl + Shift + Delete (Windows) ou Cmd + Shift + Delete (Mac)
+   - Selecione "Arquivos em cache" e "Cookies"
+   - Clique em "Limpar dados"
+
+2. DESATIVAR E REATIVAR O PLUGIN:
+   a) No WordPress Admin → Plugins
+   b) Procure por "Todday Modas Brechó"
+   c) Clique em "Desativar"
+   d) Aguarde 5 segundos
+   e) Clique em "Ativar"
+
+3. LIMPAR CACHE DO WORDPRESS (se usar plugin de cache):
+   - WP Super Cache: Admin → WP Super Cache → Deletar Cache
+   - W3 Total Cache: Admin → Performance → Empty All Caches
+   - Elementor: Admin → Elementor → Tools → Regenerate CSS
+
+4. ACESSAR A PÁGINA DA LOJA:
+   - Vá para a página que contém [todday_loja] ou [tm_home]
+   - Atualize a página (F5 ou Ctrl+R)
+
+═════════════════════════════════════════════════════════════════
+RECURSOS DO NOVO LAYOUT:
+═════════════════════════════════════════════════════════════════
+
+✨ HEADER MODERNO
+  • Top bar com promoções
+  • Buscador inteligente
+  • Ações rápidas (favoritos, carrinho, conta)
+  • Logo com gradiente roxo
+
+📱 NAVEGAÇÃO INTUITIVA
+  • Menu horizontal com categorias
+  • Dropdown com subcategorias
+  • Responsivo para mobile
+
+🎨 PRODUTOS COM ESTILO
+  • Cards com imagens grandes
+  • Badges "NOVO" e desconto %
+  • Avaliações com stars
+  • Preço atual + preço original
+  • Botão de compra destacado
+  • Efeito hover com elevação
+
+🔍 FILTROS FUNCIONAIS
+  • Ordenar por (preço, relevância, avaliação)
+  • Filtro de preço com slider
+  • Filtro de tamanho
+
+📐 GRID RESPONSIVO
+  • 5 colunas em desktop
+  • 3 colunas em tablet
+  • 2 colunas em mobile
+
+🎯 CORES E TIPOGRAFIA
+  • Roxo vibrante (#7C3AED) como destaque
+  • Font Inter moderna e limpa
+  • Tons cinza neutros
+  • Alto contraste para melhor legibilidade
+
+🔗 FOOTER PROFISSIONAL
+  • Seções: Sobre, Compra, Atendimento, Redes Sociais
+  • Links para informações importantes
+  • Telefone e email destacados
+
+═════════════════════════════════════════════════════════════════
+CUSTOMIZAÇÃO:
+═════════════════════════════════════════════════════════════════
+
+Para alterar cores, edite o arquivo:
+  templates/vitrine-marketplace.php
+
+Procure por estas variáveis CSS (no <style>):
+  --primary-color: #7C3AED (roxo)
+  --primary-dark: #5B21B6 (roxo escuro)
+  --accent-color: #F59E0B (dourado/amarelo)
+  --error-color: #EF4444 (vermelho)
+
+Você também pode editar:
+  • Textos do top bar
+  • Categorias do menu
+  • Produtos de exemplo
+  • Cores e tamanhos
+  • Conteúdo do footer
+
+═════════════════════════════════════════════════════════════════
+PRECISA DE AJUDA?
+═════════════════════════════════════════════════════════════════
+
+Se o layout ainda não aparecer:
+
+1. Verifique se o plugin está ATIVADO (não desativado)
+2. Verifique se a página contém o shortcode [todday_loja]
+3. Limpe o cache do navegador (Ctrl+Shift+Delete)
+4. Recarregue a página (F5)
+5. Desative plugins de cache temporariamente
+6. Se usar CDN (Cloudflare), limpe o cache lá também
+
+═════════════════════════════════════════════════════════════════
+
+Sucesso! Sua loja agora tem um design moderno e profissional! 🚀

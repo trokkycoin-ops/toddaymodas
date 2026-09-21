@@ -1,0 +1,13 @@
+{
+  "name": "Todday Modas Brechó",
+  "slug": "todday-modas-brecho",
+  "version": "1.0.0",
+  "db_version": "1.0.0",
+  "build_timestamp": "2026-09-11T05:00:00Z",
+  "author": "Tselak Solutions",
+  "checksum": "sha256:4f8e7c2a1b9d0e3f5a6b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f",
+  "hpos_compatible": true,
+  "requires_php": "8.1",
+  "requires_wc": "8.0+",
+  "requires_elementor": "3.16+"
+}
